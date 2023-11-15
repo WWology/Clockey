@@ -1,0 +1,29 @@
+{
+	"recommendations": [
+		"patbenatar.advanced-new-file",
+		"cyrilletuzi.angular-schematics",
+		"dbaeumer.vscode-eslint",
+		"ms-vscode.test-adapter-converter",
+		"connorshea.vscode-test-explorer-status-bar",
+		"hbenl.vscode-test-explorer",
+		"gruntfuggly.todo-tree",
+		"pflannery.vscode-versionlens",
+		"pranaygp.vscode-css-peek",
+		"editorconfig.editorconfig",
+		"rubbersheep.gi",
+		"mhutchie.git-graph",
+		"donjayamanne.githistory",
+		"eamodio.gitlens",
+		"codezombiech.gitignore",
+		"formulahendry.github-actions",
+		"ecmel.vscode-html-css",
+		"metaseed.metago",
+		"christian-kohler.npm-intellisense",
+		"ryu1kn.partial-diff",
+		"christian-kohler.path-intellisense",
+		"esbenp.prettier-vscode",
+		"natqe.reload",
+		"sibiraj-s.vscode-scss-formatter",
+		"irongeek.vscode-env"
+	]
+}
