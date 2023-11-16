@@ -26,3 +26,7 @@ export async function deployCommands({ guildId }: DeployCommandsProps) {
 		console.error(error);
 	}
 }
+
+async () => {
+	await deployCommands({ guildId: config.WW_TEST_GUILD_ID! });
+};

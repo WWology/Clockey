@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "serve": "node app/index.js",
+    "serve": "node app/app.js",
     "deploy-commands": "node app/deploy_commands.js"
   },
   "keywords": [],
@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "discord.js": "^14.14.1",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "mongodb": "^6.2.0",
+    "mongoose": "^8.0.1"
   }
 }
