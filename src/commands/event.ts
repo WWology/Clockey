@@ -34,60 +34,66 @@ export const data = new SlashCommandBuilder()
 			)
 	);
 
-// TODO
 export async function execute(interaction: ChatInputCommandInteraction) {
 	let replyMessage: string = "Hey Gardener\n\nI need up to ";
 	let eventName: string = "";
 	let eventTime: string = "";
 	let eventSeriesLength: string = "";
 	let numberOfGardeners: number = 0;
-	let hours: number = 0;
+	let hours: string = "";
 
 	const type = interaction.options.getString("type");
 	const modal = eventModal(type!);
 	await interaction.showModal(modal);
 
-	interaction.awaitModalSubmit({ time: 120_000 }).then(async (modal) => {
-		eventName = valueFromModal(modal, "eventName");
-		eventTime = valueFromModal(modal, "eventTime");
-		switch (type) {
-			case "Dota":
-				eventSeriesLength = valueFromModal(modal, "eventSeriesLength");
-				numberOfGardeners = 4;
-				hours = checkHours(eventSeriesLength);
-				break;
-			case "CS":
-				eventSeriesLength = valueFromModal(modal, "eventSeriesLength");
-				numberOfGardeners = 2;
-				hours = checkHours(eventSeriesLength);
-				break;
-			case "Other":
-				numberOfGardeners = parseInt(
-					valueFromModal(modal, "numberOfGardeners")
-				);
-				hours = parseInt(valueFromModal(modal, "hours"));
-				break;
-		}
+	interaction
+		.awaitModalSubmit({ time: 120_000 })
+		.then(async (modal) => {
+			eventName = valueFromModal(modal, "eventName");
+			eventTime = valueFromModal(modal, "eventTime");
+			switch (type) {
+				case "Dota":
+					eventSeriesLength = valueFromModal(modal, "eventSeriesLength");
+					numberOfGardeners = 4;
+					hours = checkHours(eventSeriesLength);
+					break;
+				case "CS":
+					eventSeriesLength = valueFromModal(modal, "eventSeriesLength");
+					numberOfGardeners = 2;
+					hours = checkHours(eventSeriesLength);
+					break;
+				case "Other":
+					numberOfGardeners = parseInt(
+						valueFromModal(modal, "numberOfGardeners")
+					);
+					hours = valueFromModal(modal, "hours");
+					break;
+			}
 
-		if (type !== "Other") {
-			replyMessage += `${numberOfGardeners} gardeners to work the ${type} game - ${eventName}, at <t:${eventTime}:F>
+			if (type !== "Other") {
+				replyMessage += `${numberOfGardeners} gardeners to work the ${type} game - ${eventName}, at <t:${eventTime}:F>
 
 Please react below with a <:ruggahPain:951843834554376262> to sign up!
 
 As this is a ${eventSeriesLength}, you will be able to add ${hours} hours of work to your invoice for the month`;
-		} else {
-			replyMessage += `${numberOfGardeners} gardeners to work the ${type} event - ${eventName}, at <t:${eventTime}:F>
+			} else {
+				replyMessage += `${numberOfGardeners} gardeners to work the ${type} event - ${eventName}, at <t:${eventTime}:F>
 
 Please react below with a <:ruggahPain:951843834554376262> to sign up!
 
 You will be able to add ${hours} hours of work to your invoice for the month`;
-		}
+			}
 
-		await modal.reply({
-			content: replyMessage,
-			ephemeral: true,
+			const message = await modal.reply({
+				content: replyMessage,
+				fetchReply: true,
+			});
+
+			message.react("951843834554376262");
+		})
+		.catch((err) => {
+			console.error(err);
 		});
-	});
 }
 
 function eventModal(type: string): ModalBuilder {
@@ -164,18 +170,18 @@ function eventModal(type: string): ModalBuilder {
 	return modal;
 }
 
-function checkHours(gameType: string): number {
+function checkHours(gameType: string): string {
 	switch (gameType) {
 		case "Bo1":
-			return 2;
+			return "2";
 		case "Bo2":
-			return 3;
+			return "3";
 		case "Bo3":
-			return 4;
+			return "4";
 		case "Bo5":
-			return 4;
+			return "5";
 		default:
-			return 0;
+			return "";
 	}
 }
 
@@ -184,4 +190,8 @@ function valueFromModal(
 	fieldName: string
 ): string {
 	return modalInteraction.fields.getTextInputValue(fieldName);
+}
+
+function checkValidUnixTime(eventTime: string): boolean {
+	return true;
 }

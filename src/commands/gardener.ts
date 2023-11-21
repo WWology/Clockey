@@ -24,16 +24,24 @@ export async function execute(
 	let replyMessage: string = "The people selected are: ";
 	let eventType: string = "";
 
+	const botID = interaction.client.application.id;
+
 	const message = interaction.targetMessage;
 	const messageContent = message.content;
 
+	// Check if message has already been reacted
+	if (message.reactions.cache.get("👍")?.count! > 0) {
+		await interaction.reply({
+			content: "This message has been processed for signups",
+			ephemeral: true,
+		});
+	}
+
 	if (messageContent.includes("Dota")) {
 		eventType = "Dota";
-	}
-	if (messageContent.includes("CS")) {
+	} else if (messageContent.includes("CS")) {
 		eventType = "CS";
-	}
-	if (messageContent.includes("Other")) {
+	} else if (messageContent.includes("Other")) {
 		eventType = "Other";
 	}
 
@@ -65,7 +73,7 @@ export async function execute(
 	await interaction.showModal(modal);
 
 	interaction
-		.awaitModalSubmit({ time: 30000 })
+		.awaitModalSubmit({ time: 30_000 })
 		.then(async (modalInteraction) => {
 			let numberOfGardeners = parseInt(
 				modalInteraction.fields.getTextInputValue("numberOfGardenerInput")
@@ -80,6 +88,11 @@ export async function execute(
 			reactors?.forEach((reactor) => {
 				gardenersReacted.push(reactor.id);
 			});
+
+			// Remove the bot ID from the list of potential gardeners
+			if (gardenersReacted.indexOf(botID) > -1) {
+				gardenersReacted.splice(gardenersReacted.indexOf(botID), 1);
+			}
 
 			// Select random gardeners based on the amount of gardeners required, if there's less gardeners than what's required
 			// then immediately select all the gardeners who reacted
@@ -104,12 +117,13 @@ export async function execute(
 				hours: hours,
 			});
 
-			modalInteraction.reply({
-				content: replyMessage,
-				ephemeral: true,
+			await event.save();
+
+			await modalInteraction.reply({
+				content: `${replyMessage} - ${message.url}`,
 			});
 
-			message.react("👍");
+			await message.react("👍");
 		})
 		.catch((err) => {
 			console.error(err);

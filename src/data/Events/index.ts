@@ -1,5 +1,5 @@
 import { IEvent } from "./event.model";
-import { getEventData } from "./getEvent";
+import { getEventsWorked } from "./getEventsWorked";
 import { updateEventData } from "./updateEvent";
 
-export { IEvent, getEventData, updateEventData };
+export { IEvent, getEventsWorked, updateEventData };

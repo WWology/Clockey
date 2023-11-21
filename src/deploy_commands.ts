@@ -28,5 +28,5 @@ export async function deployCommands({ guildId }: DeployCommandsProps) {
 }
 
 async () => {
-	await deployCommands({ guildId: config.WW_TEST_GUILD_ID! });
+	await deployCommands({ guildId: config.WW_TEST_GUILD_ID });
 };
