@@ -2,6 +2,9 @@ import * as fs from "fs";
 import * as path from "path";
 import * as puppeteer from "puppeteer";
 
+/**
+ * @deprecated PDF generation won't be used for the final bot
+ */
 export const generatePdf = async () => {
 	try {
 		console.log("Starting to generate PDF");

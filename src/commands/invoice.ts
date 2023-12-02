@@ -1,6 +1,10 @@
 import {
+	ActionRowBuilder,
+	ButtonBuilder,
+	ButtonStyle,
 	ChatInputCommandInteraction,
 	EmbedBuilder,
+	MessageActionRowComponentBuilder,
 	SlashCommandBuilder,
 	User,
 } from "discord.js";
@@ -8,7 +12,6 @@ import * as path from "path";
 
 import { getEventsWorked } from "../data/Events/getEventsWorked";
 import { generateInvoiceHtml } from "../utils/createHtml";
-import { generatePdf } from "../utils/createPdf";
 
 export const data = new SlashCommandBuilder()
 	.setName("invoice")
@@ -16,11 +19,17 @@ export const data = new SlashCommandBuilder()
 	.addStringOption((option) =>
 		option
 			.setName("startdate")
-			.setDescription("The start date of the invoice")
+			.setDescription(
+				"The start date of the invoice, please use YYYY-MM-DD format"
+			)
 			.setRequired(true)
 	)
 	.addStringOption((option) =>
-		option.setName("enddate").setDescription("End date of this invoice")
+		option
+			.setName("enddate")
+			.setDescription(
+				"The end date of this invoice, please use YYYY-MM-DD format"
+			)
 	);
 
 export async function execute(interaction: ChatInputCommandInteraction) {
@@ -46,8 +55,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 	}
 
 	const invoiceData = await getEventsWorked(user.id, startDate, endDate);
-	await generateInvoiceHtml(invoiceData, user.id, startDate, endDate);
-	await generatePdf();
+	await generateInvoiceHtml(invoiceData, endDate);
 
 	const invoiceEmbed = createInvoiceEmbed(
 		user,
@@ -56,9 +64,20 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 		endDate
 	);
 
+	const HTMLconverterButton = new ButtonBuilder()
+		.setLabel("Convert HTML here")
+		.setURL("https://wordtohtml.net/convert/html-to-docx")
+		.setStyle(ButtonStyle.Link);
+
+	const row =
+		new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
+			HTMLconverterButton
+		);
+
 	await interaction.editReply({
 		embeds: [invoiceEmbed],
-		files: [path.join(__dirname, "../../pages/invoice.pdf")],
+		files: [path.join(__dirname, "../../pages/invoice.html")],
+		components: [row],
 	});
 }
 

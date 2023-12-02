@@ -130,7 +130,6 @@ export async function execute(
 		});
 }
 
-//* Build the Gardener Modal
 function gardenerModal(): ModalBuilder {
 	const modal = new ModalBuilder()
 		.setCustomId("gardenerModal")

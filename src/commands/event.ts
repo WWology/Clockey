@@ -191,7 +191,3 @@ function valueFromModal(
 ): string {
 	return modalInteraction.fields.getTextInputValue(fieldName);
 }
-
-function checkValidUnixTime(eventTime: string): boolean {
-	return true;
-}

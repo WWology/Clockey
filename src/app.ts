@@ -23,6 +23,7 @@ client.on("interactionCreate", async (interaction: any) => {
 		return;
 	}
 
+	// Register command
 	const { commandName } = interaction;
 	if (commands[commandName as keyof typeof commands]) {
 		commands[commandName as keyof typeof commands].execute(interaction);
@@ -30,4 +31,3 @@ client.on("interactionCreate", async (interaction: any) => {
 });
 
 client.login(config.CLOCKEY_TOKEN);
-// TODO add backup to Mongo

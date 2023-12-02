@@ -1,19 +1,18 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as pug from "pug";
-import { getGardener } from "../data/Gardener/getGardener";
 
+/**
+ * Generate HTML
+ * @param {Map<String, any[]>} invoiceData - Invoice data taken from mongoDB
+ */
 export const generateInvoiceHtml = async (
 	invoiceData: Map<string, any[]>,
-	discordID: string,
-	startDate: Date,
 	endDate: Date
 ) => {
 	const compiledHtml = pug.compileFile(
 		path.join(__dirname, "../../pages/invoice.pug")
 	);
-
-	const gardener = await getGardener(discordID);
 
 	try {
 		let dotaEventsWorked = [];
@@ -25,21 +24,14 @@ export const generateInvoiceHtml = async (
 			dotaEventsWorked.push(dotaEvent);
 			totalHours += dotaEvent.hours;
 		}
-
 		for (let csEvent of invoiceData.get("CS")!) {
 			csEventsWorked.push(csEvent);
 			totalHours += csEvent.hours;
 		}
-
 		for (let otherEvent of invoiceData.get("Other")!) {
 			otherEventsWorked.push(otherEvent);
 			totalHours += otherEvent.hours;
 		}
-
-		const date = new Date();
-		const currentDate = date.toLocaleDateString("en-GB", {
-			dateStyle: "short",
-		});
 
 		if (doesFileExists(path.join(__dirname, "../../pages/invoice.html"))) {
 			console.log("Deleting old file");
@@ -48,16 +40,19 @@ export const generateInvoiceHtml = async (
 		fs.writeFileSync(
 			path.join(__dirname, "../../pages/invoice.html"),
 			compiledHtml({
-				gardener: gardener,
 				dotaEventsWorked: dotaEventsWorked,
 				csEventsWorked: csEventsWorked,
 				otherEventsWorked: otherEventsWorked,
 				totalHours: totalHours,
+				endDate: endDate,
 			})
 		);
+
 		console.log("Generated HTML Invoice");
+		return "Generate HTML Successful";
 	} catch (err) {
 		console.error("createHtml error: ", err);
+		return "Error generating HTML";
 	}
 };
 

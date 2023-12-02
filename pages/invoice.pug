@@ -2199,7 +2199,7 @@ table.c31
       ol.c6.lst-kix_list_1-1.start(start='1')
         li.c40
           h2(style='display: inline')
-            span= gardener.name
+            span Name
     td.c24(colspan='1' rowspan='1')
       ol.c6.lst-kix_list_1-0.start(start='1')
         li.c5
@@ -2208,15 +2208,15 @@ table.c31
   tr.c42
     td.c16(colspan='1' rowspan='1')
       p.c10
-        span.c7= gardener.addrl1
+        span.c7 Address Line 1
       p.c10
-        span.c7= gardener.addrl2
+        span.c7 Address Line 2
       p.c10
-        span.c7= gardener.postcode
+        span.c7 Postcode
       p.c10
-        span.c7= gardener.phone
+        span.c7 Phone
       p.c10
-        span.c7= gardener.email
+        span.c7 Email
       p.c10.c15
         span.c7
     td.c24(colspan='1' rowspan='1')
@@ -2224,7 +2224,7 @@ table.c31
         span.c11
       p.c21
         span.c9.c23 &nbsp;
-        span.c23.c9 DATE #{new Date().toLocaleDateString("en-GB", {dateStyle: "short"})}
+        span.c23.c9 DATE #{endDate.toLocaleDateString("en-GB", {dateStyle: "short"})}
   tr.c35
     td.c16(colspan='1' rowspan='1')
       p.c10
@@ -2354,10 +2354,10 @@ table.c31
           span.c17.c9 #{totalHours}hrs/#{totalHours * 12}€
 p.c18
   span.c11 IBAN for payment - !{' '}
-  span.c17.c9  #{gardener.iban}
+  span.c17.c9
 p.c18
   span.c11 SWIFT/BIC - !{' '}
-  span.c17.c9  #{gardener.swift}
+  span.c17.c9
 p.c18
   span.c11 Payment is due within 7 days.
 p.c18

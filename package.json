@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "serve": "node app/app.js",
+    "dev": "node app/app.js",
+    "serve": "pm2 start app/app.js",
     "deploy-commands": "node app/deploy_commands.js"
   },
   "keywords": [],
