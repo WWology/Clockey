@@ -35,7 +35,7 @@ export const data = new SlashCommandBuilder()
 	);
 
 export async function execute(interaction: ChatInputCommandInteraction) {
-	let replyMessage: string = "Hey Gardener\n\nI need up to ";
+	let replyMessage: string = "Hey <@&720253636797530203>\n\nI need up to ";
 	let eventName: string = "";
 	let eventTime: string = "";
 	let eventSeriesLength: string = "";
@@ -73,13 +73,13 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 			if (type !== "Other") {
 				replyMessage += `${numberOfGardeners} gardeners to work the ${type} game - ${eventName}, at <t:${eventTime}:F>
 
-Please react below with a <:ruggahPain:951843834554376262> to sign up!
+Please react below with a <:OGpeepoYes:730890894814740541> to sign up!
 
 As this is a ${eventSeriesLength}, you will be able to add ${hours} hours of work to your invoice for the month`;
 			} else {
 				replyMessage += `${numberOfGardeners} gardeners to work the ${type} event - ${eventName}, at <t:${eventTime}:F>
 
-Please react below with a <:ruggahPain:951843834554376262> to sign up!
+Please react below with a <:OGpeepoYes:730890894814740541> to sign up!
 
 You will be able to add ${hours} hours of work to your invoice for the month`;
 			}

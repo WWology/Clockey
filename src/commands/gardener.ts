@@ -61,8 +61,8 @@ export async function execute(
 	const eventUnixTime =
 		parseInt(
 			messageContent.substring(
-				messageContent.search("<") + 3,
-				messageContent.search(">")
+				messageContent.search("<t:") + 3,
+				messageContent.search(":F>")
 			)
 		) * 1000;
 
