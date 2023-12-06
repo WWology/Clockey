@@ -18,15 +18,29 @@ export async function execute(
 	interaction: MessageContextMenuCommandInteraction
 ) {
 	const message = interaction.targetMessage;
+	let eventName: string;
 
 	//* Check if event has been rolled before, if it hasn't been rolled, inform user
 	if (message.reactions.cache.get("👍")?.count! === 0) {
-		await interaction.editReply({
+		await interaction.reply({
 			content: "This event hasn't been rolled yet",
 		});
+		return;
 	}
 
-	const eventToBeDeleted = await Event.findOne({}).sort({ _id: -1 }).exec();
+	if (message.content.includes("Other")) {
+		eventName = message.content.substring(
+			message.content.search("-") + 2,
+			message.content.search(",")
+		);
+	} else {
+		eventName = message.content.substring(
+			message.content.search("OG vs"),
+			message.content.search(",")
+		);
+	}
+
+	const eventToBeDeleted = await Event.findOne({ eventName: eventName }).exec();
 
 	const event = new Event({
 		eventName: eventToBeDeleted?.eventName,
@@ -67,7 +81,7 @@ export async function execute(
 					content: "Signups cancelled successfully",
 					components: [],
 				});
-				await message.reactions.cache.get("👍")?.remove();
+				await message.reactions.cache.get("787697278190223370")?.remove();
 			} else {
 				await componentInteraction.update({
 					content: "Action cancelled",

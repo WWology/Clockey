@@ -29,12 +29,13 @@ export async function execute(
 	const message = interaction.targetMessage;
 	const messageContent = message.content;
 
-	// Check if message has already been reacted
-	if (message.reactions.cache.get("👍")?.count! > 0) {
+	// Check if message has already been processed before
+	if (message.reactions.cache.get("787697278190223370")?.count! > 0) {
 		await interaction.reply({
 			content: "This message has been processed for signups",
 			ephemeral: true,
 		});
+		return;
 	}
 
 	if (messageContent.includes("Dota")) {
@@ -75,13 +76,14 @@ export async function execute(
 	interaction
 		.awaitModalSubmit({ time: 30_000 })
 		.then(async (modalInteraction) => {
+			await modalInteraction.deferReply();
 			let numberOfGardeners = parseInt(
 				modalInteraction.fields.getTextInputValue("numberOfGardenerInput")
 			);
 
 			// Get the list of users who reacted with the specific emoji
 			const reactors = await message.reactions.cache
-				.get("951843834554376262")
+				.get("730890894814740541")
 				?.users.fetch();
 
 			// Gardeners Who reacted towards the message
@@ -119,11 +121,11 @@ export async function execute(
 
 			await event.save();
 
-			await modalInteraction.reply({
+			await modalInteraction.editReply({
 				content: `${replyMessage} - ${message.url}`,
 			});
 
-			await message.react("👍");
+			await message.react("787697278190223370");
 		})
 		.catch((err) => {
 			console.error(err);
