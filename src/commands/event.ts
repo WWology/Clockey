@@ -89,7 +89,7 @@ You will be able to add ${hours} hours of work to your invoice for the month`;
 				fetchReply: true,
 			});
 
-			message.react("951843834554376262");
+			await message.react("730890894814740541");
 		})
 		.catch((err) => {
 			console.error(err);

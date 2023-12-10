@@ -62,7 +62,7 @@ export async function execute(
 		parseInt(
 			messageContent.substring(
 				messageContent.search("<t:") + 3,
-				messageContent.search(":F>")
+				messageContent.search("<t:") + 13
 			)
 		) * 1000;
 
