@@ -87,6 +87,7 @@ You will be able to add ${hours} hours of work to your invoice for the month`;
 			const message = await modal.reply({
 				content: replyMessage,
 				fetchReply: true,
+				allowedMentions: { parse: ["roles"] },
 			});
 
 			await message.react("730890894814740541");
