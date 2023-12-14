@@ -123,6 +123,7 @@ export async function execute(
 
 			await modalInteraction.editReply({
 				content: `${replyMessage} - ${message.url}`,
+				allowedMentions: { parse: ["users"] },
 			});
 
 			await message.react("787697278190223370");
