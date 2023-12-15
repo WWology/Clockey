@@ -76,7 +76,6 @@ export async function execute(
 	interaction
 		.awaitModalSubmit({ time: 30_000 })
 		.then(async (modalInteraction) => {
-			await modalInteraction.deferReply();
 			let numberOfGardeners = parseInt(
 				modalInteraction.fields.getTextInputValue("numberOfGardenerInput")
 			);
@@ -111,6 +110,13 @@ export async function execute(
 				replyMessage += `<@${gardenersWorking[i]}> `;
 			}
 
+			await modalInteraction.reply({
+				content: `${replyMessage} - ${message.url}`,
+				allowedMentions: { parse: ["users"] },
+			});
+
+			await message.react("787697278190223370");
+
 			const event = new Event({
 				eventName: eventName,
 				eventTime: eventUnixTime,
@@ -120,13 +126,6 @@ export async function execute(
 			});
 
 			await event.save();
-
-			await modalInteraction.editReply({
-				content: `${replyMessage} - ${message.url}`,
-				allowedMentions: { parse: ["users"] },
-			});
-
-			await message.react("787697278190223370");
 		})
 		.catch((err) => {
 			console.error(err);

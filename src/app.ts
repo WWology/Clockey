@@ -10,7 +10,6 @@ const client = new Client({
 
 client.once("ready", async () => {
 	await connectDatabase();
-	await deployCommands({ guildId: config.WW_TEST_GUILD_ID });
 	console.log("Clockey ready ⏰");
 });
 
