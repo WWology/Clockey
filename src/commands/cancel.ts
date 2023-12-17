@@ -28,17 +28,10 @@ export async function execute(
 		return;
 	}
 
-	if (message.content.includes("Other")) {
-		eventName = message.content.substring(
-			message.content.search("-") + 2,
-			message.content.search(",")
-		);
-	} else {
-		eventName = message.content.substring(
-			message.content.search("OG vs"),
-			message.content.search(",")
-		);
-	}
+	eventName = message.content.substring(
+		message.content.search("-") + 2,
+		message.content.search(",")
+	);
 
 	const eventToBeDeleted = await Event.findOne({ eventName: eventName }).exec();
 

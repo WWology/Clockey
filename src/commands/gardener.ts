@@ -46,17 +46,10 @@ export async function execute(
 		eventType = "Other";
 	}
 
-	if (eventType !== "Other") {
-		eventName = messageContent.substring(
-			messageContent.search("OG vs"),
-			messageContent.search(",")
-		);
-	} else {
-		eventName = messageContent.substring(
-			messageContent.search("-") + 2,
-			messageContent.search(",")
-		);
-	}
+	eventName = messageContent.substring(
+		messageContent.search("-") + 2,
+		messageContent.search(",")
+	);
 
 	const eventUnixTime =
 		parseInt(
