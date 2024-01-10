@@ -1,28 +1,26 @@
+import 'package:fpdart/fpdart.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:nyxx_extensions/nyxx_extensions.dart';
-import 'package:supabase/supabase.dart';
 
 import '../data/events/events.dart';
-import '../env.dart';
 
 final gardener = MessageCommand(
   'Gardener',
   id('Gardener', (MessageContext context) async {
-    final supabase = SupabaseClient(Env.supabaseUrl, Env.supabaseApiKey);
     String replyMessage = 'The people selected are: ';
 
     final botID = context.interaction.applicationId;
     final message = context.targetMessage;
-    final thumbsUpEmoji = context.client.getTextEmoji('👍');
-
-    // Check if message has already been processed
-    final thumbsUpReactions = await message.manager.fetchReactions(
-      message.id,
-      ReactionBuilder.fromEmoji(thumbsUpEmoji),
+    final weCooEmoji = ReactionBuilder(
+      name: 'OGwecoo',
+      id: Snowflake(787697278190223370),
     );
 
-    if (thumbsUpReactions.isNotEmpty) {
+    // Check if message has already been processed
+    final weCooReactions =
+        await message.manager.fetchReactions(message.id, weCooEmoji);
+
+    if (weCooReactions.isNotEmpty) {
       context.respond(
         MessageBuilder(
           content: 'This message has already been processed for signups',
@@ -33,50 +31,62 @@ final gardener = MessageCommand(
     }
 
     await context.interaction.respondModal(_gardenerModal());
-    context
-        .awaitModal('gardenerModal', timeout: Duration(seconds: 30))
-        .then((ModalContext modalContext) async {
-      final numberOfGardeners =
-          int.parse(modalContext['numberOfGardenersInput']!);
-      final gardenerReacted = await message.manager.fetchReactions(
-        message.id,
-        ReactionBuilder(name: 'ruggahPain', id: Snowflake(951843834554376262)),
-      );
-      final ids = gardenerReacted.map((gardener) => gardener.id.value).toList();
+    final modalContext = await context.awaitModal('gardenerModal',
+        timeout: Duration(seconds: 30));
 
-      // Remove the bot id from the potential gardener list
-      ids.removeAt(ids.indexOf(botID.value));
-      ids.shuffle();
-      final gardenersWorking = ids.take(numberOfGardeners).toList();
+    final numberOfGardeners =
+        int.parse(modalContext['numberOfGardenersInput']!);
 
-      final (eventName, eventTime, eventType, hours) =
-          _parseEvent(message, context);
+    final gardenerReacted = await message.manager.fetchReactions(
+      message.id,
+      ReactionBuilder(
+        name: 'OGpeepoYes',
+        id: Snowflake(730890894814740541),
+      ),
+    );
+    final ids = gardenerReacted.map((gardener) => gardener.id.value).toList();
 
-      final event = Event(
-        eventName: eventName,
-        eventTime: eventTime,
-        eventType: eventType,
-        gardeners: gardenersWorking,
-        hours: hours,
-      );
+    // Remove the bot id from the potential gardener list
+    ids.removeAt(ids.indexOf(botID.value));
+    ids.shuffle();
+    final gardenersWorking = ids.take(numberOfGardeners).toList();
 
-      for (final id in gardenersWorking) {
-        replyMessage += '<@$id> ';
-      }
+    _parseEvent(message, context).match(
+      (error) async => await context.respond(
+        MessageBuilder(
+            content: 'Something wrong has happened, please try again'),
+      ),
+      (parsedEvent) async {
+        final (eventName, eventTime, eventType, hours) = parsedEvent;
+        final event = Event(
+          eventName: eventName,
+          eventTime: eventTime,
+          eventType: eventType,
+          gardeners: gardenersWorking,
+          hours: hours,
+        );
 
-      Future.wait(
-        [
-          modalContext.respond(MessageBuilder(content: replyMessage)),
-          message.react(
-            ReactionBuilder.fromEmoji(thumbsUpEmoji),
+        for (final id in gardenersWorking) {
+          replyMessage += '<@$id> ';
+        }
+
+        createEvent(event).match(
+          (eventError) async => await modalContext.respond(
+            MessageBuilder(
+              content: 'Something has gone wrong, please try again',
+            ),
           ),
-          supabase.from('clockey').insert(event)
-        ],
-        eagerError: true,
-      );
-    }).catchError((err) {
-      print('gardener command error: $err');
-    });
+          (_) async {
+            Future.wait([
+              modalContext.respond(
+                MessageBuilder(content: replyMessage),
+              ),
+              message.react(weCooEmoji)
+            ]);
+          },
+        ).run();
+      },
+    );
   }),
 );
 
@@ -101,12 +111,15 @@ class UnknownEventError {
   const UnknownEventError();
 }
 
-(
-  String eventName,
-  DateTime eventTime,
-  EventType eventType,
-  int hours,
-) _parseEvent(Message message, MessageContext context) {
+typedef EventDetails = (
+  String,
+  DateTime,
+  EventType,
+  int,
+);
+
+Either<UnknownEventError, EventDetails> _parseEvent(
+    Message message, MessageContext context) {
   final EventType eventType;
 
   if (message.content.contains('Dota')) {
@@ -120,7 +133,7 @@ class UnknownEventError {
   } else {
     context.respond(
         MessageBuilder(content: 'Something has gone wrong, please try again'));
-    throw const UnknownEventError();
+    return Left(const UnknownEventError());
   }
 
   final eventName = message.content.substring(
@@ -140,10 +153,10 @@ class UnknownEventError {
 
   final hours = int.parse(message.content[message.content.indexOf("add") + 4]);
 
-  return (
+  return Right((
     eventName,
     eventTime,
     eventType,
     hours,
-  );
+  ));
 }

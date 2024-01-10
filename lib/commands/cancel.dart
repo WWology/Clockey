@@ -4,6 +4,7 @@ import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 
 import '../data/events/events.dart';
+import '../env.dart';
 
 final cancel = MessageCommand(
   'Cancel',
@@ -19,13 +20,16 @@ final cancel = MessageCommand(
     'Cancel',
     (MessageContext context) async {
       final message = context.targetMessage;
-      final thumbsUpEmoji = context.client.getTextEmoji('👍');
+      final weCooEmoji = ReactionBuilder(
+        name: 'OGwecoo',
+        id: Snowflake(787697278190223370),
+      );
 
       // Check if message has already been processed
-      final thumbsUpReactions = await message.manager
-          .fetchReactions(message.id, ReactionBuilder.fromEmoji(thumbsUpEmoji));
+      final weCooReactions =
+          await message.manager.fetchReactions(message.id, weCooEmoji);
 
-      if (thumbsUpReactions.isEmpty) {
+      if (weCooReactions.isEmpty) {
         await context.respond(
           MessageBuilder(content: "This event hasn't been rolled yet"),
         );
@@ -60,21 +64,28 @@ final cancel = MessageCommand(
       );
 
       if (confirm) {
-        getEventId(eventName, eventTime)
-            .flatMap(deleteEvent)
-            .match(
-              (eventError) async => await context.respond(
+        getEventId(eventName, eventTime).flatMap(deleteEvent).match(
+          (eventError) async => await context.respond(
+            MessageBuilder(
+              content: 'Something has gone wrong, please try again',
+            ),
+          ),
+          (_) async {
+            Future.wait([
+              context.respond(
                 MessageBuilder(
-                  content: 'Something has gone wrong, please try again',
+                  content:
+                      'Successfully cancelled signup for $eventName at <t:${eventUnixTime ~/ 1000}:F> - ${message.url}',
                 ),
               ),
-              (_) async => await context.respond(
-                MessageBuilder(
-                  content: 'Successfully cancelled signup for $eventName',
-                ),
-              ),
-            )
-            .run();
+              message.manager.deleteReactionForUser(
+                message.id,
+                Snowflake(Env.clockeyId),
+                weCooEmoji,
+              )
+            ]);
+          },
+        ).run();
       } else {
         await context.respond(
           MessageBuilder(

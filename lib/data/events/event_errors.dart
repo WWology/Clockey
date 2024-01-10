@@ -19,3 +19,9 @@ class GetEventsError extends EventError {
   final StackTrace stackTrace;
   const GetEventsError(this.error, this.stackTrace);
 }
+
+class CreateEventError extends EventError {
+  final Object error;
+  final StackTrace stackTrace;
+  const CreateEventError(this.error, this.stackTrace);
+}
