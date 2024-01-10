@@ -4,6 +4,7 @@ import 'package:supabase/supabase.dart';
 import '../../env.dart';
 import 'event_errors.dart';
 
+/// Get an [id] from an [event] with [eventName] & [eventTime]
 TaskEither<EventError, int> getEventId(
   String eventName,
   DateTime eventTime,

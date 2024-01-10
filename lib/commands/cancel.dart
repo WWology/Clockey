@@ -4,7 +4,6 @@ import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 
 import '../data/events/events.dart';
-import '../env.dart';
 
 final cancel = MessageCommand(
   'Cancel',
@@ -78,9 +77,8 @@ final cancel = MessageCommand(
                       'Successfully cancelled signup for $eventName at <t:${eventUnixTime ~/ 1000}:F> - ${message.url}',
                 ),
               ),
-              message.manager.deleteReactionForUser(
+              message.manager.deleteReaction(
                 message.id,
-                Snowflake(Env.clockeyId),
                 weCooEmoji,
               )
             ]);

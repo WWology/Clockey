@@ -82,8 +82,8 @@ final event = ChatCommand(
 
       await message.react(
         ReactionBuilder(
-          name: 'ruggahPain',
-          id: Snowflake(951843834554376262),
+          name: 'OGpeepoYes',
+          id: Snowflake(730890894814740541),
         ),
       );
     },

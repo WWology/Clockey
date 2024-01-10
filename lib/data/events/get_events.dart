@@ -9,6 +9,7 @@ import 'event.dart';
 
 typedef InvoiceData = Map<String, List<Event>>;
 
+/// Get all events worked by a [gardener] between [startDate] & [endDate]
 TaskEither<EventError, InvoiceData> getEvents({
   required int gardenerID,
   required DateTime start,

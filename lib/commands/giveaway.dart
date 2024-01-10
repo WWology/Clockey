@@ -1,6 +1,5 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:nyxx_extensions/nyxx_extensions.dart';
 
 final giveaway = MessageCommand(
   'Giveaway',
@@ -11,15 +10,18 @@ final giveaway = MessageCommand(
 
       final botID = context.interaction.applicationId;
       final message = context.targetMessage;
-      final thumbsUpEmoji = context.client.getTextEmoji('👍');
-
-      // Check if message has already been processed
-      final thumbsUpReactions = await message.manager.fetchReactions(
-        message.id,
-        ReactionBuilder.fromEmoji(thumbsUpEmoji),
+      final weCooEmoji = ReactionBuilder(
+        name: 'OGwecoo',
+        id: Snowflake(787697278190223370),
       );
 
-      if (thumbsUpReactions.isNotEmpty) {
+      // Check if message has already been processed
+      final weCooReactions = await message.manager.fetchReactions(
+        message.id,
+        weCooEmoji,
+      );
+
+      if (weCooReactions.isNotEmpty) {
         context.respond(
           MessageBuilder(
             content: 'This message has been processed for giveaways',
@@ -29,38 +31,34 @@ final giveaway = MessageCommand(
       }
 
       await context.interaction.respondModal(_giveawayModal());
-      context
-          .awaitModal('giveawayModal', timeout: Duration(seconds: 30))
-          .then((ModalContext modalContext) async {
-        final numberOfWinners =
-            int.parse(modalContext['numberOfWinnersInput']!);
-        final peopleReacted = await message.manager.fetchReactions(
-          message.id,
-          ReactionBuilder(
-              name: 'ruggahPain', id: Snowflake(951843834554376262)),
-        );
-        final ids = peopleReacted.map((user) => user.id).toList();
-
-        // Remove the bot id from the potential winner list
-        ids.removeAt(ids.indexOf(botID));
-        ids.shuffle();
-        final winners = ids.take(numberOfWinners);
-
-        for (final id in winners) {
-          replyMessage += '<@$id> ';
-        }
-
-        await Future.wait([
-          modalContext.respond(MessageBuilder(content: replyMessage)),
-          message.react(
-            ReactionBuilder.fromEmoji(thumbsUpEmoji),
-          ),
-        ], eagerError: true);
-      }).catchError(
-        (err) {
-          print('giveaway command error: $err');
-        },
+      final modalContext = await context.awaitModal(
+        'giveawayModal',
+        timeout: Duration(seconds: 30),
       );
+
+      final numberOfWinners = int.parse(modalContext['numberOfWinnersInput']!);
+      final peopleReacted = await message.manager.fetchReactions(
+        message.id,
+        ReactionBuilder(
+          name: 'OGpeepoYes',
+          id: Snowflake(730890894814740541),
+        ),
+      );
+      final ids = peopleReacted.map((user) => user.id).toList();
+
+      // Remove the bot id from the potential winner list
+      ids.removeAt(ids.indexOf(botID));
+      ids.shuffle();
+      final winners = ids.take(numberOfWinners);
+
+      for (final id in winners) {
+        replyMessage += '<@$id> ';
+      }
+
+      Future.wait([
+        modalContext.respond(MessageBuilder(content: replyMessage)),
+        message.react(weCooEmoji),
+      ], eagerError: true);
     },
   ),
 );
