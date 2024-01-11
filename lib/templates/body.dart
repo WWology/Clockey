@@ -1,8 +1,9 @@
 import 'dart:io';
 
-import 'package:clockey/data/events/events.dart';
-import 'package:clockey/templates/style.dart';
 import 'package:intl/intl.dart';
+
+import '../data/events/events.dart';
+import 'style.dart';
 
 String dateInput(DateTime date) {
   return '''<div>

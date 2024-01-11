@@ -1,7 +1,7 @@
-import 'package:clockey/env.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:supabase/supabase.dart';
 
+import '../../env.dart';
 import 'event_errors.dart';
 
 /// Delete an [event] with the corresponding [id]

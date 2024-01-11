@@ -1,6 +1,8 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 
+import '../data/events/events.dart';
+
 final event = ChatCommand(
   'event',
   'Create a new event for Gardeners to sign up',
@@ -25,23 +27,23 @@ final event = ChatCommand(
       final modalContext = await context.awaitModal('eventModal',
           timeout: Duration(seconds: 120));
       modalContext.acknowledge();
-      switch (_getEventType(eventType)) {
-        case DotaEvent():
+      switch (EventType.getEventType(eventType)) {
+        case EventType.Dota:
           numberOfGardeners = 4;
           hours = _getHours(modalContext['eventSeriesLength']!);
           break;
-        case CSEvent():
+        case EventType.CS:
           numberOfGardeners = 2;
           hours = _getHours(modalContext['eventSeriesLength']!);
-        case RocketLeagueEvent():
+        case EventType.RL:
           numberOfGardeners = 0;
           hours = _getHours(modalContext['eventSeriesLength']!);
           break;
-        case OtherEvent():
+        case EventType.Other:
           numberOfGardeners = int.parse(modalContext['numberOfGardeners']!);
           hours = int.parse(modalContext['hours']!);
           break;
-        case UnknownEvent():
+        case EventType.Unknown:
           await modalContext.respond(
             MessageBuilder(content: 'An error has occured, please try again'),
             level: ResponseLevel.hint,
@@ -174,30 +176,3 @@ ModalBuilder _eventModal(String eventType) {
   return ModalBuilder(
       customId: 'eventModal', title: 'Event Modal', components: components);
 }
-
-EventType _getEventType(String eventType) {
-  switch (eventType) {
-    case 'Dota':
-      return DotaEvent();
-    case 'CS':
-      return CSEvent();
-    case 'RL':
-      return RocketLeagueEvent();
-    case 'Other':
-      return OtherEvent();
-    case _:
-      return UnknownEvent();
-  }
-}
-
-sealed class EventType {}
-
-class DotaEvent extends EventType {}
-
-class CSEvent extends EventType {}
-
-class RocketLeagueEvent extends EventType {}
-
-class OtherEvent extends EventType {}
-
-class UnknownEvent extends EventType {}

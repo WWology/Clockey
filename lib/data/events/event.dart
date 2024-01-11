@@ -9,6 +9,22 @@ enum EventType {
   CS,
   RL,
   Other,
+  Unknown;
+
+  static EventType getEventType(String eventType) {
+    switch (eventType) {
+      case 'Dota':
+        return EventType.Dota;
+      case 'CS':
+        return EventType.CS;
+      case 'RL':
+        return EventType.RL;
+      case 'Other':
+        return EventType.Other;
+      case _:
+        return EventType.Unknown;
+    }
+  }
 }
 
 @freezed

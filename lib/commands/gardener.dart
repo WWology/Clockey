@@ -52,7 +52,7 @@ final gardener = MessageCommand(
     final gardenersWorking = ids.take(numberOfGardeners).toList();
 
     _parseEvent(message, context).match(
-      (error) async => await context.respond(
+      (error) => context.respond(
         MessageBuilder(
             content: 'Something wrong has happened, please try again'),
       ),
@@ -71,7 +71,7 @@ final gardener = MessageCommand(
         }
 
         createEvent(event).match(
-          (eventError) async => await modalContext.respond(
+          (eventError) => modalContext.respond(
             MessageBuilder(
               content: 'Something has gone wrong, please try again',
             ),
@@ -107,8 +107,8 @@ ModalBuilder _gardenerModal() {
   );
 }
 
-class UnknownEventError {
-  const UnknownEventError();
+class UnknownEventTypeError {
+  const UnknownEventTypeError();
 }
 
 typedef EventDetails = (
@@ -118,7 +118,7 @@ typedef EventDetails = (
   int,
 );
 
-Either<UnknownEventError, EventDetails> _parseEvent(
+Either<UnknownEventTypeError, EventDetails> _parseEvent(
     Message message, MessageContext context) {
   final EventType eventType;
 
@@ -133,7 +133,7 @@ Either<UnknownEventError, EventDetails> _parseEvent(
   } else {
     context.respond(
         MessageBuilder(content: 'Something has gone wrong, please try again'));
-    return Left(const UnknownEventError());
+    return Left(const UnknownEventTypeError());
   }
 
   final eventName = message.content.substring(

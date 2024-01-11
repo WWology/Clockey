@@ -1,8 +1,8 @@
-import 'package:clockey/data/events/delete_event.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 
+import '../data/events/delete_event.dart';
 import '../data/events/events.dart';
 
 final cancel = MessageCommand(
@@ -64,7 +64,7 @@ final cancel = MessageCommand(
 
       if (confirm) {
         getEventId(eventName, eventTime).flatMap(deleteEvent).match(
-          (eventError) async => await context.respond(
+          (eventError) => context.respond(
             MessageBuilder(
               content: 'Something has gone wrong, please try again',
             ),

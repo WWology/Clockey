@@ -1,9 +1,9 @@
-import 'package:clockey/templates/templates.dart';
 import 'package:intl/intl.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 
 import '../data/events/events.dart';
+import '../templates/templates.dart';
 
 final invoice = ChatCommand(
   'invoice',
@@ -54,7 +54,7 @@ final invoice = ChatCommand(
         end: end,
         gardenerID: context.user.id.value,
       ).match(
-        (eventError) async => await context.respond(
+        (eventError) => context.respond(
           MessageBuilder(content: 'Something has gone wrong, please try again'),
         ),
         (invoiceData) async {
@@ -185,11 +185,10 @@ EmbedBuilder _generateInvoiceEmbed(
     }
   }
 
-//   for (final deduction in invoiceData['Deductions']!) {
-//     deductions +=
-//         '${deduction.eventName} at ${dateFormat.format(deduction.eventTime)} - ${deduction.deductions![user.id.value]!} hours \n';
-//     totalHours -= deduction.deductions![user.id.value]!;
-//   }
+  for (final deduction in invoiceData['Deductions']!) {
+    deductions +=
+        '${deduction.eventName} at ${dateFormat.format(deduction.eventTime)} - ${deduction.deductions![user.id.value]!} hours \n';
+  }
 
   return EmbedBuilder(
     color: DiscordColor.parseHexString('0099ff'),

@@ -46,3 +46,5 @@ doc/api/
 
 *.g.dart
 *.freezed.dart
+*.exe
+invoice.html
