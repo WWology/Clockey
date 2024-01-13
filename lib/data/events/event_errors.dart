@@ -11,7 +11,7 @@ class DeleteEventError extends EventError {
 
   @override
   String get message {
-    final message = 'DeleteEventError:\n $error\n StackTrace:\n $stackTrace';
+    final message = '$error\n StackTrace:\n $stackTrace';
     return message;
   }
 }
@@ -23,7 +23,7 @@ class GetEventIdError extends EventError {
 
   @override
   String get message {
-    final message = 'GetEventIdError:\n $error\n StackTrace:\n $stackTrace';
+    final message = '$error\n StackTrace:\n $stackTrace';
     return message;
   }
 }
@@ -35,7 +35,7 @@ class GetEventsError extends EventError {
 
   @override
   String get message {
-    final message = 'GetEventsError:\n $error\n StackTrace:\n $stackTrace';
+    final message = '$error\n StackTrace:\n $stackTrace';
     return message;
   }
 }
@@ -47,7 +47,7 @@ class CreateEventError extends EventError {
 
   @override
   String get message {
-    final message = 'CreateEventError:\n $error\n StackTrace:\n $stackTrace';
+    final message = '$error\n StackTrace:\n $stackTrace';
     return message;
   }
 }
@@ -59,8 +59,7 @@ class AddGardenerEventError extends EventError {
 
   @override
   String get message {
-    final message =
-        'AddGardenerEventError:\n $error\n StackTrace:\n $stackTrace';
+    final message = '$error\n StackTrace:\n $stackTrace';
     return message;
   }
 }
@@ -72,8 +71,7 @@ class RemoveGardenerEventError extends EventError {
 
   @override
   String get message {
-    final message =
-        'RemoveGardenerEventError:\n $error\n StackTrace:\n $stackTrace';
+    final message = '$error\n StackTrace:\n $stackTrace';
     return message;
   }
 }
@@ -85,7 +83,7 @@ class EditEventError extends EventError {
 
   @override
   String get message {
-    final message = 'EditEventError:\n $error\n StackTrace:\n $stackTrace';
+    final message = '$error\n StackTrace:\n $stackTrace';
     return message;
   }
 }

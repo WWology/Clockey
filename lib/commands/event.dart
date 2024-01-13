@@ -26,7 +26,6 @@ final event = ChatCommand(
       await context.interaction.respondModal(_eventModal(eventType));
       final modalContext = await context.awaitModal('eventModal',
           timeout: Duration(seconds: 120));
-      modalContext.acknowledge();
       switch (EventType.getEventType(eventType)) {
         case EventType.Dota:
           numberOfGardeners = 4;

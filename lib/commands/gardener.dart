@@ -1,4 +1,6 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart' as logger;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
@@ -61,13 +63,10 @@ final gardener = MessageCommand(
     final gardenersWorking = ids.take(numberOfGardeners).toList();
 
     _parseEvent(message, context).match(
-      (error) {
-        print(error);
-        context.respond(
-          MessageBuilder(content: 'Unable to parse event, please try again'),
-          level: ResponseLevel.hint,
-        );
-      },
+      (error) => context.respond(
+        MessageBuilder(content: 'Unable to parse event, please try again'),
+        level: ResponseLevel.hint,
+      ),
       (parsedEvent) async {
         final (eventName, eventTime, eventType, hours) = parsedEvent;
         final event = Event(
@@ -84,7 +83,7 @@ final gardener = MessageCommand(
 
         createEvent(event).match(
           (error) async {
-            print(error);
+            GetIt.I.get<logger.Logger>().e(error.message, error: error);
             modalContext.respond(
               MessageBuilder(
                 content: 'Something wrong has happened, please try again',

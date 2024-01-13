@@ -1,3 +1,5 @@
+import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart' as logger;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 
@@ -24,7 +26,7 @@ final editNameCommand = ChatCommand(
     context.acknowledge(level: ResponseLevel.hint);
     editName(eventId, newName).match(
       (error) {
-        print(error.toString());
+        GetIt.I.get<logger.Logger>().e(error.message, error: error);
         context.respond(
           MessageBuilder(
             content: 'Unable to edit the name of this event, please try again',
@@ -64,7 +66,7 @@ final editTimeCommand = ChatCommand(
     final newTime = DateTime.parse(newTimeString);
     editTime(eventId, newTime).match(
       (error) {
-        print(error.toString());
+        GetIt.I.get<logger.Logger>().e(error.message);
         context.respond(
             MessageBuilder(
               content:
@@ -95,7 +97,7 @@ final editHoursCommand = ChatCommand(
 
     editHours(eventId, newHours).match(
       (error) {
-        print(error.toString());
+        GetIt.I.get<logger.Logger>().e(error.message);
         context.respond(
             MessageBuilder(
               content:

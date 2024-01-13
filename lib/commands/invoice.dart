@@ -1,4 +1,6 @@
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart' as logger;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 
@@ -55,7 +57,7 @@ final invoice = ChatCommand(
         gardenerID: context.user.id.value,
       ).match(
         (error) async {
-          print(error.message);
+          GetIt.I.get<logger.Logger>().e(error.message, error: error);
           context.respond(
             MessageBuilder(
               content: 'Something has gone wrong, please try again',

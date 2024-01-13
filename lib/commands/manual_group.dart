@@ -1,9 +1,10 @@
+import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart' as logger;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 
 import '../constants.dart';
 import '../data/events/events.dart';
-import '../data/events/update_event.dart';
 
 ChatGroup manualGroup = ChatGroup(
   'manual',
@@ -88,17 +89,18 @@ final signUps = ChatCommand(
       replyMessage +=
           '\n\nYou can add $hours hours of work to your invoice for the month';
 
-      createEvent(event)
-          .match(
-            (error) => modalContext.respond(
-              MessageBuilder(
-                  content: 'Something has gone wrong, please try again'),
-            ),
-            (_) => modalContext.respond(
-              MessageBuilder(content: replyMessage),
-            ),
-          )
-          .run();
+      createEvent(event).match(
+        (error) {
+          GetIt.I.get<logger.Logger>().e(error.message, error: error);
+          modalContext.respond(
+            MessageBuilder(
+                content: 'Something has gone wrong, please try again'),
+          );
+        },
+        (_) => modalContext.respond(
+          MessageBuilder(content: replyMessage),
+        ),
+      ).run();
     },
   ),
 );
@@ -161,7 +163,7 @@ final addGardenerCommand = ChatCommand(
       final gardenerId = mapGardenerToId(gardener);
       addGardener(eventId, gardenerId).match(
         (error) {
-          print(error.toString());
+          GetIt.I.get<logger.Logger>().e(error.message, error: error);
           context.respond(
             MessageBuilder(content: 'Unable to add gardener, please try again'),
           );
@@ -196,7 +198,7 @@ final removeGardenerCommand = ChatCommand(
       final gardenerId = mapGardenerToId(gardener);
       removeGardener(eventId, gardenerId).match(
         (error) {
-          print(error.toString());
+          GetIt.I.get<logger.Logger>().e(error.message, error: error);
           context.respond(
             MessageBuilder(
                 content: 'Unable to remove gardener, please try again'),

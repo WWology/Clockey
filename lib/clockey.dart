@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart' as logger;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:supabase/supabase.dart';
@@ -9,6 +10,7 @@ import 'env.dart';
 void run() async {
   GetIt.I.registerSingleton<SupabaseClient>(
       SupabaseClient(Env.supabaseUrl, Env.supabaseApiKey));
+  GetIt.I.registerSingleton<logger.Logger>(logger.Logger());
   final commands = registerCommand();
   final client = await Nyxx.connectGateway(
     Env.clockeyToken,

@@ -14,6 +14,7 @@ dependencies:
   get_it: ^7.6.6
   intl: ^0.18.1
   json_annotation: ^4.8.1
+  logger: ^2.0.2+1
   nyxx: ^6.0.3
   nyxx_commands: ^6.0.2
   nyxx_extensions: ^4.1.0
