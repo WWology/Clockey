@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:fpdart/fpdart.dart';
+import 'package:get_it/get_it.dart';
 import 'package:supabase/supabase.dart';
 
-import '../../env.dart';
-import 'event_errors.dart';
 import 'event.dart';
+import 'event_errors.dart';
 
 typedef InvoiceData = Map<String, List<Event>>;
 
@@ -17,7 +17,7 @@ TaskEither<EventError, InvoiceData> getEvents({
 }) =>
     TaskEither.tryCatch(
       () async {
-        final supabase = SupabaseClient(Env.supabaseUrl, Env.supabaseApiKey);
+        final supabase = GetIt.I.get<SupabaseClient>();
         final InvoiceData invoiceData = {};
 
         final (

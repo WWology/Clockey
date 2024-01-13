@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:get_it/get_it.dart';
 import 'package:supabase/supabase.dart';
 
-import '../../env.dart';
 import 'event.dart';
 import 'event_errors.dart';
 
@@ -10,7 +10,7 @@ import 'event_errors.dart';
 /// Returns an [CreateEventError] if error occurs
 TaskEither<EventError, Unit> createEvent(Event event) => TaskEither.tryCatch(
       () async {
-        final supabase = SupabaseClient(Env.supabaseUrl, Env.supabaseApiKey);
+        final supabase = GetIt.I.get<SupabaseClient>();
         await supabase.from('clockey').insert(event);
 
         return unit;

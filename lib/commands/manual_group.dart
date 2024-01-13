@@ -159,20 +159,20 @@ final addGardenerCommand = ChatCommand(
       int eventId,
     ) async {
       final gardenerId = mapGardenerToId(gardener);
-      addGardener(eventId, gardenerId)
-          .match(
-            (error) => context.respond(
-              MessageBuilder(
-                  content: 'Unable to add gardener, please try again'),
-            ),
-            (event) => context.respond(
-              MessageBuilder(
-                content:
-                    'Added <@$gardenerId> to ${event.name} at <t:${event.time.millisecondsSinceEpoch ~/ 1000}:F>',
-              ),
-            ),
-          )
-          .run();
+      addGardener(eventId, gardenerId).match(
+        (error) {
+          print(error.toString());
+          context.respond(
+            MessageBuilder(content: 'Unable to add gardener, please try again'),
+          );
+        },
+        (event) => context.respond(
+          MessageBuilder(
+            content:
+                'Added <@$gardenerId> to ${event.name} at <t:${event.time.millisecondsSinceEpoch ~/ 1000}:F>',
+          ),
+        ),
+      ).run();
     },
   ),
   options: CommandOptions(
@@ -194,18 +194,21 @@ final removeGardenerCommand = ChatCommand(
       int eventId,
     ) async {
       final gardenerId = mapGardenerToId(gardener);
-      removeGardener(eventId, gardenerId)
-          .match(
-            (error) => context.respond(MessageBuilder(
-                content: 'Unable to remove gardener, please try again')),
-            (event) => context.respond(
-              MessageBuilder(
-                content:
-                    'Removed <@$gardenerId> to ${event.name} at <t:${event.time.millisecondsSinceEpoch ~/ 1000}:F>',
-              ),
-            ),
-          )
-          .run();
+      removeGardener(eventId, gardenerId).match(
+        (error) {
+          print(error.toString());
+          context.respond(
+            MessageBuilder(
+                content: 'Unable to remove gardener, please try again'),
+          );
+        },
+        (event) => context.respond(
+          MessageBuilder(
+            content:
+                'Removed <@$gardenerId> to ${event.name} at <t:${event.time.millisecondsSinceEpoch ~/ 1000}:F>',
+          ),
+        ),
+      ).run();
     },
   ),
   options: CommandOptions(
