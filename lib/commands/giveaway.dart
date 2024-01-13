@@ -4,7 +4,7 @@ import 'package:nyxx_commands/nyxx_commands.dart';
 final giveaway = MessageCommand(
   'Giveaway',
   id(
-    'Giveaway',
+    'Roll Giveaway winners',
     (MessageContext context) async {
       String replyMessage = 'The giveaway winners are: ';
 

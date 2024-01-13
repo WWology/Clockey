@@ -1,6 +1,6 @@
 import 'package:clockey/clockey.dart' as clockey;
 
-void main() async {
+void main() {
   clockey.run();
   // TODO add logging
 }

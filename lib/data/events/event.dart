@@ -30,9 +30,9 @@ enum EventType {
 @freezed
 sealed class Event with _$Event {
   const factory Event({
-    required String eventName,
-    required DateTime eventTime,
-    required EventType eventType,
+    required String name,
+    required DateTime time,
+    required EventType type,
     required List<int> gardeners,
     required int hours,
     Map<int, int>? deductions,

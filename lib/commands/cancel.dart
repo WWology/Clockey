@@ -6,7 +6,7 @@ import '../data/events/delete_event.dart';
 import '../data/events/events.dart';
 
 final cancel = MessageCommand(
-  'Cancel',
+  'Cancel this event',
   options: CommandOptions(
     defaultResponseLevel: ResponseLevel(
       hideInteraction: true,

@@ -112,7 +112,7 @@ String dotaEventsRows(List<Event> dotaEvents) {
 			<td class="c3" colspan="1" rowspan="1">
 				<ul class="c6 lst-kix_87mbg6thn9c7-0 start">
 					<li class="c4 c12 li-bullet-0">
-						<span class="c11">${dotaEvent.eventName} - ${DateFormat('dd/MM/yyyy').format(dotaEvent.eventTime)}</span>
+						<span class="c11">${dotaEvent.name} - ${DateFormat('dd/MM/yyyy').format(dotaEvent.time)}</span>
 					</li>
 				</ul>
 			</td>
@@ -149,7 +149,7 @@ String csEventRows(List<Event> csEvents) {
 			<td class="c3" colspan="1" rowspan="1">
 				<ul class="c6 lst-kix_87mbg6thn9c7-0 start">
           <li class="c4 c12 li-bullet-0">
-            <span class="c11">${csEvent.eventName} - ${DateFormat('dd/MM/yyyy').format(csEvent.eventTime)}</span>
+            <span class="c11">${csEvent.name} - ${DateFormat('dd/MM/yyyy').format(csEvent.time)}</span>
           </li>
         </ul>
 			</td>
@@ -186,7 +186,7 @@ String rlEventRows(List<Event> rlEvents) {
 			<td class="c3" colspan="1" rowspan="1">
 				<ul class="c6 lst-kix_87mbg6thn9c7-0 start">
           <li class="c4 c12 li-bullet-0">
-            <span class="c11">${rlEvent.eventName} - ${DateFormat('dd/MM/yyyy').format(rlEvent.eventTime)}</span>
+            <span class="c11">${rlEvent.name} - ${DateFormat('dd/MM/yyyy').format(rlEvent.time)}</span>
           </li>
         </ul>
 			</td>
@@ -223,7 +223,7 @@ String otherEventRows(List<Event> otherEvents) {
 			<td class="c3" colspan="1" rowspan="1">
 				<ul class="c6 lst-kix_87mbg6thn9c7-0 start">
           <li class="c4 c12 li-bullet-0">
-            <span class="c11">${otherEvent.eventName} - ${DateFormat('dd/MM/yyyy').format(otherEvent.eventTime)}</span>
+            <span class="c11">${otherEvent.name} - ${DateFormat('dd/MM/yyyy').format(otherEvent.time)}</span>
           </li>
         </ul>
 			</td>

@@ -1,16 +1,15 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
+import 'package:nyxx_extensions/nyxx_extensions.dart';
 
 import '../data/events/events.dart';
 
 final gardener = MessageCommand(
-  'Gardener',
+  'Roll Gardener',
   id('Gardener', (MessageContext context) async {
-    String replyMessage = 'The people selected are: ';
-
-    final botID = context.interaction.applicationId;
     final message = context.targetMessage;
+
     final weCooEmoji = ReactionBuilder(
       name: 'OGwecoo',
       id: Snowflake(787697278190223370),
@@ -29,6 +28,9 @@ final gardener = MessageCommand(
       );
       return;
     }
+    String replyMessage = 'The people selected are: ';
+    final clockeyId = context.interaction.applicationId;
+    final gooseyId = 825467569800347649;
 
     await context.interaction.respondModal(_gardenerModal());
     final modalContext = await context.awaitModal('gardenerModal',
@@ -46,22 +48,32 @@ final gardener = MessageCommand(
     );
     final ids = gardenerReacted.map((gardener) => gardener.id.value).toList();
 
-    // Remove the bot id from the potential gardener list
-    ids.removeAt(ids.indexOf(botID.value));
+    // Remove the bots id from the potential gardener list
+    if (ids.contains(clockeyId.value)) {
+      ids.removeAt(ids.indexOf(clockeyId.value));
+    }
+
+    if (ids.contains(gooseyId)) {
+      ids.removeAt(ids.indexOf(gooseyId));
+    }
+
     ids.shuffle();
     final gardenersWorking = ids.take(numberOfGardeners).toList();
 
     _parseEvent(message, context).match(
-      (error) => context.respond(
-        MessageBuilder(
-            content: 'Something wrong has happened, please try again'),
-      ),
+      (error) {
+        print(error);
+        context.respond(
+          MessageBuilder(content: 'Unable to parse event, please try again'),
+          level: ResponseLevel.hint,
+        );
+      },
       (parsedEvent) async {
         final (eventName, eventTime, eventType, hours) = parsedEvent;
         final event = Event(
-          eventName: eventName,
-          eventTime: eventTime,
-          eventType: eventType,
+          name: eventName,
+          time: eventTime,
+          type: eventType,
           gardeners: gardenersWorking,
           hours: hours,
         );
@@ -71,15 +83,20 @@ final gardener = MessageCommand(
         }
 
         createEvent(event).match(
-          (eventError) => modalContext.respond(
-            MessageBuilder(
-              content: 'Something has gone wrong, please try again',
-            ),
-          ),
+          (error) async {
+            print(error);
+            modalContext.respond(
+              MessageBuilder(
+                content: 'Something wrong has happened, please try again',
+              ),
+              level: ResponseLevel.hint,
+            );
+          },
           (_) async {
+            final url = await message.url;
             Future.wait([
               modalContext.respond(
-                MessageBuilder(content: replyMessage),
+                MessageBuilder(content: '$replyMessage - $url'),
               ),
               message.react(weCooEmoji)
             ]);

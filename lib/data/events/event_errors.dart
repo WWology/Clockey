@@ -25,3 +25,15 @@ class CreateEventError extends EventError {
   final StackTrace stackTrace;
   const CreateEventError(this.error, this.stackTrace);
 }
+
+class AddGardenerEventError extends EventError {
+  final Object error;
+  final StackTrace stackTrace;
+  const AddGardenerEventError(this.error, this.stackTrace);
+}
+
+class RemoveGardenerEventError extends EventError {
+  final Object error;
+  final StackTrace stackTrace;
+  const RemoveGardenerEventError(this.error, this.stackTrace);
+}
