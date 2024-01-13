@@ -48,3 +48,4 @@ doc/api/
 *.freezed.dart
 *.exe
 invoice.html
+.VSCODECounter/

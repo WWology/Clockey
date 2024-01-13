@@ -2,14 +2,16 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 
 final giveaway = MessageCommand(
-  'Giveaway',
+  'Roll Giveaway winners',
+  options: CommandOptions(defaultResponseLevel: ResponseLevel.hint),
   id(
     'Roll Giveaway winners',
     (MessageContext context) async {
       String replyMessage = 'The giveaway winners are: ';
+      List<User> peopleReacted = [];
 
-      final botID = context.interaction.applicationId;
       final message = context.targetMessage;
+      final clockeyId = context.interaction.applicationId;
       final weCooEmoji = ReactionBuilder(
         name: 'OGwecoo',
         id: Snowflake(787697278190223370),
@@ -26,8 +28,8 @@ final giveaway = MessageCommand(
           MessageBuilder(
             content: 'This message has been processed for giveaways',
           ),
-          level: ResponseLevel.hint,
         );
+        return;
       }
 
       await context.interaction.respondModal(_giveawayModal());
@@ -37,17 +39,17 @@ final giveaway = MessageCommand(
       );
 
       final numberOfWinners = int.parse(modalContext['numberOfWinnersInput']!);
-      final peopleReacted = await message.manager.fetchReactions(
-        message.id,
-        ReactionBuilder(
-          name: 'OGpeepoYes',
-          id: Snowflake(730890894814740541),
-        ),
-      );
-      final ids = peopleReacted.map((user) => user.id).toList();
 
-      // Remove the bot id from the potential winner list
-      ids.removeAt(ids.indexOf(botID));
+      final reactions = message.reactions;
+      for (final reaction in reactions) {
+        final emoji = await reaction.emoji.get();
+        final users = await message.manager
+            .fetchReactions(message.id, ReactionBuilder.fromEmoji(emoji));
+        peopleReacted.addAll(users);
+      }
+
+      final ids = peopleReacted.map((user) => user.id.value).toList();
+
       ids.shuffle();
       final winners = ids.take(numberOfWinners);
 

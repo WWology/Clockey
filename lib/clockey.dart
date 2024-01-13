@@ -25,14 +25,16 @@ void run() async {
 
 CommandsPlugin registerCommand() {
   final commands = CommandsPlugin(
-      prefix: null,
-      guild: Snowflake(Env.guildId),
-      options: CommandsOptions(logErrors: true));
+    prefix: null,
+    guild: Snowflake(Env.guildId),
+    options: CommandsOptions(logErrors: true),
+  );
   commands.addCommand(cancel);
   commands.addCommand(editGroup);
   commands.addCommand(event);
   commands.addCommand(gardener);
   commands.addCommand(giveaway);
+  commands.addCommand(idCommand);
   commands.addCommand(invoice);
   commands.addCommand(manualGroup);
   commands.addCommand(ping);

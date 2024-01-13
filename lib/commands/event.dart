@@ -81,7 +81,7 @@ final event = ChatCommand(
         ),
       );
 
-      await message.react(
+      message.react(
         ReactionBuilder(
           name: 'OGpeepoYes',
           id: Snowflake(730890894814740541),

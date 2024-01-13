@@ -147,8 +147,6 @@ Either<UnknownEventTypeError, EventDetails> _parseEvent(
   } else if (message.content.contains('Other')) {
     eventType = EventType.Other;
   } else {
-    context.respond(
-        MessageBuilder(content: 'Something has gone wrong, please try again'));
     return Left(const UnknownEventTypeError());
   }
 

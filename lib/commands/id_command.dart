@@ -7,6 +7,9 @@ import '../data/events/events.dart';
 
 final idCommand = MessageCommand(
   'Get event ID',
+  options: CommandOptions(
+    defaultResponseLevel: ResponseLevel.hint,
+  ),
   (MessageContext context) async {
     context.acknowledge();
     final message = context.targetMessage;
@@ -24,7 +27,6 @@ final idCommand = MessageCommand(
           content:
               'This event has not been processed yet so it does not have an id',
         ),
-        level: ResponseLevel.hint,
       );
     }
 
@@ -56,7 +58,7 @@ final idCommand = MessageCommand(
       (id) => context.respond(
         MessageBuilder(
           content:
-              'The ID for the event $eventName at <t:${eventUnixTime ~/ 1000} is: $id',
+              'The ID for the event $eventName at <t:${eventUnixTime ~/ 1000}:F> is: $id, message id: ${message.id}',
         ),
       ),
     ).run();
