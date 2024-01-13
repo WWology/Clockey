@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase/supabase.dart';
@@ -30,38 +28,38 @@ TaskEither<EventError, InvoiceData> getEvents({
           supabase
               .from('clockey')
               .select()
-              .gte('eventTime', start)
-              .lte('eventTime', end)
-              .eq('eventType', 'Dota')
+              .gte('time', start)
+              .lte('time', end)
+              .eq('type', 'Dota')
               .filter('gardeners', 'cs', {'$gardenerID'})
-              .order('eventTime')
+              .order('time')
               .withConverter((events) => events.map(Event.fromJson).toList()),
           supabase
               .from('clockey')
               .select()
-              .gte('eventTime', start)
-              .lte('eventTime', end)
-              .eq('eventType', 'CS')
+              .gte('time', start)
+              .lte('time', end)
+              .eq('type', 'CS')
               .filter('gardeners', 'cs', {'$gardenerID'})
-              .order('eventTime')
+              .order('time')
               .withConverter((events) => events.map(Event.fromJson).toList()),
           supabase
               .from('clockey')
               .select()
-              .gte('eventTime', start)
-              .lte('eventTime', end)
-              .eq('eventType', 'RL')
+              .gte('time', start)
+              .lte('time', end)
+              .eq('type', 'RL')
               .filter('gardeners', 'cs', {'$gardenerID'})
-              .order('eventTime')
+              .order('time')
               .withConverter((events) => events.map(Event.fromJson).toList()),
           supabase
               .from('clockey')
               .select()
-              .gte('eventTime', start)
-              .lte('eventTime', end)
-              .eq('eventType', 'Other')
+              .gte('time', start)
+              .lte('time', end)
+              .eq('type', 'Other')
               .filter('gardeners', 'cs', {'$gardenerID'})
-              .order('eventTime')
+              .order('time')
               .withConverter((events) => events.map(Event.fromJson).toList()),
           supabase
               .rpc<List<Map<String, dynamic>>>('get_deductions', params: {
@@ -69,7 +67,7 @@ TaskEither<EventError, InvoiceData> getEvents({
                 'end_date': end.toString(),
                 'gardener_id': '$gardenerID'
               })
-              .order('eventTime')
+              .order('time')
               .withConverter((events) => events.map(Event.fromJson).toList()),
         ).wait;
 

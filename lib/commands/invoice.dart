@@ -54,9 +54,14 @@ final invoice = ChatCommand(
         end: end,
         gardenerID: context.user.id.value,
       ).match(
-        (eventError) => context.respond(
-          MessageBuilder(content: 'Something has gone wrong, please try again'),
-        ),
+        (error) async {
+          print(error.message);
+          context.respond(
+            MessageBuilder(
+              content: 'Something has gone wrong, please try again',
+            ),
+          );
+        },
         (invoiceData) async {
           final invoiceEmbed = _generateInvoiceEmbed(
             invoiceData,

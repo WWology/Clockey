@@ -1,39 +1,91 @@
 sealed class EventError {
   const EventError();
+
+  String get message;
 }
 
 class DeleteEventError extends EventError {
   final Object error;
   final StackTrace stackTrace;
   const DeleteEventError(this.error, this.stackTrace);
+
+  @override
+  String get message {
+    final message = 'DeleteEventError:\n $error\n StackTrace:\n $stackTrace';
+    return message;
+  }
 }
 
 class GetEventIdError extends EventError {
   final Object error;
   final StackTrace stackTrace;
   const GetEventIdError(this.error, this.stackTrace);
+
+  @override
+  String get message {
+    final message = 'GetEventIdError:\n $error\n StackTrace:\n $stackTrace';
+    return message;
+  }
 }
 
 class GetEventsError extends EventError {
   final Object error;
   final StackTrace stackTrace;
   const GetEventsError(this.error, this.stackTrace);
+
+  @override
+  String get message {
+    final message = 'GetEventsError:\n $error\n StackTrace:\n $stackTrace';
+    return message;
+  }
 }
 
 class CreateEventError extends EventError {
   final Object error;
   final StackTrace stackTrace;
   const CreateEventError(this.error, this.stackTrace);
+
+  @override
+  String get message {
+    final message = 'CreateEventError:\n $error\n StackTrace:\n $stackTrace';
+    return message;
+  }
 }
 
 class AddGardenerEventError extends EventError {
   final Object error;
   final StackTrace stackTrace;
   const AddGardenerEventError(this.error, this.stackTrace);
+
+  @override
+  String get message {
+    final message =
+        'AddGardenerEventError:\n $error\n StackTrace:\n $stackTrace';
+    return message;
+  }
 }
 
 class RemoveGardenerEventError extends EventError {
   final Object error;
   final StackTrace stackTrace;
   const RemoveGardenerEventError(this.error, this.stackTrace);
+
+  @override
+  String get message {
+    final message =
+        'RemoveGardenerEventError:\n $error\n StackTrace:\n $stackTrace';
+    return message;
+  }
+}
+
+class EditEventError extends EventError {
+  final Object error;
+  final StackTrace stackTrace;
+  const EditEventError(this.error, this.stackTrace);
+
+  @override
+  String get message {
+    final message = 'EditEventError:\n $error\n StackTrace:\n $stackTrace';
+    return message;
+  }
 }

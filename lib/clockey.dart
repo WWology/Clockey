@@ -1,6 +1,6 @@
+import 'package:get_it/get_it.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:get_it/get_it.dart';
 import 'package:supabase/supabase.dart';
 
 import 'commands/commands.dart';
@@ -27,6 +27,7 @@ CommandsPlugin registerCommand() {
       guild: Snowflake(Env.guildId),
       options: CommandsOptions(logErrors: true));
   commands.addCommand(cancel);
+  commands.addCommand(editGroup);
   commands.addCommand(event);
   commands.addCommand(gardener);
   commands.addCommand(giveaway);

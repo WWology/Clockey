@@ -64,11 +64,14 @@ final cancel = MessageCommand(
 
       if (confirm) {
         getEventId(eventName, eventTime).flatMap(deleteEvent).match(
-          (eventError) => context.respond(
-            MessageBuilder(
-              content: 'Something has gone wrong, please try again',
-            ),
-          ),
+          (error) {
+            print(error.toString());
+            context.respond(
+              MessageBuilder(
+                content: 'Something has gone wrong, please try again',
+              ),
+            );
+          },
           (_) async {
             Future.wait([
               context.respond(
