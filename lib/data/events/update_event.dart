@@ -68,7 +68,7 @@ TaskEither<EditEventError, Unit> editTime(int eventId, DateTime newTime) =>
 
         await supabase
             .from('clockey')
-            .update({'time': newTime}).match({'id': eventId});
+            .update({'time': newTime.toString()}).match({'id': eventId});
 
         return unit;
       },

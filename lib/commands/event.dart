@@ -100,7 +100,7 @@ int _getHours(String eventSeriesLength) {
     case "Bo3":
       return 4;
     case "Bo5":
-      return 4;
+      return 6;
     default:
       return 0;
   }

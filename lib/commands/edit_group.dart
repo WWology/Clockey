@@ -87,9 +87,6 @@ final editTimeCommand = ChatCommand(
       ),
     );
 
-    final oldTime =
-        DateTime.fromMillisecondsSinceEpoch(oldUnixTime * 1000).toUtc();
-
     final newUnixTime = int.parse(newTimeStamp);
 
     final newTime =

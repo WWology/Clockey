@@ -28,6 +28,7 @@ final idCommand = MessageCommand(
               'This event has not been processed yet so it does not have an id',
         ),
       );
+      return;
     }
 
     final String eventName = message.content.substring(

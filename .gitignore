@@ -49,3 +49,4 @@ doc/api/
 *.exe
 invoice.html
 .VSCODECounter/
+.vscode/

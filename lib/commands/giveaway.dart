@@ -11,7 +11,6 @@ final giveaway = MessageCommand(
       List<User> peopleReacted = [];
 
       final message = context.targetMessage;
-      final clockeyId = context.interaction.applicationId;
       final weCooEmoji = ReactionBuilder(
         name: 'OGwecoo',
         id: Snowflake(787697278190223370),
