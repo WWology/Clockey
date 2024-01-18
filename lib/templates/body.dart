@@ -298,7 +298,7 @@ Future<File> createHtml(
       otherEventsWorked = [];
 
   for (final dotaEvent in eventsWorked['Dota']!) {
-    if (dotaEvent.deductions != null) {
+    if (dotaEvent.hasDeductions) {
       final int hours = dotaEvent.hours - dotaEvent.deductions![gardenerID]!;
       if (hours > 0) {
         dotaEventsWorked.add(dotaEvent.copyWith(hours: hours));
@@ -311,7 +311,7 @@ Future<File> createHtml(
   }
 
   for (final csEvent in eventsWorked['CS']!) {
-    if (csEvent.deductions != null) {
+    if (csEvent.hasDeductions) {
       final int hours = csEvent.hours - csEvent.deductions![gardenerID]!;
       if (hours > 0) {
         csEventsWorked.add(csEvent.copyWith(hours: hours));
@@ -324,7 +324,7 @@ Future<File> createHtml(
   }
 
   for (final rlEvent in eventsWorked['RL']!) {
-    if (rlEvent.deductions != null) {
+    if (rlEvent.hasDeductions) {
       final int hours = rlEvent.hours - rlEvent.deductions![gardenerID]!;
       if (hours > 0) {
         rlEventsWorked.add(rlEvent.copyWith(hours: hours));
@@ -337,7 +337,7 @@ Future<File> createHtml(
   }
 
   for (final otherEvent in eventsWorked['Other']!) {
-    if (otherEvent.deductions != null) {
+    if (otherEvent.hasDeductions) {
       final int hours = otherEvent.hours - otherEvent.deductions![gardenerID]!;
       if (hours > 0) {
         otherEventsWorked.add(otherEvent.copyWith(hours: hours));

@@ -124,7 +124,7 @@ EmbedBuilder _generateInvoiceEmbed(
   final DateFormat dateFormat = DateFormat.yMMMd();
 
   for (final dotaEvent in invoiceData['Dota']!) {
-    if (dotaEvent.deductions != null) {
+    if (dotaEvent.hasDeductions) {
       final int hours = dotaEvent.hours - dotaEvent.deductions![user.id.value]!;
       if (hours > 0) {
         dotaEventsWorked +=
@@ -141,7 +141,7 @@ EmbedBuilder _generateInvoiceEmbed(
   }
 
   for (final csEvent in invoiceData['CS']!) {
-    if (csEvent.deductions != null) {
+    if (csEvent.hasDeductions) {
       final int hours = csEvent.hours - csEvent.deductions![user.id.value]!;
       if (hours > 0) {
         csEventsWorked +=
@@ -158,7 +158,7 @@ EmbedBuilder _generateInvoiceEmbed(
   }
 
   for (final rlEvent in invoiceData['RL']!) {
-    if (rlEvent.deductions != null) {
+    if (rlEvent.hasDeductions) {
       final int hours = rlEvent.hours - rlEvent.deductions![user.id.value]!;
       if (hours > 0) {
         rlEventsWorked +=
@@ -175,7 +175,7 @@ EmbedBuilder _generateInvoiceEmbed(
   }
 
   for (final otherEvent in invoiceData['Other']!) {
-    if (otherEvent.deductions != null) {
+    if (otherEvent.hasDeductions) {
       final int hours =
           otherEvent.hours - otherEvent.deductions![user.id.value]!;
       if (hours > 0) {

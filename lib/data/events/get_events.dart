@@ -32,7 +32,7 @@ TaskEither<EventError, InvoiceData> getEvents({
               .lte('time', end)
               .eq('type', 'Dota')
               .filter('gardeners', 'cs', {'$gardenerID'})
-              .order('time')
+              .order('time', ascending: false)
               .withConverter((events) => events.map(Event.fromJson).toList()),
           supabase
               .from('clockey')
@@ -41,7 +41,7 @@ TaskEither<EventError, InvoiceData> getEvents({
               .lte('time', end)
               .eq('type', 'CS')
               .filter('gardeners', 'cs', {'$gardenerID'})
-              .order('time')
+              .order('time', ascending: false)
               .withConverter((events) => events.map(Event.fromJson).toList()),
           supabase
               .from('clockey')
@@ -50,7 +50,7 @@ TaskEither<EventError, InvoiceData> getEvents({
               .lte('time', end)
               .eq('type', 'RL')
               .filter('gardeners', 'cs', {'$gardenerID'})
-              .order('time')
+              .order('time', ascending: false)
               .withConverter((events) => events.map(Event.fromJson).toList()),
           supabase
               .from('clockey')
@@ -59,7 +59,7 @@ TaskEither<EventError, InvoiceData> getEvents({
               .lte('time', end)
               .eq('type', 'Other')
               .filter('gardeners', 'cs', {'$gardenerID'})
-              .order('time')
+              .order('time', ascending: false)
               .withConverter((events) => events.map(Event.fromJson).toList()),
           supabase
               .rpc<List<Map<String, dynamic>>>('get_deductions', params: {
@@ -67,7 +67,7 @@ TaskEither<EventError, InvoiceData> getEvents({
                 'end_date': end.toString(),
                 'gardener_id': '$gardenerID'
               })
-              .order('time')
+              .order('time', ascending: false)
               .withConverter((events) => events.map(Event.fromJson).toList()),
         ).wait;
 

@@ -39,4 +39,12 @@ sealed class Event with _$Event {
   }) = _Event;
 
   factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
+  const Event._();
+
+  bool get hasDeductions {
+    if (deductions != null) {
+      return true;
+    }
+    return false;
+  }
 }
