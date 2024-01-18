@@ -9,7 +9,12 @@ import '../data/events/events.dart';
 ChatGroup manualGroup = ChatGroup(
   'manual',
   'Command for manual Signups',
-  children: [signUps, addGardenerCommand, removeGardenerCommand],
+  children: [
+    signUps,
+    addGardenerCommand,
+    removeGardenerCommand,
+    addDeductionCommand,
+  ],
 );
 
 final signUps = ChatCommand(
@@ -150,6 +155,9 @@ ModalBuilder _manualModal() {
 final addGardenerCommand = ChatCommand(
   'add_gardener',
   'Add a gardener to an event',
+  options: CommandOptions(
+    defaultResponseLevel: ResponseLevel.hint,
+  ),
   id(
     'add_gardener',
     (
@@ -177,14 +185,14 @@ final addGardenerCommand = ChatCommand(
       ).run();
     },
   ),
-  options: CommandOptions(
-    defaultResponseLevel: ResponseLevel.hint,
-  ),
 );
 
 final removeGardenerCommand = ChatCommand(
   'remove_gardener',
   'Remove a gardener from an event',
+  options: CommandOptions(
+    defaultResponseLevel: ResponseLevel.hint,
+  ),
   id(
     'remove_gardener',
     (
@@ -207,13 +215,45 @@ final removeGardenerCommand = ChatCommand(
         (event) => context.respond(
           MessageBuilder(
             content:
-                'Removed <@$gardenerId> to ${event.name} at <t:${event.time.millisecondsSinceEpoch ~/ 1000}:F>',
+                'Removed <@$gardenerId> from ${event.name} at <t:${event.time.millisecondsSinceEpoch ~/ 1000}:F>',
           ),
         ),
       ).run();
     },
   ),
+);
+
+final addDeductionCommand = ChatCommand(
+  'add_deduction',
+  'Add a deduction for a gardener',
   options: CommandOptions(
     defaultResponseLevel: ResponseLevel.hint,
   ),
+  id('add_deduction', (
+    InteractionChatContext context,
+    @Choices(gardenerMap)
+    @Description('The gardener who will be deducted')
+    @Name('gardener')
+    String gardener,
+    int eventId,
+    int hours,
+  ) async {
+    final gardenerId = mapGardenerToId(gardener);
+    addDeduction(eventId, gardenerId, hours).match(
+      (error) {
+        GetIt.I.get<logger.Logger>().e(error.message, error: error);
+        context.respond(
+          MessageBuilder(
+            content: 'Error while adding deduction, please try again',
+          ),
+        );
+      },
+      (event) => context.respond(
+        MessageBuilder(
+          content:
+              'Added a $hours hour deduction to $gardener for ${event.name} at <t:${event.time.millisecondsSinceEpoch ~/ 1000}:F>',
+        ),
+      ),
+    ).run();
+  }),
 );

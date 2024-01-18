@@ -63,10 +63,13 @@ final gardener = MessageCommand(
     final gardenersWorking = ids.take(numberOfGardeners).toList();
 
     _parseEvent(message, context).match(
-      (error) => context.respond(
-        MessageBuilder(content: 'Unable to parse event, please try again'),
-        level: ResponseLevel.hint,
-      ),
+      (error) {
+        GetIt.I.get<logger.Logger>().e(error.message, error: error);
+        context.respond(
+          MessageBuilder(content: 'Unable to parse event, please try again'),
+          level: ResponseLevel.hint,
+        );
+      },
       (parsedEvent) async {
         final (eventName, eventTime, eventType, hours) = parsedEvent;
         final event = Event(
@@ -123,8 +126,15 @@ ModalBuilder _gardenerModal() {
   );
 }
 
-class UnknownEventTypeError {
-  const UnknownEventTypeError();
+class ParsingEventError {
+  final Object error;
+  final StackTrace stackTrace;
+  const ParsingEventError(this.error, this.stackTrace);
+
+  String get message {
+    final message = '$error\n StackTrace:\n $stackTrace';
+    return message;
+  }
 }
 
 typedef EventDetails = (
@@ -134,43 +144,51 @@ typedef EventDetails = (
   int,
 );
 
-Either<UnknownEventTypeError, EventDetails> _parseEvent(
-    Message message, MessageContext context) {
-  final EventType eventType;
+Either<ParsingEventError, EventDetails> _parseEvent(
+  Message message,
+  MessageContext context,
+) =>
+    Either.tryCatch(
+      () {
+        final EventType eventType;
 
-  if (message.content.contains('Dota')) {
-    eventType = EventType.Dota;
-  } else if (message.content.contains('CS')) {
-    eventType = EventType.CS;
-  } else if (message.content.contains('Rocket League')) {
-    eventType = EventType.RL;
-  } else if (message.content.contains('Other')) {
-    eventType = EventType.Other;
-  } else {
-    return Left(const UnknownEventTypeError());
-  }
+        if (message.content.contains('Dota')) {
+          eventType = EventType.Dota;
+        } else if (message.content.contains('CS')) {
+          eventType = EventType.CS;
+        } else if (message.content.contains('Rocket League')) {
+          eventType = EventType.RL;
+        } else if (message.content.contains('Other')) {
+          eventType = EventType.Other;
+        } else {
+          throw FormatException('UnknownEventType');
+        }
 
-  final eventName = message.content.substring(
-    message.content.indexOf("-") + 2,
-    message.content.indexOf(","),
-  );
+        final eventName = message.content.substring(
+          message.content.indexOf("-") + 2,
+          message.content.indexOf(","),
+        );
 
-  final eventUnixTime = int.parse(
-        message.content.substring(
-          message.content.indexOf('<t:') + 3,
-          message.content.indexOf('<t:') + 13,
-        ),
-      ) *
-      1000;
+        final eventUnixTime = int.parse(
+              message.content.substring(
+                message.content.indexOf('<t:') + 3,
+                message.content.indexOf('<t:') + 13,
+              ),
+            ) *
+            1000;
 
-  final eventTime = DateTime.fromMillisecondsSinceEpoch(eventUnixTime).toUtc();
+        final eventTime =
+            DateTime.fromMillisecondsSinceEpoch(eventUnixTime).toUtc();
 
-  final hours = int.parse(message.content[message.content.indexOf("add") + 4]);
+        final hours =
+            int.parse(message.content[message.content.indexOf("add") + 4]);
 
-  return Right((
-    eventName,
-    eventTime,
-    eventType,
-    hours,
-  ));
-}
+        return (
+          eventName,
+          eventTime,
+          eventType,
+          hours,
+        );
+      },
+      ParsingEventError.new,
+    );

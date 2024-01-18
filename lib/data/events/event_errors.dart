@@ -52,30 +52,6 @@ class CreateEventError extends EventError {
   }
 }
 
-class AddGardenerEventError extends EventError {
-  final Object error;
-  final StackTrace stackTrace;
-  const AddGardenerEventError(this.error, this.stackTrace);
-
-  @override
-  String get message {
-    final message = '$error\n StackTrace:\n $stackTrace';
-    return message;
-  }
-}
-
-class RemoveGardenerEventError extends EventError {
-  final Object error;
-  final StackTrace stackTrace;
-  const RemoveGardenerEventError(this.error, this.stackTrace);
-
-  @override
-  String get message {
-    final message = '$error\n StackTrace:\n $stackTrace';
-    return message;
-  }
-}
-
 class EditEventError extends EventError {
   final Object error;
   final StackTrace stackTrace;

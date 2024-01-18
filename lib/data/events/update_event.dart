@@ -5,8 +5,7 @@ import 'package:supabase/supabase.dart';
 import 'event.dart';
 import 'event_errors.dart';
 
-TaskEither<AddGardenerEventError, Event> addGardener(
-        int eventId, int gardenerId) =>
+TaskEither<EditEventError, Event> addGardener(int eventId, int gardenerId) =>
     TaskEither.tryCatch(
       () async {
         final supabase = GetIt.I.get<SupabaseClient>();
@@ -22,10 +21,10 @@ TaskEither<AddGardenerEventError, Event> addGardener(
             .withConverter(Event.fromJson);
         return event;
       },
-      AddGardenerEventError.new,
+      EditEventError.new,
     );
 
-TaskEither<RemoveGardenerEventError, Event> removeGardener(
+TaskEither<EditEventError, Event> removeGardener(
   int eventId,
   int gardenerId,
 ) =>
@@ -44,7 +43,7 @@ TaskEither<RemoveGardenerEventError, Event> removeGardener(
             .withConverter(Event.fromJson);
         return event;
       },
-      RemoveGardenerEventError.new,
+      EditEventError.new,
     );
 
 TaskEither<EditEventError, Unit> editName(int eventId, String newName) =>
@@ -84,6 +83,30 @@ TaskEither<EditEventError, Unit> editHours(int eventId, int newHours) =>
             .update({'hours': newHours}).match({'id': eventId});
 
         return unit;
+      },
+      EditEventError.new,
+    );
+
+TaskEither<EditEventError, Event> addDeduction(
+  int eventId,
+  int gardenerId,
+  int hoursToDeduct,
+) =>
+    TaskEither.tryCatch(
+      () async {
+        final supabase = GetIt.I.get<SupabaseClient>();
+        final event = await supabase
+            .rpc<Map<String, dynamic>>('add_deduction', params: {
+              'event_id': eventId,
+              'gardener_id': gardenerId,
+              'hours_to_deduct': hoursToDeduct,
+            })
+            .select()
+            .limit(1)
+            .single()
+            .withConverter(Event.fromJson);
+        print(event);
+        return event;
       },
       EditEventError.new,
     );
