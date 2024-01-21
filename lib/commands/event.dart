@@ -106,7 +106,7 @@ int _getHours(String eventSeriesLength) {
   }
 }
 
-double _getRlHours(String eventSeriesLength) {
+num _getRlHours(String eventSeriesLength) {
   switch (eventSeriesLength) {
     case "Bo3":
       return 0.5;
