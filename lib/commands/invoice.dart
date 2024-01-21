@@ -73,7 +73,8 @@ final invoice = ChatCommand(
             member: member,
           );
 
-          final invoiceHtml = await createHtml(invoiceData, user.id.value);
+          final invoiceHtml =
+              await createInvoiceHtml(invoiceData, user.id.value);
 
           final converterButton = ButtonBuilder.link(
             url: Uri.parse('https://wordtohtml.net/convert/html-to-docx'),

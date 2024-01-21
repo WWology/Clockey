@@ -286,7 +286,7 @@ String totalHoursRow(int hours) {
 </ol>''';
 }
 
-Future<File> createHtml(
+Future<File> createInvoiceHtml(
   Map<String, List<Event>> eventsWorked,
   int gardenerID,
 ) async {
@@ -362,3 +362,7 @@ Future<File> createHtml(
       File(filename).create().then((file) => file.writeAsString(htmlString));
   return invoiceFile;
 }
+
+// Future<File> createReportHtml(Map<String, List<Event>> events) {
+
+// }

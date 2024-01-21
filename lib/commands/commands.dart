@@ -7,3 +7,4 @@ export 'id_command.dart';
 export 'invoice.dart';
 export 'manual_group.dart';
 export 'ping.dart';
+export 'report.dart';

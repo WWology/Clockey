@@ -21,7 +21,7 @@ final event = ChatCommand(
       String eventType,
     ) async {
       String replyMessage = 'Hey <@&720253636797530203>\n\nI need up to ';
-      final int numberOfGardeners, hours;
+      final num numberOfGardeners, hours;
 
       await context.interaction.respondModal(_eventModal(eventType));
       final modalContext = await context.awaitModal('eventModal',
@@ -35,8 +35,8 @@ final event = ChatCommand(
           numberOfGardeners = 2;
           hours = _getHours(modalContext['eventSeriesLength']!);
         case EventType.RL:
-          numberOfGardeners = 0;
-          hours = _getHours(modalContext['eventSeriesLength']!);
+          numberOfGardeners = 1;
+          hours = _getRlHours(modalContext['eventSeriesLength']!);
           break;
         case EventType.Other:
           numberOfGardeners = int.parse(modalContext['numberOfGardeners']!);
@@ -101,6 +101,18 @@ int _getHours(String eventSeriesLength) {
       return 4;
     case "Bo5":
       return 6;
+    default:
+      return 0;
+  }
+}
+
+double _getRlHours(String eventSeriesLength) {
+  switch (eventSeriesLength) {
+    case "Bo3":
+      return 0.5;
+    case "Bo5":
+    case "Bo7":
+      return 1;
     default:
       return 0;
   }
