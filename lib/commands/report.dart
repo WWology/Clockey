@@ -54,7 +54,10 @@ final report = ChatCommand(
           ),
         );
       },
-      (events) async {},
+      (reportData) async {
+        final reportEmbed =
+            _generateReportEmbed(reportData, context.user, start, end);
+      },
     ).run();
   }),
 );

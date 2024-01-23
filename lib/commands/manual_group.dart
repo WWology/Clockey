@@ -50,6 +50,10 @@ final signUps = ChatCommand(
       @Name('gardener4')
       String? gardener4,
     ]) async {
+      final weCooEmoji = ReactionBuilder(
+        name: 'OGwecoo',
+        id: Snowflake(787697278190223370),
+      );
       String replyMessage = "The people working on the ";
 
       final List<int> gardenerList = [
@@ -102,9 +106,13 @@ final signUps = ChatCommand(
                 content: 'Something has gone wrong, please try again'),
           );
         },
-        (_) => modalContext.respond(
-          MessageBuilder(content: replyMessage),
-        ),
+        (_) async {
+          final message = await modalContext.respond(
+            MessageBuilder(content: replyMessage),
+          );
+
+          message.react(weCooEmoji);
+        },
       ).run();
     },
   ),
