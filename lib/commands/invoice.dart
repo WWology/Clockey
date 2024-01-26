@@ -120,13 +120,13 @@ EmbedBuilder _generateInvoiceEmbed(
   String rlEventsWorked = '';
   String otherEventsWorked = '';
   String deductions = '';
-  int totalHours = 0;
+  num totalHours = 0;
 
   final DateFormat dateFormat = DateFormat.yMMMd();
 
   for (final dotaEvent in invoiceData['Dota']!) {
     if (dotaEvent.hasDeductions) {
-      final int hours = dotaEvent.hours - dotaEvent.deductions![user.id.value]!;
+      final num hours = dotaEvent.hours - dotaEvent.deductions![user.id.value]!;
       if (hours > 0) {
         dotaEventsWorked +=
             '${dotaEvent.name} at ${dateFormat.format(dotaEvent.time)} - $hours hours\n';
@@ -143,7 +143,7 @@ EmbedBuilder _generateInvoiceEmbed(
 
   for (final csEvent in invoiceData['CS']!) {
     if (csEvent.hasDeductions) {
-      final int hours = csEvent.hours - csEvent.deductions![user.id.value]!;
+      final num hours = csEvent.hours - csEvent.deductions![user.id.value]!;
       if (hours > 0) {
         csEventsWorked +=
             '${csEvent.name} at ${dateFormat.format(csEvent.time)} - $hours hours\n';
@@ -160,7 +160,7 @@ EmbedBuilder _generateInvoiceEmbed(
 
   for (final rlEvent in invoiceData['RL']!) {
     if (rlEvent.hasDeductions) {
-      final int hours = rlEvent.hours - rlEvent.deductions![user.id.value]!;
+      final num hours = rlEvent.hours - rlEvent.deductions![user.id.value]!;
       if (hours > 0) {
         rlEventsWorked +=
             '${rlEvent.name} at ${dateFormat.format(rlEvent.time)} - $hours hours\n';
@@ -177,7 +177,7 @@ EmbedBuilder _generateInvoiceEmbed(
 
   for (final otherEvent in invoiceData['Other']!) {
     if (otherEvent.hasDeductions) {
-      final int hours =
+      final num hours =
           otherEvent.hours - otherEvent.deductions![user.id.value]!;
       if (hours > 0) {
         otherEventsWorked +=

@@ -9,6 +9,7 @@ import '../data/events/events.dart';
 
 final gardener = MessageCommand(
   'Roll Gardener',
+  options: CommandOptions(defaultResponseLevel: ResponseLevel.hint),
   id('Gardener', (MessageContext context) async {
     final message = context.targetMessage;
 
@@ -99,6 +100,7 @@ final gardener = MessageCommand(
             Future.wait([
               modalContext.respond(
                 MessageBuilder(content: '$replyMessage - $url'),
+                level: ResponseLevel.hint,
               ),
               message.react(weCooEmoji)
             ]);
@@ -141,7 +143,7 @@ typedef EventDetails = (
   String,
   DateTime,
   EventType,
-  int,
+  num,
 );
 
 Either<ParsingEventError, EventDetails> _parseEvent(
@@ -156,7 +158,7 @@ Either<ParsingEventError, EventDetails> _parseEvent(
           eventType = EventType.Dota;
         } else if (message.content.contains('CS')) {
           eventType = EventType.CS;
-        } else if (message.content.contains('Rocket League')) {
+        } else if (message.content.contains('RL')) {
           eventType = EventType.RL;
         } else if (message.content.contains('Other')) {
           eventType = EventType.Other;
@@ -180,8 +182,11 @@ Either<ParsingEventError, EventDetails> _parseEvent(
         final eventTime =
             DateTime.fromMillisecondsSinceEpoch(eventUnixTime).toUtc();
 
-        final hours =
-            int.parse(message.content[message.content.indexOf("add") + 4]);
+        final hours = num.parse(
+          message.content
+              .substring(message.content.indexOf("add") + 4)
+              .split(' ')[0],
+        );
 
         return (
           eventName,

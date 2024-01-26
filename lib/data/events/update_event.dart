@@ -74,7 +74,7 @@ TaskEither<EditEventError, Unit> editTime(int eventId, DateTime newTime) =>
       EditEventError.new,
     );
 
-TaskEither<EditEventError, Unit> editHours(int eventId, int newHours) =>
+TaskEither<EditEventError, Unit> editHours(int eventId, num newHours) =>
     TaskEither.tryCatch(
       () async {
         final supabase = GetIt.I.get<SupabaseClient>();
@@ -90,7 +90,7 @@ TaskEither<EditEventError, Unit> editHours(int eventId, int newHours) =>
 TaskEither<EditEventError, Event> addDeduction(
   int eventId,
   int gardenerId,
-  int hoursToDeduct,
+  num hoursToDeduct,
 ) =>
     TaskEither.tryCatch(
       () async {
@@ -105,7 +105,6 @@ TaskEither<EditEventError, Event> addDeduction(
             .limit(1)
             .single()
             .withConverter(Event.fromJson);
-        print(event);
         return event;
       },
       EditEventError.new,

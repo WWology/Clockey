@@ -28,11 +28,11 @@ final event = ChatCommand(
           timeout: Duration(seconds: 120));
       switch (EventType.getEventType(eventType)) {
         case EventType.Dota:
-          numberOfGardeners = 4;
+          numberOfGardeners = 2;
           hours = _getHours(modalContext['eventSeriesLength']!);
           break;
         case EventType.CS:
-          numberOfGardeners = 2;
+          numberOfGardeners = 1;
           hours = _getHours(modalContext['eventSeriesLength']!);
         case EventType.RL:
           numberOfGardeners = 1;

@@ -126,14 +126,17 @@ final editHoursCommand = ChatCommand(
     @Name('message_id')
     String messageId,
     @Description('ID of the event to be edited') @Name('event_id') int eventId,
-    @Description('The new time of this event') @Name('new_hours') int newHours,
+    @Description('The new time of this event') @Name('new_hours') num newHours,
   ) async {
     context.acknowledge();
     final message =
         await context.channel.messages.fetch(Snowflake.parse(messageId));
 
-    final oldHours =
-        int.parse(message.content[message.content.indexOf("add") + 4]);
+    final oldHours = num.parse(
+      message.content
+          .substring(message.content.indexOf("add") + 4)
+          .split(' ')[0],
+    );
 
     final newMessage = message.content
         .replaceFirst('$oldHours', '$newHours', message.content.indexOf('add'));

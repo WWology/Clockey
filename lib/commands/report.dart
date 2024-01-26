@@ -74,7 +74,7 @@ EmbedBuilder _generateReportEmbed(
   String rlEvents = '';
   String otherEvents = '';
   String deductions = '';
-  int totalHours = 0;
+  num totalHours = 0;
 
   final DateFormat dateFormat = DateFormat.yMMMd();
 

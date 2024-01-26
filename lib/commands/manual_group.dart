@@ -244,7 +244,7 @@ final addDeductionCommand = ChatCommand(
     @Name('gardener')
     String gardener,
     int eventId,
-    int hours,
+    num hours,
   ) async {
     final gardenerId = mapGardenerToId(gardener);
     addDeduction(eventId, gardenerId, hours).match(

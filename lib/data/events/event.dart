@@ -34,8 +34,8 @@ sealed class Event with _$Event {
     required DateTime time,
     required EventType type,
     required List<int> gardeners,
-    required int hours,
-    Map<int, int>? deductions,
+    required num hours,
+    Map<int, num>? deductions,
   }) = _Event;
 
   factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);

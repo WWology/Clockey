@@ -245,7 +245,7 @@ String otherEventRows(List<Event> otherEvents) {
   return otherSections;
 }
 
-String totalHoursRow(int hours) {
+String totalHoursRow(num hours) {
   return '''<tr class="c8">
 			<td class="c27" colspan="1" rowspan="1">
 				<p class="c4 c15"><span class="c17 c9"></span></p>
@@ -291,7 +291,7 @@ Future<File> createInvoiceHtml(
   int gardenerID,
 ) async {
   final filename = 'invoice.html';
-  int totalHours = 0;
+  num totalHours = 0;
   List<Event> dotaEventsWorked = [],
       csEventsWorked = [],
       rlEventsWorked = [],
@@ -299,7 +299,7 @@ Future<File> createInvoiceHtml(
 
   for (final dotaEvent in eventsWorked['Dota']!) {
     if (dotaEvent.hasDeductions) {
-      final int hours = dotaEvent.hours - dotaEvent.deductions![gardenerID]!;
+      final num hours = dotaEvent.hours - dotaEvent.deductions![gardenerID]!;
       if (hours > 0) {
         dotaEventsWorked.add(dotaEvent.copyWith(hours: hours));
         totalHours += hours;
@@ -312,7 +312,7 @@ Future<File> createInvoiceHtml(
 
   for (final csEvent in eventsWorked['CS']!) {
     if (csEvent.hasDeductions) {
-      final int hours = csEvent.hours - csEvent.deductions![gardenerID]!;
+      final num hours = csEvent.hours - csEvent.deductions![gardenerID]!;
       if (hours > 0) {
         csEventsWorked.add(csEvent.copyWith(hours: hours));
         totalHours += hours;
@@ -325,7 +325,7 @@ Future<File> createInvoiceHtml(
 
   for (final rlEvent in eventsWorked['RL']!) {
     if (rlEvent.hasDeductions) {
-      final int hours = rlEvent.hours - rlEvent.deductions![gardenerID]!;
+      final num hours = rlEvent.hours - rlEvent.deductions![gardenerID]!;
       if (hours > 0) {
         rlEventsWorked.add(rlEvent.copyWith(hours: hours));
         totalHours += hours;
@@ -338,7 +338,7 @@ Future<File> createInvoiceHtml(
 
   for (final otherEvent in eventsWorked['Other']!) {
     if (otherEvent.hasDeductions) {
-      final int hours = otherEvent.hours - otherEvent.deductions![gardenerID]!;
+      final num hours = otherEvent.hours - otherEvent.deductions![gardenerID]!;
       if (hours > 0) {
         otherEventsWorked.add(otherEvent.copyWith(hours: hours));
         totalHours += hours;
