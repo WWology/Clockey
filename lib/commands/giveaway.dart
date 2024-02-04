@@ -8,28 +8,8 @@ final giveaway = MessageCommand(
     'Roll Giveaway winners',
     (MessageContext context) async {
       String replyMessage = 'The giveaway winners are: ';
-      List<User> peopleReacted = [];
-
+      final clockeyId = context.interaction.applicationId;
       final message = context.targetMessage;
-      final weCooEmoji = ReactionBuilder(
-        name: 'OGwecoo',
-        id: Snowflake(787697278190223370),
-      );
-
-      // Check if message has already been processed
-      final weCooReactions = await message.manager.fetchReactions(
-        message.id,
-        weCooEmoji,
-      );
-
-      if (weCooReactions.isNotEmpty) {
-        context.respond(
-          MessageBuilder(
-            content: 'This message has been processed for giveaways',
-          ),
-        );
-        return;
-      }
 
       await context.interaction.respondModal(_giveawayModal());
       final modalContext = await context.awaitModal(
@@ -39,15 +19,28 @@ final giveaway = MessageCommand(
 
       final numberOfWinners = int.parse(modalContext['numberOfWinnersInput']!);
 
-      final reactions = message.reactions;
-      for (final reaction in reactions) {
-        final emoji = await reaction.emoji.get();
-        final users = await message.manager
-            .fetchReactions(message.id, ReactionBuilder.fromEmoji(emoji));
-        peopleReacted.addAll(users);
-      }
+      //   List<User> peopleReacted = [];
+      //   final reactions = message.reactions;
+      //   for (final reaction in reactions) {
+      //     final emoji = await reaction.emoji.get();
+      //     final users = await message.manager
+      //         .fetchReactions(message.id, ReactionBuilder.fromEmoji(emoji));
+      //     peopleReacted.addAll(users);
+      //   }
 
+      final peopleReacted = await message.manager.fetchReactions(
+        message.id,
+        ReactionBuilder(
+          name: 'OGpeepoYes',
+          id: Snowflake(730890894814740541),
+        ),
+      );
       final ids = peopleReacted.map((user) => user.id.value).toList();
+
+      // Remove the bots id from the potential gardener list
+      if (ids.contains(clockeyId.value)) {
+        ids.removeAt(ids.indexOf(clockeyId.value));
+      }
 
       ids.shuffle();
       final winners = ids.take(numberOfWinners);
@@ -56,10 +49,7 @@ final giveaway = MessageCommand(
         replyMessage += '<@$id> ';
       }
 
-      Future.wait([
-        modalContext.respond(MessageBuilder(content: replyMessage)),
-        message.react(weCooEmoji),
-      ], eagerError: true);
+      await modalContext.respond(MessageBuilder(content: replyMessage));
     },
   ),
 );

@@ -9,7 +9,6 @@ import '../data/events/events.dart';
 
 final gardener = MessageCommand(
   'Roll Gardener',
-  options: CommandOptions(defaultResponseLevel: ResponseLevel.hint),
   id('Gardener', (MessageContext context) async {
     final message = context.targetMessage;
 
@@ -100,7 +99,6 @@ final gardener = MessageCommand(
             Future.wait([
               modalContext.respond(
                 MessageBuilder(content: '$replyMessage - $url'),
-                level: ResponseLevel.hint,
               ),
               message.react(weCooEmoji)
             ]);

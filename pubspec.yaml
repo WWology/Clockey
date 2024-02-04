@@ -8,6 +8,7 @@ environment:
 # Add regular dependencies here.
 dependencies:
   collection: ^1.18.0
+  cron: ^0.6.0
   envied: ^0.5.3
   fpdart: ^1.1.0
   freezed_annotation: ^2.4.1

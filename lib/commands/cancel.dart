@@ -75,11 +75,12 @@ final cancel = MessageCommand(
             );
           },
           (_) async {
+            final messageUrl = await message.url;
             Future.wait([
               context.respond(
                 MessageBuilder(
                   content:
-                      'Successfully cancelled signup for $eventName at <t:${eventUnixTime ~/ 1000}:F> - ${message.url}',
+                      'Successfully cancelled signup for $eventName at <t:${eventUnixTime ~/ 1000}:F> - $messageUrl',
                 ),
               ),
               message.manager.deleteReaction(

@@ -18,8 +18,11 @@ final event = ChatCommand(
       })
       @Description('The type of event')
       @Name('type')
-      String eventType,
-    ) async {
+      String eventType, [
+      @Description('Ping Gardeners or not')
+      @Name('ping')
+      bool shouldPing = true,
+    ]) async {
       String replyMessage = 'Hey <@&720253636797530203>\n\nI need up to ';
       final num numberOfGardeners, hours;
 
@@ -40,7 +43,7 @@ final event = ChatCommand(
           break;
         case EventType.Other:
           numberOfGardeners = int.parse(modalContext['numberOfGardeners']!);
-          hours = int.parse(modalContext['hours']!);
+          hours = num.parse(modalContext['hours']!);
           break;
         case EventType.Unknown:
           await modalContext.respond(
@@ -75,9 +78,9 @@ final event = ChatCommand(
       final message = await context.respond(
         MessageBuilder(
           content: replyMessage,
-          allowedMentions: AllowedMentions(
-            parse: ['roles', 'users'],
-          ),
+          allowedMentions: shouldPing
+              ? AllowedMentions(parse: ['roles', 'users'])
+              : AllowedMentions(parse: []),
         ),
       );
 

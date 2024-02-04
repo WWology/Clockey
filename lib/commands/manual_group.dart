@@ -73,7 +73,7 @@ final signUps = ChatCommand(
       final eventTime = DateTime.fromMillisecondsSinceEpoch(
               int.parse(modalContext['eventTime']!) * 1000)
           .toUtc();
-      final hours = int.parse(modalContext['hours']!);
+      final hours = num.parse(modalContext['hours']!);
 
       final event = Event(
         name: eventName,

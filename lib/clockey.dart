@@ -3,6 +3,7 @@ import 'package:logger/logger.dart' as logger;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:supabase/supabase.dart';
+import 'package:cron/cron.dart';
 
 import 'commands/commands.dart';
 import 'env.dart';
@@ -40,4 +41,12 @@ CommandsPlugin registerCommand() {
   commands.addCommand(ping);
 
   return commands;
+}
+
+void startCronJobs() {
+  final cron = Cron();
+
+  cron.schedule(Schedule.parse('*/5 * * * *'), () {
+    // TODO run scheduled signups for RL
+  });
 }
