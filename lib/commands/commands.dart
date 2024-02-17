@@ -6,5 +6,6 @@ export 'giveaway.dart';
 export 'id_command.dart';
 export 'invoice.dart';
 export 'manual_group.dart';
+export 'next_game_group.dart';
 export 'ping.dart';
 export 'report.dart';

@@ -1,9 +1,9 @@
+import 'package:cron/cron.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart' as logger;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:supabase/supabase.dart';
-import 'package:cron/cron.dart';
 
 import 'commands/commands.dart';
 import 'env.dart';
@@ -16,7 +16,7 @@ void run() async {
   final client = await Nyxx.connectGateway(
     Env.clockeyToken,
     GatewayIntents.allUnprivileged,
-    options: GatewayClientOptions(plugins: [logging, cliIntegration, commands]),
+    options: GatewayClientOptions(plugins: [cliIntegration, commands]),
   );
 
   client.onReady.listen((event) async {
@@ -38,6 +38,7 @@ CommandsPlugin registerCommand() {
   commands.addCommand(idCommand);
   commands.addCommand(invoice);
   commands.addCommand(manualGroup);
+  commands.addCommand(nextGameGroup);
   commands.addCommand(ping);
 
   return commands;
