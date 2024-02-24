@@ -19,8 +19,6 @@ int mapGardenerToId(String gardener) {
       return 172360818715918337;
     case 'Sam':
       return 332438787588227072;
-    case 'Nin':
-      return 530121845760851968;
     default:
       return 0;
   }
