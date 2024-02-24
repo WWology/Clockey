@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:puppeteer/puppeteer.dart';
@@ -21,7 +22,7 @@ final nextDota = ChatCommand(
       context.acknowledge();
 
       // Navigate to OG's Dota page
-      final browser = await puppeteer.launch();
+      final browser = GetIt.I.get<Browser>();
       final page = await browser.newPage();
       await page.goto(ogDotaUrl, wait: Until.networkIdle);
 
@@ -46,7 +47,7 @@ final nextDota = ChatCommand(
       );
 
       final embed = _gameEmbedBuilder(opponent, matchTimeUnix, 'Dota');
-      await browser.close();
+      await page.close();
 
       if (context.channel.id.value == 721391448812945480 ||
           context.channel.id.value == 720994728937521193) {
@@ -86,7 +87,7 @@ final nextCS = ChatCommand(
       context.acknowledge();
 
       // Navigate to OG's CS page
-      final browser = await puppeteer.launch();
+      final browser = GetIt.I.get<Browser>();
       final page = await browser.newPage();
       await page.goto(ogCSUrl, wait: Until.networkIdle);
 
@@ -111,7 +112,8 @@ final nextCS = ChatCommand(
       );
 
       final embed = _gameEmbedBuilder(opponent, matchTimeUnix, 'CS');
-      await browser.close();
+      await page.close();
+
       if (context.channel.id.value == 721391448812945480 ||
           context.channel.id.value == 720994728937521193) {
         context.respond(
@@ -150,7 +152,7 @@ final nextRL = ChatCommand(
       context.acknowledge();
 
       // Navigate to OG's Rocket League Page
-      final browser = await puppeteer.launch();
+      final browser = GetIt.I.get<Browser>();
       final page = await browser.newPage();
       await page.goto(ogRLUrl, wait: Until.networkIdle);
 
@@ -176,8 +178,8 @@ final nextRL = ChatCommand(
       );
 
       final embed = _gameEmbedBuilder(opponent, matchTimeUnix, 'RL');
+      await page.close();
 
-      await browser.close();
       if (context.channel.id.value == 721391448812945480 ||
           context.channel.id.value == 720994728937521193) {
         context.respond(

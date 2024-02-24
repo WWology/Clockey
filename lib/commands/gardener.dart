@@ -195,3 +195,46 @@ Either<ParsingEventError, EventDetails> _parseEvent(
       },
       ParsingEventError.new,
     );
+
+// final gardeners = await context.getSelection(
+//       gardenerIdMap(ids),
+//       MessageBuilder(content: 'Gardeners who signed Up'),
+//     );
+
+//     final List<int> gardenersWorking = switch (gardeners) {
+//       'Nik' => [293360731867316225],
+//       'Kit' => [204923365205475329],
+//       'WW' => [754724309276164159],
+//       'Bonteng' => [172360818715918337],
+//       'Sam' => [332438787588227072],
+//       _ => [],
+//     };
+
+//     if (gardenersWorking.isEmpty) {
+//       context.respond(
+//         MessageBuilder(content: 'An invalid choice has been made'),
+//         level: ResponseLevel.hint,
+//       );
+//       return;
+//     }
+// List<String> gardenerIdMap(List<int> ids) {
+//   List<String> gardenerMap = [];
+//   for (final id in ids) {
+//     switch (id) {
+//       case 293360731867316225:
+//         gardenerMap.add('Nik');
+//         break;
+//       case 204923365205475329:
+//         gardenerMap.add('Kit');
+//         break;
+//       case 754724309276164159:
+//         gardenerMap.add('WW');
+//         break;
+//       case 172360818715918337:
+//         gardenerMap.add('Bonteng');
+//       case 332438787588227072:
+//         gardenerMap.add('Sam');
+//     }
+//   }
+//   return gardenerMap;
+// }

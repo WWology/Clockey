@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart' as logger;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
+import 'package:puppeteer/puppeteer.dart';
 import 'package:supabase/supabase.dart';
 
 import 'commands/commands.dart';
@@ -12,11 +13,13 @@ void run() async {
   GetIt.I.registerSingleton<SupabaseClient>(
       SupabaseClient(Env.supabaseUrl, Env.supabaseApiKey));
   GetIt.I.registerSingleton<logger.Logger>(logger.Logger());
+  final browser = await puppeteer.launch();
+  GetIt.I.registerSingleton<Browser>(browser);
   final commands = registerCommand();
   final client = await Nyxx.connectGateway(
     Env.clockeyToken,
     GatewayIntents.allUnprivileged,
-    options: GatewayClientOptions(plugins: [cliIntegration, commands]),
+    options: GatewayClientOptions(plugins: [logging, cliIntegration, commands]),
   );
 
   client.onReady.listen((event) async {
