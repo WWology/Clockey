@@ -5,12 +5,14 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 
+import '../constants.dart';
 import '../data/events/events.dart';
 
 final gardener = MessageCommand(
   'Roll Gardener',
   id('Gardener', (MessageContext context) async {
     final message = context.targetMessage;
+    final user = context.user;
 
     final weCooEmoji = ReactionBuilder(
       name: 'OGwecoo',
@@ -30,7 +32,8 @@ final gardener = MessageCommand(
       );
       return;
     }
-    String replyMessage = 'The people selected are: ';
+
+    String replyMessage = 'The people working this event are: ';
     final clockeyId = context.interaction.applicationId;
     final gooseyId = 825467569800347649;
 
@@ -59,15 +62,43 @@ final gardener = MessageCommand(
       ids.removeAt(ids.indexOf(gooseyId));
     }
 
-    ids.shuffle();
-    final gardenersWorking = ids.take(numberOfGardeners).toList();
+    // Generate select menu for Gardeners who reacted
+    final gardenerSelectMenuId = ComponentId.generate(
+      allowedUser: user.id,
+      expirationTime: Duration(minutes: 2),
+    );
+    final gardenersSelectMenu =
+        _gardenerSelectMenu(numberOfGardeners, ids, gardenerSelectMenuId);
+    final row = ActionRowBuilder(components: [gardenersSelectMenu]);
+
+    await modalContext.respond(
+      MessageBuilder(
+        content: 'Choose the Gardener to work this event',
+        components: [row],
+      ),
+      level: ResponseLevel.hint,
+    );
+
+    // Get the selected Gardeners
+    final gardeners =
+        await modalContext.awaitMultiSelection<String>(gardenerSelectMenuId);
+    final gardenersWorking = gardeners.selected.map(mapGardenerToId).toList();
+
+    // If there's no Gardener, then return an error and abort the command
+    if (gardenersWorking.isEmpty) {
+      modalContext.interaction.updateOriginalResponse(
+        MessageUpdateBuilder(content: 'An invalid choice has been made'),
+      );
+      return;
+    }
 
     _parseEvent(message, context).match(
       (error) {
         GetIt.I.get<logger.Logger>().e(error.message, error: error);
-        context.respond(
-          MessageBuilder(content: 'Unable to parse event, please try again'),
-          level: ResponseLevel.hint,
+        modalContext.interaction.updateOriginalResponse(
+          MessageUpdateBuilder(
+            content: 'Unable to parse event, please try again',
+          ),
         );
       },
       (parsedEvent) async {
@@ -87,18 +118,25 @@ final gardener = MessageCommand(
         createEvent(event).match(
           (error) async {
             GetIt.I.get<logger.Logger>().e(error.message, error: error);
-            modalContext.respond(
-              MessageBuilder(
+            modalContext.interaction.updateOriginalResponse(
+              MessageUpdateBuilder(
                 content: 'Something wrong has happened, please try again',
               ),
-              level: ResponseLevel.hint,
             );
           },
           (_) async {
             final url = await message.url;
             Future.wait([
-              modalContext.respond(
-                MessageBuilder(content: '$replyMessage - $url'),
+              modalContext.interaction.deleteOriginalResponse(),
+              modalContext.interaction.createFollowup(
+                MessageBuilder(
+                  content: '$replyMessage - $url',
+                  allowedMentions: AllowedMentions(
+                    parse: ['users'],
+                  ),
+                  replyId: message.id,
+                  requireReplyToExist: true,
+                ),
               ),
               message.react(weCooEmoji)
             ]);
@@ -123,6 +161,21 @@ ModalBuilder _gardenerModal() {
     customId: 'gardenerModal',
     title: 'Gardener Modal',
     components: [firstActionRow],
+  );
+}
+
+SelectMenuBuilder _gardenerSelectMenu(
+  int numberOfGardeners,
+  List<int> ids,
+  ComponentId gardenerSelectMenuId,
+) {
+  return SelectMenuBuilder(
+    type: MessageComponentType.stringSelect,
+    customId: gardenerSelectMenuId.toString(),
+    minValues: 0,
+    maxValues: numberOfGardeners,
+    placeholder: 'Gardeners who reacted',
+    options: _gardenerIdMap(ids),
   );
 }
 
@@ -196,45 +249,27 @@ Either<ParsingEventError, EventDetails> _parseEvent(
       ParsingEventError.new,
     );
 
-// final gardeners = await context.getSelection(
-//       gardenerIdMap(ids),
-//       MessageBuilder(content: 'Gardeners who signed Up'),
-//     );
-
-//     final List<int> gardenersWorking = switch (gardeners) {
-//       'Nik' => [293360731867316225],
-//       'Kit' => [204923365205475329],
-//       'WW' => [754724309276164159],
-//       'Bonteng' => [172360818715918337],
-//       'Sam' => [332438787588227072],
-//       _ => [],
-//     };
-
-//     if (gardenersWorking.isEmpty) {
-//       context.respond(
-//         MessageBuilder(content: 'An invalid choice has been made'),
-//         level: ResponseLevel.hint,
-//       );
-//       return;
-//     }
-// List<String> gardenerIdMap(List<int> ids) {
-//   List<String> gardenerMap = [];
-//   for (final id in ids) {
-//     switch (id) {
-//       case 293360731867316225:
-//         gardenerMap.add('Nik');
-//         break;
-//       case 204923365205475329:
-//         gardenerMap.add('Kit');
-//         break;
-//       case 754724309276164159:
-//         gardenerMap.add('WW');
-//         break;
-//       case 172360818715918337:
-//         gardenerMap.add('Bonteng');
-//       case 332438787588227072:
-//         gardenerMap.add('Sam');
-//     }
-//   }
-//   return gardenerMap;
-// }
+List<SelectMenuOptionBuilder> _gardenerIdMap(List<int> ids) {
+  List<SelectMenuOptionBuilder> gardenerMap = [];
+  for (final id in ids) {
+    switch (id) {
+      case 293360731867316225:
+        gardenerMap.add(SelectMenuOptionBuilder(label: 'Nik', value: 'Nik'));
+        break;
+      case 204923365205475329:
+        gardenerMap.add(SelectMenuOptionBuilder(label: 'Kit', value: 'Kit'));
+        break;
+      case 754724309276164159:
+        gardenerMap.add(SelectMenuOptionBuilder(label: 'WW', value: 'WW'));
+        break;
+      case 172360818715918337:
+        gardenerMap
+            .add(SelectMenuOptionBuilder(label: 'Bonteng', value: 'Bonteng'));
+        break;
+      case 332438787588227072:
+        gardenerMap.add(SelectMenuOptionBuilder(label: 'Sam', value: 'Sam'));
+        break;
+    }
+  }
+  return gardenerMap;
+}
