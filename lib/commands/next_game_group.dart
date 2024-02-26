@@ -3,6 +3,8 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:puppeteer/puppeteer.dart';
 
+import '../constants.dart';
+
 const String ogDotaUrl = 'https://liquipedia.net/dota2/OG';
 const String ogCSUrl = 'https://liquipedia.net/counterstrike/OG';
 const String ogRLUrl = 'https://liquipedia.net/rocketleague/OG';
@@ -20,57 +22,64 @@ final nextDota = ChatCommand(
     'dota',
     (InteractionChatContext context) async {
       context.acknowledge();
+      bool inBotChannels = context.channel.id.value == botSpamChannelId ||
+          context.channel.id.value == botStuffChannelId;
 
-      // Navigate to OG's Dota page
-      final browser = GetIt.I.get<Browser>();
-      final page = await browser.newPage();
-      await page.goto(ogDotaUrl, wait: Until.networkIdle);
+      try {
+        // Navigate to OG's Dota page
+        final browser = GetIt.I.get<Browser>();
+        final page = await browser.newPage();
+        await page.goto(ogDotaUrl, wait: Until.networkIdle);
 
-      final opponent = await page.$eval<String>(
-        '.team-template-team-short',
-        /* js */
-        '''
-        function (matchTable) {
-            return matchTable.lastElementChild.innerText;
-        }
-        ''',
-      );
-
-      final matchTimeUnix = await page.$eval<String>(
-        '.timer-object-countdown-only',
-        /* js */
-        '''
-        function (matchTime) {
-            return matchTime.getAttribute('data-timestamp');
-        }
-        ''',
-      );
-
-      final embed = _gameEmbedBuilder(opponent, matchTimeUnix, 'Dota');
-      await page.close();
-
-      if (context.channel.id.value == 721391448812945480 ||
-          context.channel.id.value == 720994728937521193) {
-        context.respond(
-          MessageBuilder(
-            embeds: [embed],
-          ),
+        final opponent = await page.$eval<String>(
+          '.team-template-team-short',
+          /* js */
+          '''
+            function (matchTable) {
+              return matchTable.lastElementChild.innerText;
+            }
+          ''',
         );
-      } else {
+
+        final matchTimeUnix = await page.$eval<String>(
+          '.timer-object-countdown-only',
+          /* js */
+          '''
+            function (matchTime) {
+              return matchTime.getAttribute('data-timestamp');
+          }
+          ''',
+        );
+        page.close();
+
         if (opponent != null && matchTimeUnix != 'error') {
-          context.respond(
-            MessageBuilder(
-              content:
-                  'OG vs $opponent - <t:$matchTimeUnix:F> in your local timezone - '
-                  'For more information use /next dota in <#721391448812945480>',
-            ),
-          );
+          final embed = _gameEmbedBuilder(opponent, matchTimeUnix, 'Dota');
+
+          if (inBotChannels) {
+            context.respond(
+              MessageBuilder(
+                embeds: [embed],
+              ),
+            );
+          } else {
+            context.respond(
+              MessageBuilder(
+                content:
+                    'OG vs $opponent - <t:$matchTimeUnix:F> in your local timezone - '
+                    'For more information use /next dota in <#$botSpamChannelId>',
+              ),
+            );
+          }
+        }
+      } catch (e) {
+        if (inBotChannels) {
+          final embed = _gameEmbedBuilder('', '', 'Dota', error: true);
+          context.respond(MessageBuilder(embeds: [embed]));
         } else {
           context.respond(
             MessageBuilder(
-              content: 'No games planned currently - '
-                  'For more information use /next dota in <#721391448812945480>',
-            ),
+                content: 'No games planned currently - '
+                    'For more information use /next dota in <#$botSpamChannelId>'),
           );
         }
       }
@@ -85,56 +94,64 @@ final nextCS = ChatCommand(
     'cs',
     (InteractionChatContext context) async {
       context.acknowledge();
+      bool inBotChannels = context.channel.id.value == botSpamChannelId ||
+          context.channel.id.value == botStuffChannelId;
 
-      // Navigate to OG's CS page
-      final browser = GetIt.I.get<Browser>();
-      final page = await browser.newPage();
-      await page.goto(ogCSUrl, wait: Until.networkIdle);
+      try {
+        // Navigate to OG's CS page
+        final browser = GetIt.I.get<Browser>();
+        final page = await browser.newPage();
+        await page.goto(ogCSUrl, wait: Until.networkIdle);
 
-      final opponent = await page.$eval<String>(
-        '.team-template-team-short',
-        /* js */
-        '''
-        function (matchTable) {
+        final opponent = await page.$eval<String>(
+          '.team-template-team-short',
+          /* js */
+          '''
+          function (matchTable) {
             return matchTable.lastElementChild.innerText;
-        }
-        ''',
-      );
-
-      final matchTimeUnix = await page.$eval<String>(
-        '.timer-object-countdown-only',
-        /* js */
-        '''
-        function (matchTime) {
-            return matchTime.getAttribute('data-timestamp');
-        }
-        ''',
-      );
-
-      final embed = _gameEmbedBuilder(opponent, matchTimeUnix, 'CS');
-      await page.close();
-
-      if (context.channel.id.value == 721391448812945480 ||
-          context.channel.id.value == 720994728937521193) {
-        context.respond(
-          MessageBuilder(
-            embeds: [embed],
-          ),
+          }
+          ''',
         );
-      } else {
+
+        final matchTimeUnix = await page.$eval<String>(
+          '.timer-object-countdown-only',
+          /* js */
+          '''
+          function (matchTime) {
+            return matchTime.getAttribute('data-timestamp');
+          }
+          ''',
+        );
+        page.close();
+
         if (opponent != null && matchTimeUnix != 'error') {
-          context.respond(
-            MessageBuilder(
-              content:
-                  'OG vs $opponent - <t:$matchTimeUnix:F> in your local timezone - '
-                  'For more information use /next cs in <#721391448812945480>',
-            ),
-          );
+          final embed = _gameEmbedBuilder(opponent, matchTimeUnix, 'CS');
+
+          if (inBotChannels) {
+            context.respond(
+              MessageBuilder(
+                embeds: [embed],
+              ),
+            );
+          } else {
+            context.respond(
+              MessageBuilder(
+                content:
+                    'OG vs $opponent - <t:$matchTimeUnix:F> in your local timezone - '
+                    'For more information use /next cs in <#$botSpamChannelId>',
+              ),
+            );
+          }
+        }
+      } catch (e) {
+        if (inBotChannels) {
+          final embed = _gameEmbedBuilder('', '', 'CS', error: true);
+          context.respond(MessageBuilder(embeds: [embed]));
         } else {
           context.respond(
             MessageBuilder(
               content: 'No games planned currently - '
-                  'For more information use /next cs in <#721391448812945480>',
+                  'For more information use /next cs in <#$botSpamChannelId>',
             ),
           );
         }
@@ -150,57 +167,65 @@ final nextRL = ChatCommand(
     'rl',
     (InteractionChatContext context) async {
       context.acknowledge();
+      bool inBotChannels = context.channel.id.value == botSpamChannelId ||
+          context.channel.id.value == botStuffChannelId;
 
-      // Navigate to OG's Rocket League Page
-      final browser = GetIt.I.get<Browser>();
-      final page = await browser.newPage();
-      await page.goto(ogRLUrl, wait: Until.networkIdle);
+      try {
+        // Navigate to OG's Rocket League Page
+        final browser = GetIt.I.get<Browser>();
+        final page = await browser.newPage();
+        await page.goto(ogRLUrl, wait: Until.networkIdle);
 
-      // Get Opponent's team name
-      final opponent = await page.$eval<String>(
-        '.team-template-team-short',
-        /* js */
-        '''
-        function (matchTable) {
+        // Get Opponent's team name
+        final opponent = await page.$eval<String>(
+          '.team-template-team-short',
+          /* js */
+          '''
+          function (matchTable) {
             return matchTable.lastElementChild.innerText;
-        }
-        ''',
-      );
-
-      final matchTimeUnix = await page.$eval<String>(
-        '.timer-object-countdown-only',
-        /* js */
-        '''
-        function (matchTime) {
-            return matchTime.getAttribute('data-timestamp');
-        }
-        ''',
-      );
-
-      final embed = _gameEmbedBuilder(opponent, matchTimeUnix, 'RL');
-      await page.close();
-
-      if (context.channel.id.value == 721391448812945480 ||
-          context.channel.id.value == 720994728937521193) {
-        context.respond(
-          MessageBuilder(
-            embeds: [embed],
-          ),
+          }
+          ''',
         );
-      } else {
+
+        final matchTimeUnix = await page.$eval<String>(
+          '.timer-object-countdown-only',
+          /* js */
+          '''
+          function (matchTime) {
+            return matchTime.getAttribute('data-timestamp');
+          }
+          ''',
+        );
+        page.close();
+
         if (opponent != null && matchTimeUnix != 'error') {
-          context.respond(
-            MessageBuilder(
-              content:
-                  'OG vs $opponent - <t:$matchTimeUnix:F> in your local timezone - '
-                  'For more information use /next rl in <#721391448812945480>',
-            ),
-          );
+          final embed = _gameEmbedBuilder(opponent, matchTimeUnix, 'RL');
+
+          if (inBotChannels) {
+            context.respond(
+              MessageBuilder(
+                embeds: [embed],
+              ),
+            );
+          } else {
+            context.respond(
+              MessageBuilder(
+                content:
+                    'OG vs $opponent - <t:$matchTimeUnix:F> in your local timezone - '
+                    'For more information use /next rl in <#$botSpamChannelId>',
+              ),
+            );
+          }
+        }
+      } catch (e) {
+        if (inBotChannels) {
+          final embed = _gameEmbedBuilder('', '', 'RL', error: true);
+          context.respond(MessageBuilder(embeds: [embed]));
         } else {
           context.respond(
             MessageBuilder(
               content: 'No games planned currently - '
-                  'For more information use /next rl in <#721391448812945480>',
+                  'For more information use /next rl in <#$botSpamChannelId>',
             ),
           );
         }
@@ -212,8 +237,9 @@ final nextRL = ChatCommand(
 EmbedBuilder _gameEmbedBuilder(
   String? opponent,
   String? matchTimeUnix,
-  String type,
-) {
+  String type, {
+  bool error = false,
+}) {
   late final String title, url, colour;
   switch (type) {
     case 'Dota':
@@ -233,7 +259,7 @@ EmbedBuilder _gameEmbedBuilder(
       break;
   }
 
-  if (opponent != null && matchTimeUnix != 'error') {
+  if (!error) {
     return EmbedBuilder(
       color: DiscordColor.parseHexString(colour),
       title: title,
