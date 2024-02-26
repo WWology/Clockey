@@ -3,7 +3,7 @@ import 'package:logger/logger.dart' as logger;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 
-import '../data/events/update_event.dart';
+import '../../data/events/update_event.dart';
 
 final editGroup = ChatGroup(
   'edit',

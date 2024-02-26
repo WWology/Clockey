@@ -1,7 +1,7 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 
-import '../data/events/events.dart';
+import '../../data/events/events.dart';
 
 final event = ChatCommand(
   'event',

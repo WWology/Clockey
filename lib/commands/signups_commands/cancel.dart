@@ -4,8 +4,8 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 
-import '../data/events/delete_event.dart';
-import '../data/events/events.dart';
+import '../../data/events/delete_event.dart';
+import '../../data/events/events.dart';
 
 final cancel = MessageCommand(
   'Cancel this event',

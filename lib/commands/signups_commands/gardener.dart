@@ -5,8 +5,8 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 
-import '../constants.dart';
-import '../data/events/events.dart';
+import '../../constants.dart';
+import '../../data/events/events.dart';
 
 final gardener = MessageCommand(
   'Roll Gardener',
@@ -33,7 +33,7 @@ final gardener = MessageCommand(
       return;
     }
 
-    String replyMessage = 'The people working this event are: ';
+    String replyMessage = 'The people working ';
     final clockeyId = context.interaction.applicationId;
     final gooseyId = 825467569800347649;
 
@@ -111,6 +111,7 @@ final gardener = MessageCommand(
           hours: hours,
         );
 
+        replyMessage += '$eventName are: ';
         for (final id in gardenersWorking) {
           replyMessage += '<@$id> ';
         }

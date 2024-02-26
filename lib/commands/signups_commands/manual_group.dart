@@ -3,8 +3,8 @@ import 'package:logger/logger.dart' as logger;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 
-import '../constants.dart';
-import '../data/events/events.dart';
+import '../../constants.dart';
+import '../../data/events/events.dart';
 
 ChatGroup manualGroup = ChatGroup(
   'manual',
