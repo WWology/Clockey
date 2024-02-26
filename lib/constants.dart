@@ -23,3 +23,6 @@ int mapGardenerToId(String gardener) {
       return 0;
   }
 }
+
+const int botSpamChannelId = 721391448812945480;
+const int botStuffChannelId = 720994728937521193;
