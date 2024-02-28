@@ -135,8 +135,6 @@ final gardener = MessageCommand(
                   allowedMentions: AllowedMentions(
                     parse: ['users'],
                   ),
-                  replyId: message.id,
-                  requireReplyToExist: true,
                 ),
               ),
               message.react(weCooEmoji)
