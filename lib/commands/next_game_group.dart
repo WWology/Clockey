@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart' as logger;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:puppeteer/puppeteer.dart';
@@ -17,18 +18,18 @@ ChatGroup nextGameGroup = ChatGroup(
 
 final nextDota = ChatCommand(
   'dota',
-  'Next Dota game for OG',
+  'Next Dota 2 game for OG',
   id(
     'dota',
     (InteractionChatContext context) async {
       context.acknowledge();
       bool inBotChannels = context.channel.id.value == botSpamChannelId ||
           context.channel.id.value == botStuffChannelId;
+      final browser = GetIt.I.get<Browser>();
+      final page = await browser.newPage();
 
       try {
         // Navigate to OG's Dota page
-        final browser = GetIt.I.get<Browser>();
-        final page = await browser.newPage();
         await page.goto(ogDotaUrl, wait: Until.networkIdle);
 
         final opponent = await page.$eval<String>(
@@ -70,8 +71,10 @@ final nextDota = ChatCommand(
               ),
             );
           }
+          page.close();
         }
-      } catch (e) {
+      } catch (error) {
+        GetIt.I.get<logger.Logger>().e(error);
         if (inBotChannels) {
           final embed = _gameEmbedBuilder('', '', 'Dota', error: true);
           context.respond(MessageBuilder(embeds: [embed]));
@@ -89,18 +92,18 @@ final nextDota = ChatCommand(
 
 final nextCS = ChatCommand(
   'cs',
-  'Next CS game for OG',
+  'Next CS2 game for OG',
   id(
     'cs',
     (InteractionChatContext context) async {
       context.acknowledge();
       bool inBotChannels = context.channel.id.value == botSpamChannelId ||
           context.channel.id.value == botStuffChannelId;
+      final browser = GetIt.I.get<Browser>();
+      final page = await browser.newPage();
 
       try {
         // Navigate to OG's CS page
-        final browser = GetIt.I.get<Browser>();
-        final page = await browser.newPage();
         await page.goto(ogCSUrl, wait: Until.networkIdle);
 
         final opponent = await page.$eval<String>(
@@ -143,7 +146,8 @@ final nextCS = ChatCommand(
             );
           }
         }
-      } catch (e) {
+      } catch (error) {
+        GetIt.I.get<logger.Logger>().e(error);
         if (inBotChannels) {
           final embed = _gameEmbedBuilder('', '', 'CS', error: true);
           context.respond(MessageBuilder(embeds: [embed]));
@@ -155,6 +159,7 @@ final nextCS = ChatCommand(
             ),
           );
         }
+        page.close();
       }
     },
   ),
@@ -169,11 +174,11 @@ final nextRL = ChatCommand(
       context.acknowledge();
       bool inBotChannels = context.channel.id.value == botSpamChannelId ||
           context.channel.id.value == botStuffChannelId;
+      final browser = GetIt.I.get<Browser>();
+      final page = await browser.newPage();
 
       try {
         // Navigate to OG's Rocket League Page
-        final browser = GetIt.I.get<Browser>();
-        final page = await browser.newPage();
         await page.goto(ogRLUrl, wait: Until.networkIdle);
 
         // Get Opponent's team name
@@ -217,7 +222,8 @@ final nextRL = ChatCommand(
             );
           }
         }
-      } catch (e) {
+      } catch (error) {
+        GetIt.I.get<logger.Logger>().e(error);
         if (inBotChannels) {
           final embed = _gameEmbedBuilder('', '', 'RL', error: true);
           context.respond(MessageBuilder(embeds: [embed]));
@@ -229,6 +235,7 @@ final nextRL = ChatCommand(
             ),
           );
         }
+        page.close();
       }
     },
   ),
