@@ -72,6 +72,13 @@ final nextDota = ChatCommand(
             );
           }
           page.close();
+        } else {
+          context.respond(
+            MessageBuilder(
+              content: 'No games planned currently - '
+                  'For more information use /next dota in <#$botSpamChannelId>',
+            ),
+          );
         }
       } catch (error) {
         GetIt.I.get<logger.Logger>().e(error);
@@ -81,8 +88,9 @@ final nextDota = ChatCommand(
         } else {
           context.respond(
             MessageBuilder(
-                content: 'No games planned currently - '
-                    'For more information use /next dota in <#$botSpamChannelId>'),
+              content: 'No games planned currently - '
+                  'For more information use /next dota in <#$botSpamChannelId>',
+            ),
           );
         }
       }
@@ -145,6 +153,14 @@ final nextCS = ChatCommand(
               ),
             );
           }
+        } else {
+          context.respond(
+            MessageBuilder(
+              content:
+                  'OG vs $opponent - <t:$matchTimeUnix:F> in your local timezone - '
+                  'For more information use /next dota in <#$botSpamChannelId>',
+            ),
+          );
         }
       } catch (error) {
         GetIt.I.get<logger.Logger>().e(error);
@@ -221,6 +237,14 @@ final nextRL = ChatCommand(
               ),
             );
           }
+        } else {
+          context.respond(
+            MessageBuilder(
+              content:
+                  'OG vs $opponent - <t:$matchTimeUnix:F> in your local timezone - '
+                  'For more information use /next dota in <#$botSpamChannelId>',
+            ),
+          );
         }
       } catch (error) {
         GetIt.I.get<logger.Logger>().e(error);

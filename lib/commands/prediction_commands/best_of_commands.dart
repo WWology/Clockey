@@ -1,0 +1,1044 @@
+import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
+import 'package:logger/logger.dart' as logger;
+import 'package:nyxx/nyxx.dart';
+import 'package:nyxx_commands/nyxx_commands.dart';
+
+final dotaBo = ChatCommand(
+  'dotabo',
+  'Create Dota roles',
+  id(
+    'dotabo',
+    (
+      InteractionChatContext context,
+      @Name('series_length') int seriesLength,
+    ) async {
+      context.acknowledge();
+
+      final roleManager = context.guild!.roles;
+      var dotaBox = Hive.box<int>('dotaBox');
+
+      if (seriesLength == 1) {
+        try {
+          final bool rolesAlreadyExist = dotaBox.get('D1-0') != null;
+          if (rolesAlreadyExist) {
+            context.respond(
+              MessageBuilder(
+                content:
+                    'Dota Bo1 roles already exist, please delete them first and try again',
+              ),
+            );
+            return;
+          }
+
+          final rolesToBeCreated = [
+            'D1-0',
+            'D0-1',
+          ];
+          for (final roleName in rolesToBeCreated) {
+            final role = await roleManager.create(RoleBuilder(name: roleName));
+            dotaBox.put(roleName, role.id.value);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'I have created roles for a Dota Bo1'),
+          );
+        } catch (error) {
+          GetIt.I.get<logger.Logger>().e(error);
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 2) {
+        try {
+          final bool rolesAlreadyExist = dotaBox.get('D1-1') != null;
+          if (rolesAlreadyExist) {
+            context.respond(
+              MessageBuilder(
+                content:
+                    'Dota Bo2 roles already exist, please delete them first and try again',
+              ),
+            );
+            return;
+          }
+
+          final rolesToBeCreated = [
+            'D2-0',
+            'D1-1',
+            'D0-2',
+          ];
+          for (final roleName in rolesToBeCreated) {
+            final role = await roleManager.create(RoleBuilder(name: roleName));
+            dotaBox.put(roleName, role.id.value);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'I have created roles for a Dota Bo2'),
+          );
+        } catch (error) {
+          GetIt.I.get<logger.Logger>().e(error);
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 3) {
+        try {
+          final bool rolesAlreadyExist = dotaBox.get('D2-1') != null;
+          if (rolesAlreadyExist) {
+            context.respond(
+              MessageBuilder(
+                content:
+                    'Dota Bo3 roles already exist, please delete them first and try again',
+              ),
+            );
+            return;
+          }
+
+          final rolesToBeCreated = [
+            'D2-0',
+            'D2-1',
+            'D1-2',
+            'D0-2',
+          ];
+          for (final roleName in rolesToBeCreated) {
+            final role = await roleManager.create(RoleBuilder(name: roleName));
+            dotaBox.put(roleName, role.id.value);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'I have created roles for a Dota Bo3'),
+          );
+        } catch (error) {
+          GetIt.I.get<logger.Logger>().e(error);
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 5) {
+        try {
+          final bool rolesAlreadyExist = dotaBox.get('D3-0') != null;
+          if (rolesAlreadyExist) {
+            context.respond(
+              MessageBuilder(
+                content:
+                    'Dota Bo5 roles already exist, please delete them first and try again',
+              ),
+            );
+            return;
+          }
+
+          final rolesToBeCreated = [
+            'D3-0',
+            'D3-1',
+            'D3-2',
+            'D2-3',
+            'D1-3',
+            'D0-3',
+          ];
+          for (final roleName in rolesToBeCreated) {
+            final role = await roleManager.create(RoleBuilder(name: roleName));
+            dotaBox.put(roleName, role.id.value);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'I have created roles for a Dota Bo5'),
+          );
+        } catch (error) {
+          GetIt.I.get<logger.Logger>().e(error);
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+    },
+  ),
+);
+
+final csBo = ChatCommand(
+  'csbo',
+  'Create CS roles',
+  id(
+    'csbo',
+    (
+      InteractionChatContext context,
+      @Name('series_length') int seriesLength,
+    ) async {
+      context.acknowledge();
+
+      final roleManager = context.guild!.roles;
+      var csBox = Hive.box<int>('csBox');
+
+      if (seriesLength == 1) {
+        try {
+          final bool rolesAlreadyExist = csBox.get('CS1-0') != null;
+          if (rolesAlreadyExist) {
+            context.respond(
+              MessageBuilder(
+                content:
+                    'CS Bo1 roles already exist, please delete them first and try again',
+              ),
+            );
+            return;
+          }
+
+          final rolesToBeCreated = [
+            'CS1-0',
+            'CS0-1',
+          ];
+          for (final roleName in rolesToBeCreated) {
+            final role = await roleManager.create(RoleBuilder(name: roleName));
+            csBox.put(roleName, role.id.value);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'I have created roles for a CS Bo1'),
+          );
+        } catch (error) {
+          GetIt.I.get<logger.Logger>().e(error);
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 2) {
+        try {
+          final bool rolesAlreadyExist = csBox.get('CS1-1') != null;
+          if (rolesAlreadyExist) {
+            context.respond(
+              MessageBuilder(
+                content:
+                    'CS Bo2 roles already exist, please delete them first and try again',
+              ),
+            );
+            return;
+          }
+
+          final rolesToBeCreated = [
+            'CS2-0',
+            'CS1-1',
+            'CS0-2',
+          ];
+          for (final roleName in rolesToBeCreated) {
+            final role = await roleManager.create(RoleBuilder(name: roleName));
+            csBox.put(roleName, role.id.value);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'I have created roles for a CS Bo2'),
+          );
+        } catch (error) {
+          GetIt.I.get<logger.Logger>().e(error);
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 3) {
+        try {
+          final bool rolesAlreadyExist = csBox.get('CS2-1') != null;
+          if (rolesAlreadyExist) {
+            context.respond(
+              MessageBuilder(
+                content:
+                    'CS Bo3 roles already exist, please delete them first and try again',
+              ),
+            );
+            return;
+          }
+
+          final rolesToBeCreated = [
+            'CS2-0',
+            'CS2-1',
+            'CS1-2',
+            'CS0-2',
+          ];
+          for (final roleName in rolesToBeCreated) {
+            final role = await roleManager.create(RoleBuilder(name: roleName));
+            csBox.put(roleName, role.id.value);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'I have created roles for a CS Bo3'),
+          );
+        } catch (error) {
+          GetIt.I.get<logger.Logger>().e(error);
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 5) {
+        try {
+          final bool rolesAlreadyExist = csBox.get('CS3-0') != null;
+          if (rolesAlreadyExist) {
+            context.respond(
+              MessageBuilder(
+                content:
+                    'CS Bo5 roles already exist, please delete them first and try again',
+              ),
+            );
+            return;
+          }
+
+          final rolesToBeCreated = [
+            'CS3-0',
+            'CS3-1',
+            'CS3-2',
+            'CS2-3',
+            'CS1-3',
+            'CS0-3',
+          ];
+          for (final roleName in rolesToBeCreated) {
+            final role = await roleManager.create(RoleBuilder(name: roleName));
+            csBox.put(roleName, role.id.value);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'I have created roles for a CS Bo5'),
+          );
+        } catch (error) {
+          GetIt.I.get<logger.Logger>().e(error);
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+    },
+  ),
+);
+
+final rlBo = ChatCommand(
+  'rlbo',
+  'Create RL roles',
+  id(
+    'rlbo',
+    (
+      InteractionChatContext context,
+      @Name('series_length') int seriesLength,
+    ) async {
+      context.acknowledge();
+
+      final roleManager = context.guild!.roles;
+      var rlBox = Hive.box<int>('rlBox');
+
+      if (seriesLength == 1) {
+        try {
+          final bool rolesAlreadyExist = rlBox.get('RL1-0') != null;
+          if (rolesAlreadyExist) {
+            context.respond(
+              MessageBuilder(
+                content:
+                    'RL Bo1 roles already exist, please delete them first and try again',
+              ),
+            );
+            return;
+          }
+
+          final rolesToBeCreated = [
+            'RL1-0',
+            'RL0-1',
+          ];
+          for (final roleName in rolesToBeCreated) {
+            final role = await roleManager.create(RoleBuilder(name: roleName));
+            rlBox.put(roleName, role.id.value);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'I have created roles for a RL Bo1'),
+          );
+        } catch (error) {
+          GetIt.I.get<logger.Logger>().e(error);
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 2) {
+        try {
+          final bool rolesAlreadyExist = rlBox.get('RL1-1') != null;
+          if (rolesAlreadyExist) {
+            context.respond(
+              MessageBuilder(
+                content:
+                    'RL Bo2 roles already exist, please delete them first and try again',
+              ),
+            );
+            return;
+          }
+          final rolesToBeCreated = [
+            'RL2-0',
+            'RL1-1',
+            'RL0-2',
+          ];
+          for (final roleName in rolesToBeCreated) {
+            final role = await roleManager.create(RoleBuilder(name: roleName));
+            rlBox.put(roleName, role.id.value);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'I have created roles for a RL Bo2'),
+          );
+        } catch (error) {
+          GetIt.I.get<logger.Logger>().e(error);
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 3) {
+        try {
+          final bool rolesAlreadyExist = rlBox.get('RL2-1') != null;
+          if (rolesAlreadyExist) {
+            context.respond(
+              MessageBuilder(
+                content:
+                    'RL Bo3 roles already exist, please delete them first and try again',
+              ),
+            );
+            return;
+          }
+          final rolesToBeCreated = [
+            'RL2-0',
+            'RL2-1',
+            'RL1-2',
+            'RL0-2',
+          ];
+          for (final roleName in rolesToBeCreated) {
+            final role = await roleManager.create(RoleBuilder(name: roleName));
+            rlBox.put(roleName, role.id.value);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'I have created roles for a RL Bo3'),
+          );
+        } catch (error) {
+          GetIt.I.get<logger.Logger>().e(error);
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 5) {
+        try {
+          final bool rolesAlreadyExist = rlBox.get('RL3-0') != null;
+          if (rolesAlreadyExist) {
+            context.respond(
+              MessageBuilder(
+                content:
+                    'RL Bo5 roles already exist, please delete them first and try again',
+              ),
+            );
+            return;
+          }
+
+          final rolesToBeCreated = [
+            'RL3-0',
+            'RL3-1',
+            'RL3-2',
+            'RL2-3',
+            'RL1-3',
+            'RL0-3',
+          ];
+          for (final roleName in rolesToBeCreated) {
+            final role = await roleManager.create(RoleBuilder(name: roleName));
+            rlBox.put(roleName, role.id.value);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'I have created roles for a RL Bo5'),
+          );
+        } catch (error) {
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 7) {
+        try {
+          final bool rolesAlreadyExist = rlBox.get('RL4-0') != null;
+          if (rolesAlreadyExist) {
+            context.respond(
+              MessageBuilder(
+                content:
+                    'RL Bo7 roles already exist, please delete them first and try again',
+              ),
+            );
+            return;
+          }
+
+          final rolesToBeCreated = [
+            'RL4-0',
+            'RL4-1',
+            'RL4-2',
+            'RL4-3',
+            'RL3-4',
+            'RL2-4',
+            'RL1-4',
+            'RL0-4',
+          ];
+          for (final roleName in rolesToBeCreated) {
+            final role = await roleManager.create(RoleBuilder(name: roleName));
+            rlBox.put(roleName, role.id.value);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'I have created roles for a RL Bo7'),
+          );
+        } catch (error) {
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+    },
+  ),
+);
+
+final deleteDota = ChatCommand(
+  'deletedota',
+  'Delete Dota roles for prediction',
+  id(
+    'deletedota',
+    (
+      InteractionChatContext context,
+      @Name('series_length') int seriesLength,
+    ) async {
+      context.acknowledge();
+      final roleManager = context.guild!.roles;
+      var dotaBox = Hive.box<int>('dotaBox');
+
+      if (seriesLength == 1) {
+        try {
+          final rolesToBeDeleted = [
+            'D1-0',
+            'D0-1',
+          ];
+          for (final roleName in rolesToBeDeleted) {
+            final roleId = dotaBox.get(roleName);
+            if (roleId == null) {
+              context.respond(
+                MessageBuilder(
+                  content: '$roleName is missing, manual deletion required',
+                ),
+              );
+              return;
+            }
+
+            await roleManager.delete(Snowflake(roleId));
+            dotaBox.delete(roleName);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'Deleted the roles for a Dota Bo1'),
+          );
+        } catch (error) {
+          GetIt.I.get<logger.Logger>().e(error);
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 2) {
+        try {
+          final rolesToBeDeleted = [
+            'D2-0',
+            'D1-1',
+            'D0-2',
+          ];
+          for (final roleName in rolesToBeDeleted) {
+            final roleId = dotaBox.get(roleName);
+            if (roleId == null) {
+              context.respond(
+                MessageBuilder(
+                  content: '$roleName is missing, manual deletion required',
+                ),
+              );
+              return;
+            }
+
+            await roleManager.delete(Snowflake(roleId));
+            dotaBox.delete(roleName);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'Deleted the roles for a Dota Bo2'),
+          );
+        } catch (error) {
+          GetIt.I.get<logger.Logger>().e(error);
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 3) {
+        try {
+          final rolesToBeDeleted = [
+            'D2-0',
+            'D2-1',
+            'D1-2',
+            'D0-2',
+          ];
+          for (final roleName in rolesToBeDeleted) {
+            final roleId = dotaBox.get(roleName);
+            if (roleId == null) {
+              context.respond(
+                MessageBuilder(
+                  content: '$roleName is missing, manual deletion required',
+                ),
+              );
+              return;
+            }
+
+            await roleManager.delete(Snowflake(roleId));
+            dotaBox.delete(roleName);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'Deleted the roles for a Dota Bo3'),
+          );
+        } catch (error) {
+          GetIt.I.get<logger.Logger>().e(error);
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 5) {
+        try {
+          final rolesToBeDeleted = [
+            'D3-0',
+            'D3-1',
+            'D3-2',
+            'D2-3',
+            'D1-3',
+            'D0-3',
+          ];
+          for (final roleName in rolesToBeDeleted) {
+            final roleId = dotaBox.get(roleName);
+            if (roleId == null) {
+              context.respond(
+                MessageBuilder(
+                  content: '$roleName is missing, manual deletion required',
+                ),
+              );
+              return;
+            }
+
+            await roleManager.delete(Snowflake(roleId));
+            dotaBox.delete(roleName);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'Deleted the roles for a Dota Bo5'),
+          );
+        } catch (error) {
+          GetIt.I.get<logger.Logger>().e(error);
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+    },
+  ),
+);
+
+final deleteCS = ChatCommand(
+  'deletecs',
+  'Delete CS roles for prediction',
+  id(
+    'deletecs',
+    (
+      InteractionChatContext context,
+      @Name('series_length') int seriesLength,
+    ) async {
+      context.acknowledge();
+      final roleManager = context.guild!.roles;
+      var csBox = Hive.box<int>('csBox');
+
+      if (seriesLength == 1) {
+        try {
+          final rolesToBeDeleted = [
+            'CS1-0',
+            'CS0-1',
+          ];
+          for (final roleName in rolesToBeDeleted) {
+            final roleId = csBox.get(roleName);
+            if (roleId == null) {
+              context.respond(
+                MessageBuilder(
+                  content: '$roleName is missing, manual deletion required',
+                ),
+              );
+              return;
+            }
+
+            await roleManager.delete(Snowflake(roleId));
+            csBox.delete(roleName);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'Deleted the roles for a CS Bo1'),
+          );
+        } catch (error) {
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 2) {
+        try {
+          final rolesToBeDeleted = [
+            'CS2-0',
+            'CS1-1',
+            'CS0-2',
+          ];
+          for (final roleName in rolesToBeDeleted) {
+            final roleId = csBox.get(roleName);
+            if (roleId == null) {
+              context.respond(
+                MessageBuilder(
+                  content: '$roleName is missing, manual deletion required',
+                ),
+              );
+              return;
+            }
+
+            await roleManager.delete(Snowflake(roleId));
+            csBox.delete(roleName);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'Deleted the roles for a CS Bo2'),
+          );
+        } catch (error) {
+          GetIt.I.get<logger.Logger>().e(error);
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 3) {
+        try {
+          final rolesToBeDeleted = [
+            'CS2-0',
+            'CS2-1',
+            'CS1-2',
+            'CS0-2',
+          ];
+          for (final roleName in rolesToBeDeleted) {
+            final roleId = csBox.get(roleName);
+            if (roleId == null) {
+              context.respond(
+                MessageBuilder(
+                  content: '$roleName is missing, manual deletion required',
+                ),
+              );
+              return;
+            }
+
+            await roleManager.delete(Snowflake(roleId));
+            csBox.delete(roleName);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'Deleted the roles for a CS Bo3'),
+          );
+        } catch (error) {
+          GetIt.I.get<logger.Logger>().e(error);
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 5) {
+        try {
+          final rolesToBeDeleted = [
+            'CS3-0',
+            'CS3-1',
+            'CS3-2',
+            'CS2-3',
+            'CS1-3',
+            'CS0-3',
+          ];
+          for (final roleName in rolesToBeDeleted) {
+            final roleId = csBox.get(roleName);
+            if (roleId == null) {
+              context.respond(
+                MessageBuilder(
+                  content: '$roleName is missing, manual deletion required',
+                ),
+              );
+              return;
+            }
+
+            await roleManager.delete(Snowflake(roleId));
+            csBox.delete(roleName);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'Deleted the roles for a CS Bo5'),
+          );
+        } catch (error) {
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+    },
+  ),
+);
+
+final deleteRL = ChatCommand(
+  'deleterl',
+  'Delete RL roles for prediction',
+  id(
+    'deleterl',
+    (
+      InteractionChatContext context,
+      @Name('series_length') int seriesLength,
+    ) async {
+      context.acknowledge();
+      final roleManager = context.guild!.roles;
+      var rlBox = Hive.box<int>('rlBox');
+
+      if (seriesLength == 1) {
+        try {
+          final rolesToBeDeleted = [
+            'RL1-0',
+            'RL0-1',
+          ];
+          for (final roleName in rolesToBeDeleted) {
+            final roleId = rlBox.get(roleName);
+            if (roleId == null) {
+              context.respond(
+                MessageBuilder(
+                  content: '$roleName is missing, manual deletion required',
+                ),
+              );
+              return;
+            }
+
+            await roleManager.delete(Snowflake(roleId));
+            rlBox.delete(roleName);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'Deleted the roles for a RL Bo1'),
+          );
+        } catch (error) {
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 2) {
+        try {
+          final rolesToBeDeleted = [
+            'RL2-0',
+            'RL1-1',
+            'RL0-2',
+          ];
+          for (final roleName in rolesToBeDeleted) {
+            final roleId = rlBox.get(roleName);
+            if (roleId == null) {
+              context.respond(
+                MessageBuilder(
+                  content: '$roleName is missing, manual deletion required',
+                ),
+              );
+              return;
+            }
+
+            await roleManager.delete(Snowflake(roleId));
+            rlBox.delete(roleName);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'Deleted the roles for a RL Bo2'),
+          );
+        } catch (error) {
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 3) {
+        try {
+          final rolesToBeDeleted = [
+            'RL2-0',
+            'RL2-1',
+            'RL1-2',
+            'RL0-2',
+          ];
+          for (final roleName in rolesToBeDeleted) {
+            final roleId = rlBox.get(roleName);
+            if (roleId == null) {
+              context.respond(
+                MessageBuilder(
+                  content: '$roleName is missing, manual deletion required',
+                ),
+              );
+              return;
+            }
+
+            await roleManager.delete(Snowflake(roleId));
+            rlBox.delete(roleName);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'Deleted the roles for a RL Bo3'),
+          );
+        } catch (error) {
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 5) {
+        try {
+          final rolesToBeDeleted = [
+            'RL3-0',
+            'RL3-1',
+            'RL3-2',
+            'RL2-3',
+            'RL1-3',
+            'RL0-3',
+          ];
+          for (final roleName in rolesToBeDeleted) {
+            final roleId = rlBox.get(roleName);
+            if (roleId == null) {
+              context.respond(
+                MessageBuilder(
+                  content: '$roleName is missing, manual deletion required',
+                ),
+              );
+              return;
+            }
+
+            await roleManager.delete(Snowflake(roleId));
+            rlBox.delete(roleName);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'Deleted the roles for a RL Bo5'),
+          );
+        } catch (error) {
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+
+      if (seriesLength == 7) {
+        try {
+          final rolesToBeDeleted = [
+            'RL4-0',
+            'RL4-1',
+            'RL4-2',
+            'RL4-3',
+            'RL3-4',
+            'RL2-4',
+            'RL1-4',
+            'RL0-4',
+          ];
+          for (final roleName in rolesToBeDeleted) {
+            final roleId = rlBox.get(roleName);
+            if (roleId == null) {
+              context.respond(
+                MessageBuilder(
+                  content: '$roleName is missing, manual deletion required',
+                ),
+              );
+              return;
+            }
+
+            await roleManager.delete(Snowflake(roleId));
+            rlBox.delete(roleName);
+          }
+
+          context.respond(
+            MessageBuilder(content: 'Deleted the roles for a RL Bo7'),
+          );
+        } catch (error) {
+          context.respond(
+            MessageBuilder(
+              content: 'Something wrong has occured, please try again',
+            ),
+          );
+        }
+      }
+    },
+  ),
+);

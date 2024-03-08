@@ -10,6 +10,7 @@ import '../../data/events/events.dart';
 
 final gardener = MessageCommand(
   'Roll Gardener',
+  options: CommandOptions(defaultResponseLevel: ResponseLevel.hint),
   id('Gardener', (MessageContext context) async {
     final message = context.targetMessage;
     final user = context.user;
@@ -86,8 +87,8 @@ final gardener = MessageCommand(
 
     // If there's no Gardener, then return an error and abort the command
     if (gardenersWorking.isEmpty) {
-      modalContext.interaction.updateOriginalResponse(
-        MessageUpdateBuilder(content: 'An invalid choice has been made'),
+      modalContext.respond(
+        MessageBuilder(content: 'An invalid choice has been made'),
       );
       return;
     }
@@ -95,10 +96,11 @@ final gardener = MessageCommand(
     _parseEvent(message, context).match(
       (error) {
         GetIt.I.get<logger.Logger>().e(error.message, error: error);
-        modalContext.interaction.updateOriginalResponse(
-          MessageUpdateBuilder(
+        modalContext.respond(
+          MessageBuilder(
             content: 'Unable to parse event, please try again',
           ),
+          level: ResponseLevel.hint,
         );
       },
       (parsedEvent) async {
@@ -119,23 +121,24 @@ final gardener = MessageCommand(
         createEvent(event).match(
           (error) async {
             GetIt.I.get<logger.Logger>().e(error.message, error: error);
-            modalContext.interaction.updateOriginalResponse(
-              MessageUpdateBuilder(
+            modalContext.respond(
+              MessageBuilder(
                 content: 'Something wrong has happened, please try again',
               ),
+              level: ResponseLevel.hint,
             );
           },
           (_) async {
             final url = await message.url;
             Future.wait([
-              modalContext.interaction.deleteOriginalResponse(),
-              modalContext.interaction.createFollowup(
+              modalContext.respond(
                 MessageBuilder(
                   content: '$replyMessage - $url',
                   allowedMentions: AllowedMentions(
                     parse: ['users'],
                   ),
                 ),
+                level: ResponseLevel.public,
               ),
               message.react(weCooEmoji)
             ]);

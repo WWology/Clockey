@@ -2,7 +2,11 @@
 export 'giveaway.dart';
 export 'next_game_group.dart';
 export 'ping.dart';
-// Signup related commands
+export 'show_group.dart';
+// Prediction commands
+export 'prediction_commands/best_of_commands.dart';
+export 'prediction_commands/clear_cache.dart';
+// Signup commands
 export 'signups_commands/cancel.dart';
 export 'signups_commands/edit_group.dart';
 export 'signups_commands/event.dart';
