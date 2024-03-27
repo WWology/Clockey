@@ -1,4 +1,3 @@
-import 'package:cron/cron.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart' as logger;
@@ -9,7 +8,9 @@ import 'package:puppeteer/puppeteer.dart';
 import 'package:supabase/supabase.dart';
 
 import 'commands/commands.dart';
+import 'data/game/game.dart';
 import 'env.dart';
+import 'plugins/game_checker.dart';
 
 void run() async {
   GetIt.I.registerSingleton<SupabaseClient>(
@@ -18,6 +19,11 @@ void run() async {
   final browser = await puppeteer.launch();
   GetIt.I.registerSingleton<Browser>(browser);
   final commands = registerCommand();
+  Hive
+    ..init('./hive_boxes')
+    ..registerAdapter(GameAdapter());
+  await openHiveBoxes();
+
   final client = await Nyxx.connectGateway(
     Env.clockeyToken,
     GatewayIntents.allUnprivileged,
@@ -26,11 +32,10 @@ void run() async {
       cliIntegration,
       commands,
       pagination,
+      GameChecker(),
     ]),
   );
 
-  Hive.init('./hive_boxes');
-  await openHiveBoxes();
   client.onReady.listen((event) async {
     print('Clockey Ready ⏰');
   });
@@ -76,16 +81,9 @@ CommandsPlugin registerCommand() {
   return commands;
 }
 
-void startCronJobs() {
-  final cron = Cron();
-
-  cron.schedule(Schedule.parse('*/5 * * * *'), () {
-    // TODO run scheduled signups for RL
-  });
-}
-
 Future<void> openHiveBoxes() async {
   await Hive.openBox<int>('dotaBox');
   await Hive.openBox<int>('csBox');
   await Hive.openBox<int>('rlBox');
+  await Hive.openBox<Game>('gameBox');
 }

@@ -6,10 +6,6 @@ import 'package:puppeteer/puppeteer.dart';
 
 import '../constants.dart';
 
-const String ogDotaUrl = 'https://liquipedia.net/dota2/OG';
-const String ogCSUrl = 'https://liquipedia.net/counterstrike/OG';
-const String ogRLUrl = 'https://liquipedia.net/rocketleague/OG';
-
 ChatGroup nextGameGroup = ChatGroup(
   'next',
   'Command for next available games for OG',
@@ -51,9 +47,11 @@ final nextDota = ChatCommand(
           }
           ''',
         );
-        page.close();
+        await page.close();
 
-        if (opponent != null && matchTimeUnix != 'error') {
+        if (opponent != null &&
+            matchTimeUnix != 'error' &&
+            matchTimeUnix != null) {
           final embed = _gameEmbedBuilder(opponent, matchTimeUnix, 'Dota');
 
           if (inBotChannels) {
@@ -71,7 +69,7 @@ final nextDota = ChatCommand(
               ),
             );
           }
-          page.close();
+          await page.close();
         } else {
           context.respond(
             MessageBuilder(
@@ -133,9 +131,11 @@ final nextCS = ChatCommand(
           }
           ''',
         );
-        page.close();
+        await page.close();
 
-        if (opponent != null && matchTimeUnix != 'error') {
+        if (opponent != null &&
+            matchTimeUnix != 'error' &&
+            matchTimeUnix != null) {
           final embed = _gameEmbedBuilder(opponent, matchTimeUnix, 'CS');
 
           if (inBotChannels) {
@@ -175,7 +175,7 @@ final nextCS = ChatCommand(
             ),
           );
         }
-        page.close();
+        await page.close();
       }
     },
   ),
@@ -217,9 +217,11 @@ final nextRL = ChatCommand(
           }
           ''',
         );
-        page.close();
+        await page.close();
 
-        if (opponent != null && matchTimeUnix != 'error') {
+        if (opponent != null &&
+            matchTimeUnix != 'error' &&
+            matchTimeUnix != null) {
           final embed = _gameEmbedBuilder(opponent, matchTimeUnix, 'RL');
 
           if (inBotChannels) {
@@ -259,7 +261,7 @@ final nextRL = ChatCommand(
             ),
           );
         }
-        page.close();
+        await page.close();
       }
     },
   ),

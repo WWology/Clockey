@@ -198,12 +198,6 @@ EmbedBuilder _scoreEmbed(
           'https://liquipedia.net/commons/images/thumb/7/70/OG_RB_allmode.png/1200px-OG_RB_allmode.png',
         ),
       ),
-      //   thumbnail: EmbedThumbnailBuilder(
-      //     url: Uri.parse(
-      //       'https://liquipedia.net/commons/images/thumb'
-      //       '/7/70/OG_RB_allmode.png/1200px-OG_RB_allmode.png',
-      //     ),
-      //   ),
       fields: [
         EmbedFieldBuilder(
           name: '',
