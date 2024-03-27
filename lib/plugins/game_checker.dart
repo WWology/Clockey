@@ -16,7 +16,7 @@ class GameChecker extends NyxxPlugin<NyxxGateway> {
   void afterConnect(NyxxGateway client) async {
     super.afterConnect(client);
 
-    timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+    timer = Timer.periodic(const Duration(minutes: 15), (timer) {
       checkForDotaMatch(client);
       //   checkForCSMatch(client);
       checkForRLMatch(client);
