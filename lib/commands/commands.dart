@@ -6,6 +6,7 @@ export 'show_group.dart';
 // Prediction commands
 export 'prediction_commands/best_of_commands.dart';
 export 'prediction_commands/clear_cache.dart';
+export 'prediction_commands/score_adder_commands.dart';
 // Signup commands
 export 'signups_commands/cancel.dart';
 export 'signups_commands/edit_group.dart';

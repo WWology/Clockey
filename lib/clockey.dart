@@ -71,6 +71,9 @@ CommandsPlugin registerCommand() {
   commands.addCommand(deleteCS);
   commands.addCommand(deleteRL);
   commands.addCommand(clearCache);
+  commands.addCommand(dotaAdd);
+  commands.addCommand(csAdd);
+  commands.addCommand(rlAdd);
 
   // General Commands
   commands.addCommand(giveaway);

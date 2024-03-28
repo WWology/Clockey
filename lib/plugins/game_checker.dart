@@ -37,18 +37,18 @@ void checkForDotaMatch(
   NyxxGateway client,
 ) async {
   var gameBox = Hive.box<Game>('gameBox');
-  await gameBox.clear();
   final dotaMatch = gameBox.get('Dota');
   final DateTime currentTime = DateTime.now();
 
   if (dotaMatch != null) {
+    print(dotaMatch.name);
     print(dotaMatch.alreadyPosted);
     // Check for conditions before posting
     if (!dotaMatch.alreadyPosted &&
         dotaMatch.time.difference(currentTime).inHours <= 1) {
       final embed = _gameEmbed(dotaMatch, 'Dota');
 
-      await (client.channels[Snowflake(720994728937521193)]
+      await (client.channels[Snowflake(1218158154206937200)]
               as PartialTextChannel)
           .sendMessage(MessageBuilder(embeds: [embed]));
 
@@ -142,13 +142,14 @@ void checkForCSMatch(
   final DateTime currentTime = DateTime.now();
 
   if (csMatch != null) {
-    print(csMatch);
+    print(csMatch.name);
+    print(csMatch.alreadyPosted);
     // Check for conditions before posting
     if (!csMatch.alreadyPosted &&
         csMatch.time.difference(currentTime).inHours <= 1) {
       final embed = _gameEmbed(csMatch, 'CS');
 
-      await (client.channels[Snowflake(720994728937521193)]
+      await (client.channels[Snowflake(1218158154206937200)]
               as PartialTextChannel)
           .sendMessage(MessageBuilder(embeds: [embed]));
 
@@ -242,13 +243,14 @@ void checkForRLMatch(
   final DateTime currentTime = DateTime.now();
 
   if (rlMatch != null) {
+    print(rlMatch.name);
     print(rlMatch.alreadyPosted);
     // Check for conditions before posting
     if (!rlMatch.alreadyPosted &&
         rlMatch.time.difference(currentTime).inHours <= 1) {
       final embed = _gameEmbed(rlMatch, 'RL');
 
-      await (client.channels[Snowflake(720994728937521193)]
+      await (client.channels[Snowflake(1218158154206937200)]
               as PartialTextChannel)
           .sendMessage(MessageBuilder(embeds: [embed]));
 
@@ -355,26 +357,27 @@ EmbedBuilder _gameEmbed(Game game, String type) {
   }
 
   return EmbedBuilder(
-      title: title,
-      color: DiscordColor.parseHexString(colour),
-      url: Uri.parse(url),
-      thumbnail: EmbedThumbnailBuilder(
-        url: Uri.parse(
-          'https://liquipedia.net/commons/images/thumb'
-          '/7/70/OG_RB_allmode.png/1200px-OG_RB_allmode.png',
-        ),
+    title: title,
+    color: DiscordColor.parseHexString(colour),
+    url: Uri.parse(url),
+    thumbnail: EmbedThumbnailBuilder(
+      url: Uri.parse(
+        'https://liquipedia.net/commons/images/thumb'
+        '/7/70/OG_RB_allmode.png/1200px-OG_RB_allmode.png',
       ),
-      fields: [
-        EmbedFieldBuilder(
-          name: game.name,
-          value:
-              '<t:${game.time.millisecondsSinceEpoch ~/ 1000}:F> - This is local to your timezone',
-          isInline: false,
-        ),
-        EmbedFieldBuilder(
-          name: 'Streams',
-          value: game.streamUrl,
-          isInline: false,
-        )
-      ]);
+    ),
+    fields: [
+      EmbedFieldBuilder(
+        name: game.name,
+        value:
+            '<t:${game.time.millisecondsSinceEpoch ~/ 1000}:F> - This is local to your timezone',
+        isInline: false,
+      ),
+      EmbedFieldBuilder(
+        name: 'Streams',
+        value: game.streamUrl,
+        isInline: false,
+      )
+    ],
+  );
 }
