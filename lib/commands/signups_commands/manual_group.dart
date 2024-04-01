@@ -99,9 +99,9 @@ final signUps = ChatCommand(
           '\n\nYou can add $hours hours of work to your invoice for the month';
 
       createEvent(event).match(
-        (error) {
+        (error) async {
           GetIt.I.get<logger.Logger>().e(error.message, error: error);
-          modalContext.respond(
+          await modalContext.respond(
             MessageBuilder(
                 content: 'Something has gone wrong, please try again'),
           );
@@ -111,7 +111,7 @@ final signUps = ChatCommand(
             MessageBuilder(content: replyMessage),
           );
 
-          message.react(weCooEmoji);
+          await message.react(weCooEmoji);
         },
       ).run();
     },
@@ -178,18 +178,20 @@ final addGardenerCommand = ChatCommand(
     ) async {
       final gardenerId = mapGardenerToId(gardener);
       addGardener(eventId, gardenerId).match(
-        (error) {
+        (error) async {
           GetIt.I.get<logger.Logger>().e(error.message, error: error);
-          context.respond(
+          await context.respond(
             MessageBuilder(content: 'Unable to add gardener, please try again'),
           );
         },
-        (event) => context.respond(
-          MessageBuilder(
-            content:
-                'Added <@$gardenerId> to ${event.name} at <t:${event.time.millisecondsSinceEpoch ~/ 1000}:F>',
-          ),
-        ),
+        (event) async {
+          await context.respond(
+            MessageBuilder(
+              content:
+                  'Added <@$gardenerId> to ${event.name} at <t:${event.time.millisecondsSinceEpoch ~/ 1000}:F>',
+            ),
+          );
+        },
       ).run();
     },
   ),
@@ -213,19 +215,21 @@ final removeGardenerCommand = ChatCommand(
     ) async {
       final gardenerId = mapGardenerToId(gardener);
       removeGardener(eventId, gardenerId).match(
-        (error) {
+        (error) async {
           GetIt.I.get<logger.Logger>().e(error.message, error: error);
-          context.respond(
+          await context.respond(
             MessageBuilder(
                 content: 'Unable to remove gardener, please try again'),
           );
         },
-        (event) => context.respond(
-          MessageBuilder(
-            content:
-                'Removed <@$gardenerId> from ${event.name} at <t:${event.time.millisecondsSinceEpoch ~/ 1000}:F>',
-          ),
-        ),
+        (event) async {
+          await context.respond(
+            MessageBuilder(
+              content:
+                  'Removed <@$gardenerId> from ${event.name} at <t:${event.time.millisecondsSinceEpoch ~/ 1000}:F>',
+            ),
+          );
+        },
       ).run();
     },
   ),
@@ -248,20 +252,22 @@ final addDeductionCommand = ChatCommand(
   ) async {
     final gardenerId = mapGardenerToId(gardener);
     addDeduction(eventId, gardenerId, hours).match(
-      (error) {
+      (error) async {
         GetIt.I.get<logger.Logger>().e(error.message, error: error);
-        context.respond(
+        await context.respond(
           MessageBuilder(
             content: 'Error while adding deduction, please try again',
           ),
         );
       },
-      (event) => context.respond(
-        MessageBuilder(
-          content:
-              'Added a $hours hour deduction to $gardener for ${event.name} at <t:${event.time.millisecondsSinceEpoch ~/ 1000}:F>',
-        ),
-      ),
+      (event) async {
+        await context.respond(
+          MessageBuilder(
+            content:
+                'Added a $hours hour deduction to $gardener for ${event.name} at <t:${event.time.millisecondsSinceEpoch ~/ 1000}:F>',
+          ),
+        );
+      },
     ).run();
   }),
 );

@@ -25,7 +25,7 @@ final gardener = MessageCommand(
         await message.manager.fetchReactions(message.id, weCooEmoji);
 
     if (weCooReactions.isNotEmpty) {
-      context.respond(
+      await context.respond(
         MessageBuilder(
           content: 'This message has already been processed for signups',
         ),
@@ -87,16 +87,16 @@ final gardener = MessageCommand(
 
     // If there's no Gardener, then return an error and abort the command
     if (gardenersWorking.isEmpty) {
-      modalContext.respond(
+      await modalContext.respond(
         MessageBuilder(content: 'An invalid choice has been made'),
       );
       return;
     }
 
     _parseEvent(message, context).match(
-      (error) {
+      (error) async {
         GetIt.I.get<logger.Logger>().e(error.message, error: error);
-        modalContext.respond(
+        await modalContext.respond(
           MessageBuilder(
             content: 'Unable to parse event, please try again',
           ),
@@ -121,7 +121,7 @@ final gardener = MessageCommand(
         createEvent(event).match(
           (error) async {
             GetIt.I.get<logger.Logger>().e(error.message, error: error);
-            modalContext.respond(
+            await modalContext.respond(
               MessageBuilder(
                 content: 'Something wrong has happened, please try again',
               ),
@@ -140,7 +140,7 @@ final gardener = MessageCommand(
                 ),
                 level: ResponseLevel.public,
               ),
-              message.react(weCooEmoji)
+              message.react(weCooEmoji),
             ]);
           },
         ).run();

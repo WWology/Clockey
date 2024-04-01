@@ -27,7 +27,7 @@ final editNameCommand = ChatCommand(
     @Description('ID of the event to be edited') @Name('event_id') int eventId,
     @Description('The new name of the event') @Name('new_name') String newName,
   ) async {
-    context.acknowledge();
+    await context.acknowledge();
     final message =
         await context.channel.messages.fetch(Snowflake.parse(messageId));
 
@@ -39,9 +39,9 @@ final editNameCommand = ChatCommand(
     final newMessage = message.content.replaceAll(oldName, newName);
 
     editName(eventId, newName).match(
-      (error) {
+      (error) async {
         GetIt.I.get<logger.Logger>().e(error.message, error: error);
-        context.respond(
+        await context.respond(
           MessageBuilder(
             content: 'Unable to edit the name of this event, please try again',
           ),
@@ -76,7 +76,7 @@ final editTimeCommand = ChatCommand(
     @Name('new_time')
     String newTimeStamp,
   ) async {
-    context.acknowledge();
+    await context.acknowledge();
     final message =
         await context.channel.messages.fetch(Snowflake.parse(messageId));
 
@@ -95,24 +95,29 @@ final editTimeCommand = ChatCommand(
     final newMessage =
         message.content.replaceAll('$oldUnixTime', '$newUnixTime');
 
-    editTime(eventId, newTime).match((error) {
-      GetIt.I.get<logger.Logger>().e(error.message);
-      context.respond(
-        MessageBuilder(
-          content: 'Unable to edit the time of this event, please try again',
-        ),
-      );
-    }, (_) async {
-      Future.wait([
-        message.update(MessageUpdateBuilder(content: newMessage)),
-        context.respond(
+    editTime(eventId, newTime).match(
+      (error) async {
+        GetIt.I.get<logger.Logger>().e(error.message);
+        await context.respond(
           MessageBuilder(
-            content:
-                'Successfully changed event $eventId time from <t:$oldUnixTime:F> to <t:$newUnixTime:F>',
+            content: 'Unable to edit the time of this event, please try again',
           ),
-        ),
-      ]);
-    }).run();
+        );
+      },
+      (_) async {
+        Future.wait(
+          [
+            message.update(MessageUpdateBuilder(content: newMessage)),
+            context.respond(
+              MessageBuilder(
+                content:
+                    'Successfully changed event $eventId time from <t:$oldUnixTime:F> to <t:$newUnixTime:F>',
+              ),
+            ),
+          ],
+        );
+      },
+    ).run();
   }),
 );
 
@@ -128,7 +133,7 @@ final editHoursCommand = ChatCommand(
     @Description('ID of the event to be edited') @Name('event_id') int eventId,
     @Description('The new time of this event') @Name('new_hours') num newHours,
   ) async {
-    context.acknowledge();
+    await context.acknowledge();
     final message =
         await context.channel.messages.fetch(Snowflake.parse(messageId));
 
@@ -141,9 +146,9 @@ final editHoursCommand = ChatCommand(
     final newMessage = message.content
         .replaceFirst('$oldHours', '$newHours', message.content.indexOf('add'));
     editHours(eventId, newHours).match(
-      (error) {
+      (error) async {
         GetIt.I.get<logger.Logger>().e(error.message);
-        context.respond(
+        await context.respond(
           MessageBuilder(
             content:
                 'Unable to edit the amount of hours of this event, please try again',

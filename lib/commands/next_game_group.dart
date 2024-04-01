@@ -18,7 +18,7 @@ final nextDota = ChatCommand(
   id(
     'dota',
     (InteractionChatContext context) async {
-      context.acknowledge();
+      await context.acknowledge();
       bool inBotChannels = context.channel.id.value == botSpamChannelId ||
           context.channel.id.value == botStuffChannelId;
       final browser = GetIt.I.get<Browser>();
@@ -55,13 +55,13 @@ final nextDota = ChatCommand(
           final embed = _gameEmbedBuilder(opponent, matchTimeUnix, 'Dota');
 
           if (inBotChannels) {
-            context.respond(
+            await context.respond(
               MessageBuilder(
                 embeds: [embed],
               ),
             );
           } else {
-            context.respond(
+            await context.respond(
               MessageBuilder(
                 content:
                     'OG vs $opponent - <t:$matchTimeUnix:F> in your local timezone - '
@@ -71,7 +71,7 @@ final nextDota = ChatCommand(
           }
           await page.close();
         } else {
-          context.respond(
+          await context.respond(
             MessageBuilder(
               content: 'No games planned currently - '
                   'For more information use /next dota in <#$botSpamChannelId>',
@@ -82,15 +82,16 @@ final nextDota = ChatCommand(
         GetIt.I.get<logger.Logger>().e(error);
         if (inBotChannels) {
           final embed = _gameEmbedBuilder('', '', 'Dota', error: true);
-          context.respond(MessageBuilder(embeds: [embed]));
+          await context.respond(MessageBuilder(embeds: [embed]));
         } else {
-          context.respond(
+          await context.respond(
             MessageBuilder(
               content: 'No games planned currently - '
                   'For more information use /next dota in <#$botSpamChannelId>',
             ),
           );
         }
+        await page.close();
       }
     },
   ),
@@ -102,7 +103,7 @@ final nextCS = ChatCommand(
   id(
     'cs',
     (InteractionChatContext context) async {
-      context.acknowledge();
+      await context.acknowledge();
       bool inBotChannels = context.channel.id.value == botSpamChannelId ||
           context.channel.id.value == botStuffChannelId;
       final browser = GetIt.I.get<Browser>();
@@ -139,13 +140,13 @@ final nextCS = ChatCommand(
           final embed = _gameEmbedBuilder(opponent, matchTimeUnix, 'CS');
 
           if (inBotChannels) {
-            context.respond(
+            await context.respond(
               MessageBuilder(
                 embeds: [embed],
               ),
             );
           } else {
-            context.respond(
+            await context.respond(
               MessageBuilder(
                 content:
                     'OG vs $opponent - <t:$matchTimeUnix:F> in your local timezone - '
@@ -154,7 +155,7 @@ final nextCS = ChatCommand(
             );
           }
         } else {
-          context.respond(
+          await context.respond(
             MessageBuilder(
               content:
                   'OG vs $opponent - <t:$matchTimeUnix:F> in your local timezone - '
@@ -166,9 +167,9 @@ final nextCS = ChatCommand(
         GetIt.I.get<logger.Logger>().e(error);
         if (inBotChannels) {
           final embed = _gameEmbedBuilder('', '', 'CS', error: true);
-          context.respond(MessageBuilder(embeds: [embed]));
+          await context.respond(MessageBuilder(embeds: [embed]));
         } else {
-          context.respond(
+          await context.respond(
             MessageBuilder(
               content: 'No games planned currently - '
                   'For more information use /next cs in <#$botSpamChannelId>',
@@ -187,7 +188,7 @@ final nextRL = ChatCommand(
   id(
     'rl',
     (InteractionChatContext context) async {
-      context.acknowledge();
+      await context.acknowledge();
       bool inBotChannels = context.channel.id.value == botSpamChannelId ||
           context.channel.id.value == botStuffChannelId;
       final browser = GetIt.I.get<Browser>();
@@ -225,13 +226,13 @@ final nextRL = ChatCommand(
           final embed = _gameEmbedBuilder(opponent, matchTimeUnix, 'RL');
 
           if (inBotChannels) {
-            context.respond(
+            await context.respond(
               MessageBuilder(
                 embeds: [embed],
               ),
             );
           } else {
-            context.respond(
+            await context.respond(
               MessageBuilder(
                 content:
                     'OG vs $opponent - <t:$matchTimeUnix:F> in your local timezone - '
@@ -240,7 +241,7 @@ final nextRL = ChatCommand(
             );
           }
         } else {
-          context.respond(
+          await context.respond(
             MessageBuilder(
               content:
                   'OG vs $opponent - <t:$matchTimeUnix:F> in your local timezone - '
@@ -252,9 +253,9 @@ final nextRL = ChatCommand(
         GetIt.I.get<logger.Logger>().e(error);
         if (inBotChannels) {
           final embed = _gameEmbedBuilder('', '', 'RL', error: true);
-          context.respond(MessageBuilder(embeds: [embed]));
+          await context.respond(MessageBuilder(embeds: [embed]));
         } else {
-          context.respond(
+          await context.respond(
             MessageBuilder(
               content: 'No games planned currently - '
                   'For more information use /next rl in <#$botSpamChannelId>',

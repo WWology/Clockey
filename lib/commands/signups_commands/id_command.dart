@@ -11,7 +11,7 @@ final idCommand = MessageCommand(
     defaultResponseLevel: ResponseLevel.hint,
   ),
   (MessageContext context) async {
-    context.acknowledge();
+    await context.acknowledge();
     final message = context.targetMessage;
 
     final weCooEmoji = ReactionBuilder(
@@ -48,20 +48,22 @@ final idCommand = MessageCommand(
         DateTime.fromMillisecondsSinceEpoch(eventUnixTime).toUtc();
 
     getEventId(eventName, eventTime).match(
-      (error) {
+      (error) async {
         GetIt.I.get<logger.Logger>().e(error.message, error: error);
-        context.respond(
+        await context.respond(
           MessageBuilder(
             content: 'Something has gone wrong, please try again',
           ),
         );
       },
-      (id) => context.respond(
-        MessageBuilder(
-          content:
-              'The ID for the event $eventName at <t:${eventUnixTime ~/ 1000}:F> is: $id, message id: ${message.id}',
-        ),
-      ),
+      (id) async {
+        context.respond(
+          MessageBuilder(
+            content:
+                'The ID for the event $eventName at <t:${eventUnixTime ~/ 1000}:F> is: $id, message id: ${message.id}',
+          ),
+        );
+      },
     ).run();
   },
 );

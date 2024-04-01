@@ -58,7 +58,7 @@ final invoice = ChatCommand(
       ).match(
         (error) async {
           GetIt.I.get<logger.Logger>().e(error.message, error: error);
-          context.respond(
+          await context.respond(
             MessageBuilder(
               content: 'Something has gone wrong, please try again',
             ),

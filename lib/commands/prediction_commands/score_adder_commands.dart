@@ -11,7 +11,7 @@ final dotaAdd = ChatCommand(
   id(
     'dotaadd',
     (InteractionChatContext context, Role role) async {
-      context.acknowledge();
+      await context.acknowledge();
       final memberManager = context.guild!.members;
       final memberList = await memberManager.list();
 
@@ -24,7 +24,7 @@ final dotaAdd = ChatCommand(
       }
 
       if (winnerList.isEmpty) {
-        context.respond(
+        await context.respond(
           MessageBuilder(
             content: 'No one was found in that role',
           ),
@@ -35,14 +35,14 @@ final dotaAdd = ChatCommand(
       addScore(winnerList, 'Dota').match(
         (error) async {
           GetIt.I.get<logger.Logger>().e(error.message, error: error);
-          context.respond(
+          await context.respond(
             MessageBuilder(
               content: 'Error while adding the score, please try again',
             ),
           );
         },
-        (_) {
-          context.respond(
+        (_) async {
+          await context.respond(
             MessageBuilder(
               content:
                   'I have added the score for ${winnerList.length} users to the Dota scoreboard',
@@ -59,7 +59,7 @@ final csAdd = ChatCommand(
   id(
     'csadd',
     (InteractionChatContext context, Role role) async {
-      context.acknowledge();
+      await context.acknowledge();
       final memberManager = context.guild!.members;
       final memberList = await memberManager.list();
 
@@ -72,7 +72,7 @@ final csAdd = ChatCommand(
       }
 
       if (winnerList.isEmpty) {
-        context.respond(
+        await context.respond(
           MessageBuilder(
             content: 'No one was found in that role',
           ),
@@ -83,14 +83,14 @@ final csAdd = ChatCommand(
       addScore(winnerList, 'CS').match(
         (error) async {
           GetIt.I.get<logger.Logger>().e(error.message, error: error);
-          context.respond(
+          await context.respond(
             MessageBuilder(
               content: 'Error while adding the score, please try again',
             ),
           );
         },
-        (_) {
-          context.respond(
+        (_) async {
+          await context.respond(
             MessageBuilder(
               content:
                   'I have added the score for ${winnerList.length} users to the CS scoreboard',
@@ -108,7 +108,7 @@ final rlAdd = ChatCommand(
   id(
     'rladd',
     (InteractionChatContext context, Role role) async {
-      context.acknowledge();
+      await context.acknowledge();
       final memberManager = context.guild!.members;
       final memberList = await memberManager.list();
 
@@ -121,7 +121,7 @@ final rlAdd = ChatCommand(
       }
 
       if (winnerList.isEmpty) {
-        context.respond(
+        await context.respond(
           MessageBuilder(
             content: 'No one was found in that role',
           ),
@@ -132,14 +132,14 @@ final rlAdd = ChatCommand(
       addScore(winnerList, 'RL').match(
         (error) async {
           GetIt.I.get<logger.Logger>().e(error.message, error: error);
-          context.respond(
+          await context.respond(
             MessageBuilder(
               content: 'Error while adding the score, please try again',
             ),
           );
         },
-        (_) {
-          context.respond(
+        (_) async {
+          await context.respond(
             MessageBuilder(
               content:
                   'I have added the score for ${winnerList.length} users to the RL scoreboard',

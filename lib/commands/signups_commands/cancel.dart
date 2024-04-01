@@ -66,9 +66,9 @@ final cancel = MessageCommand(
 
       if (confirm) {
         getEventId(eventName, eventTime).flatMap(deleteEvent).match(
-          (error) {
+          (error) async {
             GetIt.I.get<logger.Logger>().e(error.message, error: error);
-            context.respond(
+            await context.respond(
               MessageBuilder(
                 content: 'Something has gone wrong, please try again',
               ),

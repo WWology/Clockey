@@ -94,25 +94,27 @@ final event = ChatCommand(
               : AllowedMentions(parse: []),
         ),
       );
-
-      message.react(
-        ReactionBuilder(
-          name: 'OGpeepoYes',
-          id: Snowflake(730890894814740541),
-        ),
-      );
-
-      context.guild!.scheduledEvents.create(
-        ScheduledEventBuilder(
-          channelId: eventChannelId,
-          name: modalContext['eventName']!,
-          privacyLevel: PrivacyLevel.guildOnly,
-          scheduledStartTime: DateTime.fromMillisecondsSinceEpoch(
-            int.parse(modalContext['eventTime']!) * 1000,
-          ).toUtc(),
-          scheduledEndTime: null,
-          type: scheduledEntityType,
-        ),
+      Future.wait(
+        [
+          message.react(
+            ReactionBuilder(
+              name: 'OGpeepoYes',
+              id: Snowflake(730890894814740541),
+            ),
+          ),
+          context.guild!.scheduledEvents.create(
+            ScheduledEventBuilder(
+              channelId: eventChannelId,
+              name: modalContext['eventName']!,
+              privacyLevel: PrivacyLevel.guildOnly,
+              scheduledStartTime: DateTime.fromMillisecondsSinceEpoch(
+                int.parse(modalContext['eventTime']!) * 1000,
+              ).toUtc(),
+              scheduledEndTime: null,
+              type: scheduledEntityType,
+            ),
+          ),
+        ],
       );
     },
   ),

@@ -17,7 +17,7 @@ final showDota = ChatCommand(
   'dota',
   'Show Dota 2 Scoreboard',
   id('dota', (InteractionChatContext context) async {
-    context.acknowledge(
+    await context.acknowledge(
       level: ResponseLevel(
         hideInteraction: false,
         isDm: false,
@@ -29,7 +29,7 @@ final showDota = ChatCommand(
     getScores('dota_scoreboard').match(
       (error) async {
         GetIt.I.get<logger.Logger>().e(error.message, error: error);
-        context.respond(
+        await context.respond(
           MessageBuilder(
             content: 'Something wrong has occurred, please try again',
           ),
@@ -69,7 +69,7 @@ final showCS = ChatCommand(
     InteractionChatContext context, [
     @Name('user') User? user,
   ]) async {
-    context.acknowledge(
+    await context.acknowledge(
       level: ResponseLevel(
         hideInteraction: false,
         isDm: false,
@@ -81,7 +81,7 @@ final showCS = ChatCommand(
     getScores('cs_scoreboard').match(
       (error) async {
         GetIt.I.get<logger.Logger>().e(error.message, error: error);
-        context.respond(
+        await context.respond(
           MessageBuilder(
             content: 'Something wrong has occurred, please try again',
           ),
@@ -123,7 +123,7 @@ final showRL = ChatCommand(
       InteractionChatContext context, [
       @Name('user') User? user,
     ]) async {
-      context.acknowledge(
+      await context.acknowledge(
         level: ResponseLevel(
           hideInteraction: false,
           isDm: false,
@@ -135,7 +135,7 @@ final showRL = ChatCommand(
       getScores('rl_scoreboard').match(
         (error) async {
           GetIt.I.get<logger.Logger>().e(error.message, error: error);
-          context.respond(
+          await context.respond(
             MessageBuilder(
               content: 'Something wrong has occurred, please try again',
             ),

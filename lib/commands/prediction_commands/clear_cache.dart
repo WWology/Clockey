@@ -8,12 +8,12 @@ final clearCache = ChatCommand(
   id(
     'clear_cache',
     (InteractionChatContext context) async {
-      context.acknowledge();
+      await context.acknowledge();
       var dotaBox = Hive.box<int>('dotaBox');
       var csBox = Hive.box<int>('csBox');
       var rlBox = Hive.box<int>('rlBox');
       await (dotaBox.clear(), csBox.clear(), rlBox.clear()).wait;
-      context.respond(
+      await context.respond(
         MessageBuilder(
           content: 'Cleared the cache for all prediction roles',
         ),

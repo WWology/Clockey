@@ -26,7 +26,7 @@ void run() async {
 
   final client = await Nyxx.connectGateway(
     Env.clockeyToken,
-    GatewayIntents.allUnprivileged,
+    GatewayIntents.all,
     options: GatewayClientOptions(plugins: [
       logging,
       cliIntegration,
