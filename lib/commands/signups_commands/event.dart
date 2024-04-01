@@ -26,6 +26,7 @@ final event = ChatCommand(
       String replyMessage = 'Hey <@&720253636797530203>\n\nI need up to ';
       final num numberOfGardeners, hours;
       late final Snowflake? eventChannelId;
+      late final ScheduledEntityType scheduledEntityType;
 
       await context.interaction.respondModal(_eventModal(eventType));
       final modalContext = await context.awaitModal('eventModal',
@@ -35,21 +36,25 @@ final event = ChatCommand(
           numberOfGardeners = 1;
           hours = _getHours(modalContext['eventSeriesLength']!);
           eventChannelId = Snowflake(738009797932351519);
+          scheduledEntityType = ScheduledEntityType.voice;
           break;
         case EventType.CS:
           numberOfGardeners = 1;
           hours = _getHours(modalContext['eventSeriesLength']!);
           eventChannelId = Snowflake(746618267434614804);
+          scheduledEntityType = ScheduledEntityType.voice;
           break;
         case EventType.RL:
           numberOfGardeners = 1;
           hours = _getRlHours(modalContext['eventSeriesLength']!);
           eventChannelId = Snowflake(1194677990290894989);
+          scheduledEntityType = ScheduledEntityType.voice;
           break;
         case EventType.Other:
           numberOfGardeners = int.parse(modalContext['numberOfGardeners']!);
           hours = num.parse(modalContext['hours']!);
-          eventChannelId = null;
+          eventChannelId = Snowflake(1186593338300842025);
+          scheduledEntityType = ScheduledEntityType.stageInstance;
           break;
         case EventType.Unknown:
           await modalContext.respond(
@@ -106,7 +111,7 @@ final event = ChatCommand(
             int.parse(modalContext['eventTime']!) * 1000,
           ).toUtc(),
           scheduledEndTime: null,
-          type: ScheduledEntityType.voice,
+          type: scheduledEntityType,
         ),
       );
     },

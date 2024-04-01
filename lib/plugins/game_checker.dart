@@ -46,15 +46,20 @@ void checkForDotaMatch(
     // Check for conditions before posting
     if (!dotaMatch.alreadyPosted &&
         dotaMatch.time.difference(currentTime).inHours <= 1) {
-      final embed = _gameEmbed(dotaMatch, 'Dota');
+      try {
+        final embed = _gameEmbed(dotaMatch, 'Dota');
 
-      await (client.channels[Snowflake(1218158154206937200)]
-              as PartialTextChannel)
-          .sendMessage(MessageBuilder(embeds: [embed]));
+        await (client.channels[Snowflake(1218158154206937200)]
+                as PartialTextChannel)
+            .sendMessage(MessageBuilder(embeds: [embed]));
 
-      dotaMatch.alreadyPosted = true;
-      await dotaMatch.save();
-      return;
+        dotaMatch.alreadyPosted = true;
+        await dotaMatch.save();
+        return;
+      } catch (error) {
+        GetIt.I.get<logger.Logger>().e(error);
+        return;
+      }
     } else if (currentTime.isAfter(dotaMatch.expiryTime)) {
       gameBox.delete('Dota');
       return;
@@ -104,6 +109,7 @@ void checkForDotaMatch(
           }
           ''',
         );
+
         if (specialUrl != null) {
           late final String streamUrl;
           final split = specialUrl.split('/');
@@ -147,15 +153,20 @@ void checkForCSMatch(
     // Check for conditions before posting
     if (!csMatch.alreadyPosted &&
         csMatch.time.difference(currentTime).inHours <= 1) {
-      final embed = _gameEmbed(csMatch, 'CS');
+      try {
+        final embed = _gameEmbed(csMatch, 'CS');
 
-      await (client.channels[Snowflake(1218158154206937200)]
-              as PartialTextChannel)
-          .sendMessage(MessageBuilder(embeds: [embed]));
+        await (client.channels[Snowflake(1218158154206937200)]
+                as PartialTextChannel)
+            .sendMessage(MessageBuilder(embeds: [embed]));
 
-      csMatch.alreadyPosted = true;
-      await csMatch.save();
-      return;
+        csMatch.alreadyPosted = true;
+        await csMatch.save();
+        return;
+      } catch (error) {
+        GetIt.I.get<logger.Logger>().e(error);
+        return;
+      }
     } else if (currentTime.isAfter(csMatch.expiryTime)) {
       gameBox.delete('CS');
       return;
@@ -248,15 +259,19 @@ void checkForRLMatch(
     // Check for conditions before posting
     if (!rlMatch.alreadyPosted &&
         rlMatch.time.difference(currentTime).inHours <= 1) {
-      final embed = _gameEmbed(rlMatch, 'RL');
+      try {
+        final embed = _gameEmbed(rlMatch, 'RL');
 
-      await (client.channels[Snowflake(1218158154206937200)]
-              as PartialTextChannel)
-          .sendMessage(MessageBuilder(embeds: [embed]));
+        await (client.channels[Snowflake(1218158154206937200)]
+                as PartialTextChannel)
+            .sendMessage(MessageBuilder(embeds: [embed]));
 
-      rlMatch.alreadyPosted = true;
-      await rlMatch.save();
-      return;
+        rlMatch.alreadyPosted = true;
+        await rlMatch.save();
+        return;
+      } catch (error) {
+        GetIt.I.get<logger.Logger>().e(error);
+      }
     } else if (currentTime.isAfter(rlMatch.expiryTime)) {
       gameBox.delete('RL');
       return;
