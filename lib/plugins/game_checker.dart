@@ -126,7 +126,7 @@ void checkForDotaMatch(
             name: 'OG vs $opponent',
             time: gameTime,
             streamUrl: streamUrl,
-            expiryTime: gameTime.add(Duration(hours: 6)),
+            expiryTime: gameTime.add(Duration(hours: 4)),
           );
           gameBox.put('Dota', game);
           await page.close();
@@ -232,7 +232,7 @@ void checkForCSMatch(
             name: 'OG vs $opponent',
             time: gameTime,
             streamUrl: streamUrl,
-            expiryTime: gameTime.add(Duration(hours: 6)),
+            expiryTime: gameTime.add(Duration(hours: 4)),
           );
           gameBox.put('CS', game);
           await page.close();

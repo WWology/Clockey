@@ -47,7 +47,6 @@ final nextDota = ChatCommand(
           }
           ''',
         );
-        await page.close();
 
         if (opponent != null &&
             matchTimeUnix != 'error' &&
@@ -132,7 +131,6 @@ final nextCS = ChatCommand(
           }
           ''',
         );
-        await page.close();
 
         if (opponent != null &&
             matchTimeUnix != 'error' &&
@@ -157,12 +155,12 @@ final nextCS = ChatCommand(
         } else {
           await context.respond(
             MessageBuilder(
-              content:
-                  'OG vs $opponent - <t:$matchTimeUnix:F> in your local timezone - '
-                  'For more information use /next dota in <#$botSpamChannelId>',
+              content: 'No games planned currently - '
+                  'For more information use /next cs in <#$botSpamChannelId>',
             ),
           );
         }
+        await page.close();
       } catch (error) {
         GetIt.I.get<logger.Logger>().e(error);
         if (inBotChannels) {
@@ -218,7 +216,6 @@ final nextRL = ChatCommand(
           }
           ''',
         );
-        await page.close();
 
         if (opponent != null &&
             matchTimeUnix != 'error' &&
@@ -243,9 +240,8 @@ final nextRL = ChatCommand(
         } else {
           await context.respond(
             MessageBuilder(
-              content:
-                  'OG vs $opponent - <t:$matchTimeUnix:F> in your local timezone - '
-                  'For more information use /next dota in <#$botSpamChannelId>',
+              content: 'No games planned currently - '
+                  'For more information use /next rl in <#$botSpamChannelId>',
             ),
           );
         }
