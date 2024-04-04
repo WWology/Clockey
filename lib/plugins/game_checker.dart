@@ -10,15 +10,25 @@ import '../constants.dart';
 import '../data/game/game.dart';
 
 class GameChecker extends NyxxPlugin<NyxxGateway> {
-  late final Timer timer;
+  late final Timer dotaTimer, csTimer, rlTimer;
 
   @override
   void afterConnect(NyxxGateway client) async {
     super.afterConnect(client);
 
-    timer = Timer.periodic(const Duration(minutes: 15), (timer) {
+    dotaTimer = Timer.periodic(const Duration(minutes: 15), (timer) {
       checkForDotaMatch(client);
+    });
+
+    await Future.delayed(const Duration(minutes: 5));
+
+    csTimer = Timer.periodic(const Duration(minutes: 15), (timer) {
       checkForCSMatch(client);
+    });
+
+    await Future.delayed(const Duration(minutes: 5));
+
+    rlTimer = Timer.periodic(const Duration(minutes: 15), (timer) {
       checkForRLMatch(client);
     });
   }
@@ -29,7 +39,9 @@ class GameChecker extends NyxxPlugin<NyxxGateway> {
 
     var gameBox = Hive.box<Game>('gameBox');
     await gameBox.clear();
-    timer.cancel();
+    dotaTimer.cancel();
+    csTimer.cancel();
+    rlTimer.cancel();
   }
 }
 
