@@ -44,7 +44,7 @@ final showDota = ChatCommand(
 
         await context.respond(
           await pagination.builders(
-            await _paginatedScoreBuilder(scores, memberManager, 'RL'),
+            await _paginatedScoreBuilder(scores, memberManager, 'Dota'),
             options: PaginationOptions(
               nextEmoji: nextEmoji,
               nextStyle: ButtonStyle.primary,
@@ -53,7 +53,7 @@ final showDota = ChatCommand(
               previousStyle: ButtonStyle.primary,
               previousLabel: '',
               showJumpToEnds: false,
-              showPageIndex: false,
+              showPageIndex: true,
             ),
           ),
         );
@@ -105,7 +105,7 @@ final showCS = ChatCommand(
               previousStyle: ButtonStyle.primary,
               previousLabel: '',
               showJumpToEnds: false,
-              showPageIndex: false,
+              showPageIndex: true,
             ),
           ),
         );
@@ -198,6 +198,12 @@ EmbedBuilder _scoreEmbed(
           'https://liquipedia.net/commons/images/thumb/7/70/OG_RB_allmode.png/1200px-OG_RB_allmode.png',
         ),
       ),
+      thumbnail: EmbedThumbnailBuilder(
+        url: Uri.parse(
+          'https://liquipedia.net/commons/images/thumb'
+          '/7/70/OG_RB_allmode.png/1200px-OG_RB_allmode.png',
+        ),
+      ),
       fields: [
         EmbedFieldBuilder(
           name: '',
@@ -249,7 +255,6 @@ Future<String> _scoreboard(
   return tabular(
     scoreboard,
     style: Style.markdown,
-    border: Border.vertical,
     align: {'Name': Side.center},
   );
 }

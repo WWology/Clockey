@@ -13,39 +13,44 @@ import 'env.dart';
 import 'plugins/game_checker.dart';
 
 void run() async {
-  GetIt.I.registerSingleton<SupabaseClient>(
-      SupabaseClient(Env.supabaseUrl, Env.supabaseApiKey));
-  GetIt.I.registerSingleton<logger.Logger>(logger.Logger());
-  final browser = await puppeteer.launch();
-  GetIt.I.registerSingleton<Browser>(browser);
-  final commands = registerCommand();
-  Hive
-    ..init('./hive_boxes')
-    ..registerAdapter(GameAdapter());
-  await openHiveBoxes();
+  try {
+    GetIt.I.registerSingleton<SupabaseClient>(
+        SupabaseClient(Env.supabaseUrl, Env.supabaseApiKey));
+    GetIt.I.registerSingleton<logger.Logger>(logger.Logger());
+    final browser = await puppeteer.launch();
+    GetIt.I.registerSingleton<Browser>(browser);
+    final commands = registerCommand();
+    Hive
+      ..init('./hive_boxes')
+      ..registerAdapter(GameAdapter());
+    await openHiveBoxes();
 
-  final client = await Nyxx.connectGateway(
-    Env.clockeyToken,
-    GatewayIntents.allPrivileged,
-    options: GatewayClientOptions(plugins: [
-      logging,
-      cliIntegration,
-      commands,
-      pagination,
-      GameChecker(),
-    ]),
-  );
-
-  client.onReady.listen((event) async {
-    print('Clockey Ready ⏰');
-  });
-
-  pagination.onDisallowedUse.listen((event) async {
-    await event.interaction.respond(
-      MessageBuilder(content: "Only user of the command can use the buttons"),
-      isEphemeral: true,
+    final client = await Nyxx.connectGateway(
+      Env.clockeyToken,
+      GatewayIntents.allPrivileged,
+      options: GatewayClientOptions(plugins: [
+        logging,
+        cliIntegration,
+        commands,
+        pagination,
+        ignoreExceptions,
+        GameChecker(),
+      ]),
     );
-  });
+
+    client.onReady.listen((event) async {
+      print('Clockey Ready ⏰');
+    });
+
+    pagination.onDisallowedUse.listen((event) async {
+      await event.interaction.respond(
+        MessageBuilder(content: "Only user of the command can use the buttons"),
+        isEphemeral: true,
+      );
+    });
+  } catch (error) {
+    GetIt.I.get<logger.Logger>().e(error);
+  }
 }
 
 CommandsPlugin registerCommand() {

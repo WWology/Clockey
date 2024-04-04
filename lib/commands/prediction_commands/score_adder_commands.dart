@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart' as logger;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
+import 'package:nyxx_extensions/nyxx_extensions.dart';
 
 import '../../data/scoreboard/add_score.dart';
 
@@ -13,11 +14,11 @@ final dotaAdd = ChatCommand(
     (InteractionChatContext context, Role role) async {
       await context.acknowledge();
       final memberManager = context.guild!.members;
-      final memberList = await memberManager.list();
+      final members = memberManager.stream(pageSize: 1000);
 
       final List<int> winnerList = [];
 
-      for (final member in memberList) {
+      await for (final member in members) {
         if (member.roleIds.contains(role.id)) {
           winnerList.add(member.id.value);
         }
@@ -61,11 +62,11 @@ final csAdd = ChatCommand(
     (InteractionChatContext context, Role role) async {
       await context.acknowledge();
       final memberManager = context.guild!.members;
-      final memberList = await memberManager.list();
+      final members = memberManager.stream(pageSize: 1000);
 
       final List<int> winnerList = [];
 
-      for (final member in memberList) {
+      await for (final member in members) {
         if (member.roleIds.contains(role.id)) {
           winnerList.add(member.id.value);
         }
@@ -110,11 +111,11 @@ final rlAdd = ChatCommand(
     (InteractionChatContext context, Role role) async {
       await context.acknowledge();
       final memberManager = context.guild!.members;
-      final memberList = await memberManager.list();
+      final members = memberManager.stream(pageSize: 1000);
 
       final List<int> winnerList = [];
 
-      for (final member in memberList) {
+      await for (final member in members) {
         if (member.roleIds.contains(role.id)) {
           winnerList.add(member.id.value);
         }
