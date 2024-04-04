@@ -33,7 +33,6 @@ void run() async {
         cliIntegration,
         commands,
         pagination,
-        ignoreExceptions,
         GameChecker(),
       ]),
     );
