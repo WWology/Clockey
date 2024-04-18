@@ -1,9 +1,5 @@
-import 'package:get_it/get_it.dart';
-import 'package:logger/logger.dart' as logger;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-
-import '../../data/events/update_event.dart';
 
 final editGroup = ChatGroup(
   'edit',
@@ -24,7 +20,6 @@ final editNameCommand = ChatCommand(
     @Description('Message ID for the event')
     @Name('message_id')
     String messageId,
-    @Description('ID of the event to be edited') @Name('event_id') int eventId,
     @Description('The new name of the event') @Name('new_name') String newName,
   ) async {
     await context.acknowledge();
@@ -60,9 +55,6 @@ final editTimeCommand = ChatCommand(
       @Description('Message ID for the event')
       @Name('message_id')
       String messageId,
-      @Description('ID of the event to be edited')
-      @Name('event_id')
-      int eventId,
       @Description('The new time of this event')
       @Name('new_time')
       String newTimeStamp,
@@ -79,9 +71,6 @@ final editTimeCommand = ChatCommand(
       );
 
       final newUnixTime = int.parse(newTimeStamp);
-
-      final newTime =
-          DateTime.fromMillisecondsSinceEpoch(newUnixTime * 1000).toUtc();
 
       final newMessage =
           message.content.replaceAll('$oldUnixTime', '$newUnixTime');
@@ -110,8 +99,9 @@ final editHoursCommand = ChatCommand(
     @Description('Message ID for the event')
     @Name('message_id')
     String messageId,
-    @Description('ID of the event to be edited') @Name('event_id') int eventId,
-    @Description('The new time of this event') @Name('new_hours') num newHours,
+    @Description('The new duration of this event')
+    @Name('new_hours')
+    num newHours,
   ) async {
     await context.acknowledge();
     final message =
@@ -131,7 +121,7 @@ final editHoursCommand = ChatCommand(
       context.respond(
         MessageBuilder(
           content:
-              'Successfully changed event $eventId amount of hours from $oldHours to $newHours',
+              'Successfully changed event amount of hours from $oldHours to $newHours',
         ),
       ),
     ]);
