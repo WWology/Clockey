@@ -17,7 +17,7 @@ void run() async {
     GetIt.I.registerSingleton<SupabaseClient>(
         SupabaseClient(Env.supabaseUrl, Env.supabaseApiKey));
     GetIt.I.registerSingleton<logger.Logger>(logger.Logger());
-    final browser = await puppeteer.launch();
+    final browser = await puppeteer.launch(headless: true);
     GetIt.I.registerSingleton<Browser>(browser);
     final commands = registerCommand();
     Hive
@@ -33,7 +33,7 @@ void run() async {
         cliIntegration,
         commands,
         pagination,
-        // GameChecker(),
+        GameChecker(),
       ]),
     );
 
