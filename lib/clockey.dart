@@ -10,7 +10,6 @@ import 'package:supabase/supabase.dart';
 import 'commands/commands.dart';
 import 'data/game/game.dart';
 import 'env.dart';
-import 'plugins/game_checker.dart';
 
 void run() async {
   try {
@@ -33,7 +32,7 @@ void run() async {
         cliIntegration,
         commands,
         pagination,
-        GameChecker(),
+        // GameChecker(),
       ]),
     );
 
