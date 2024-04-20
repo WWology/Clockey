@@ -24,6 +24,7 @@ final event = ChatCommand(
       bool shouldPing = true,
     ]) async {
       String replyMessage = 'Hey <@&720253636797530203>\n\nI need up to ';
+      late final String name;
       final num numberOfGardeners, hours;
       late final Snowflake? eventChannelId;
       late final ScheduledEntityType scheduledEntityType;
@@ -33,24 +34,28 @@ final event = ChatCommand(
           timeout: Duration(seconds: 120));
       switch (EventType.getEventType(eventType)) {
         case EventType.Dota:
+          name = 'Dota - ${modalContext['eventName']!}';
           numberOfGardeners = 1;
           hours = _getHours(modalContext['eventSeriesLength']!);
           eventChannelId = Snowflake(738009797932351519);
           scheduledEntityType = ScheduledEntityType.voice;
           break;
         case EventType.CS:
+          name = 'CS - ${modalContext['eventName']!}';
           numberOfGardeners = 1;
           hours = _getHours(modalContext['eventSeriesLength']!);
           eventChannelId = Snowflake(746618267434614804);
           scheduledEntityType = ScheduledEntityType.voice;
           break;
         case EventType.RL:
+          name = 'Rocket League - ${modalContext['eventName']!}';
           numberOfGardeners = 1;
           hours = _getRlHours(modalContext['eventSeriesLength']!);
           eventChannelId = Snowflake(1194677990290894989);
           scheduledEntityType = ScheduledEntityType.voice;
           break;
         case EventType.Other:
+          name = modalContext['eventName']!;
           numberOfGardeners = int.parse(modalContext['numberOfGardeners']!);
           hours = num.parse(modalContext['hours']!);
           eventChannelId = Snowflake(1186593338300842025);
@@ -105,7 +110,7 @@ final event = ChatCommand(
           context.guild!.scheduledEvents.create(
             ScheduledEventBuilder(
               channelId: eventChannelId,
-              name: modalContext['eventName']!,
+              name: name,
               privacyLevel: PrivacyLevel.guildOnly,
               scheduledStartTime: DateTime.fromMillisecondsSinceEpoch(
                 int.parse(modalContext['eventTime']!) * 1000,
