@@ -13,6 +13,7 @@ final dotaAdd = ChatCommand(
     'dotaadd',
     (InteractionChatContext context, Role role) async {
       await context.acknowledge();
+
       final memberManager = context.guild!.members;
       final members = memberManager.stream(pageSize: 1000);
 
@@ -61,6 +62,7 @@ final csAdd = ChatCommand(
     'csadd',
     (InteractionChatContext context, Role role) async {
       await context.acknowledge();
+
       final memberManager = context.guild!.members;
       final members = memberManager.stream(pageSize: 1000);
 
@@ -110,6 +112,7 @@ final rlAdd = ChatCommand(
     'rladd',
     (InteractionChatContext context, Role role) async {
       await context.acknowledge();
+
       final memberManager = context.guild!.members;
       final members = memberManager.stream(pageSize: 1000);
 

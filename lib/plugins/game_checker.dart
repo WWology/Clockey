@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart' as logger;
 import 'package:nyxx/nyxx.dart';
-import 'package:puppeteer/puppeteer.dart';
 
 import '../constants.dart';
 import '../data/game/game.dart';
@@ -79,73 +78,8 @@ void checkForDotaMatch(
       return;
     }
   } else {
-    const String ogDotaUrl = 'https://liquipedia.net/dota2/OG';
-    final browser = GetIt.I.get<Browser>();
-    final page = await browser.newPage();
-
     try {
-      // Navigate to OG's Dota page
-      await page.goto(ogDotaUrl, wait: Until.networkIdle);
-
-      final opponent = await page.$eval<String>(
-        '.team-template-team-short',
-        /* js */
-        '''
-        function (matchTable) {
-          return matchTable.lastElementChild.innerText;
-        }
-        ''',
-      );
-
-      final gameTimeUnix = await page.$eval<String>(
-        '.timer-object-countdown-only',
-        /* js */
-        '''
-        function (matchTime) {
-          return matchTime.getAttribute('data-timestamp');
-        }
-        ''',
-      );
-
-      if (opponent != null && gameTimeUnix != 'error' && gameTimeUnix != null) {
-        final gameTime =
-            DateTime.fromMillisecondsSinceEpoch(int.parse(gameTimeUnix) * 1000)
-                .toUtc();
-
-        final specialUrl = await page.$eval<String>(
-          '.timer-object-countdown',
-          /* js */
-          '''
-          function (matchUrl) {
-            return matchUrl.firstElementChild.nextElementSibling.getAttribute('href');
-          }
-          ''',
-        );
-
-        if (specialUrl != null) {
-          late final String streamUrl;
-          final split = specialUrl.split('/');
-          final platform = split.reversed.toList()[1];
-          final channel = split.last;
-
-          if (platform == 'twitch') {
-            streamUrl = 'https://www.twitch.tv/$channel';
-          } else {
-            streamUrl = 'https://www.youtube.com/$channel';
-          }
-
-          final game = Game(
-            name: 'OG vs $opponent',
-            time: gameTime,
-            streamUrl: streamUrl,
-            expiryTime: gameTime.add(Duration(hours: 4)),
-          );
-          gameBox.put('Dota', game);
-          await page.close();
-        } else {
-          GetIt.I.get<logger.Logger>().i('No streams found');
-        }
-      }
+      // Todo, implement Liquipedia's api
     } catch (error) {
       GetIt.I.get<logger.Logger>().e(error);
     }
@@ -186,72 +120,8 @@ void checkForCSMatch(
       return;
     }
   } else {
-    const String ogCSUrl = 'https://liquipedia.net/counterstrike/OG';
-    final browser = GetIt.I.get<Browser>();
-    final page = await browser.newPage();
-
     try {
-      // Navigate to OG's CS page
-      await page.goto(ogCSUrl, wait: Until.networkIdle);
-
-      final opponent = await page.$eval<String>(
-        '.team-template-team-short',
-        /* js */
-        '''
-        function (matchTable) {
-          return matchTable.lastElementChild.innerText;
-        }
-        ''',
-      );
-
-      final gameTimeUnix = await page.$eval<String>(
-        '.timer-object-countdown-only',
-        /* js */
-        '''
-        function (matchTime) {
-          return matchTime.getAttribute('data-timestamp');
-        }
-        ''',
-      );
-
-      if (opponent != null && gameTimeUnix != 'error' && gameTimeUnix != null) {
-        final gameTime =
-            DateTime.fromMillisecondsSinceEpoch(int.parse(gameTimeUnix) * 1000)
-                .toUtc();
-
-        final specialUrl = await page.$eval<String>(
-          '.timer-object-countdown',
-          /* js */
-          '''
-          function (matchUrl) {
-            return matchUrl.firstElementChild.nextElementSibling.getAttribute('href');
-          }
-          ''',
-        );
-        if (specialUrl != null) {
-          late final String streamUrl;
-          final split = specialUrl.split('/');
-          final platform = split.reversed.toList()[1];
-          final channel = split.last;
-
-          if (platform == 'twitch') {
-            streamUrl = 'https://www.twitch.tv/$channel';
-          } else {
-            streamUrl = 'https://www.youtube.com/$channel';
-          }
-
-          final game = Game(
-            name: 'OG vs $opponent',
-            time: gameTime,
-            streamUrl: streamUrl,
-            expiryTime: gameTime.add(Duration(hours: 4)),
-          );
-          gameBox.put('CS', game);
-          await page.close();
-        } else {
-          GetIt.I.get<logger.Logger>().i('No streams found');
-        }
-      }
+      // Todo Implement Liquipedia's API
     } catch (error) {
       GetIt.I.get<logger.Logger>().e(error);
     }
@@ -291,72 +161,8 @@ void checkForRLMatch(
       return;
     }
   } else {
-    const String ogRLUrl = 'https://liquipedia.net/rocketleague/OG';
-    final browser = GetIt.I.get<Browser>();
-    final page = await browser.newPage();
-
     try {
-      // Navigate to OG's RL page
-      await page.goto(ogRLUrl, wait: Until.networkIdle);
-
-      final opponent = await page.$eval<String>(
-        '.team-template-team-short',
-        /* js */
-        '''
-        function (matchTable) {
-          return matchTable.lastElementChild.innerText;
-        }
-        ''',
-      );
-
-      final gameTimeUnix = await page.$eval<String>(
-        '.timer-object-countdown-only',
-        /* js */
-        '''
-        function (matchTime) {
-          return matchTime.getAttribute('data-timestamp');
-        }
-        ''',
-      );
-
-      if (opponent != null && gameTimeUnix != 'error' && gameTimeUnix != null) {
-        final gameTime =
-            DateTime.fromMillisecondsSinceEpoch(int.parse(gameTimeUnix) * 1000)
-                .toUtc();
-
-        final specialUrl = await page.$eval<String>(
-          '.timer-object-countdown',
-          /* js */
-          '''
-          function (matchUrl) {
-            return matchUrl.firstElementChild.nextElementSibling.getAttribute('href');
-          }
-          ''',
-        );
-        if (specialUrl != null) {
-          late final String streamUrl;
-          final split = specialUrl.split('/');
-          final platform = split.reversed.toList()[1];
-          final channel = split.last;
-
-          if (platform == 'twitch') {
-            streamUrl = 'https://www.twitch.tv/$channel';
-          } else {
-            streamUrl = 'https://www.youtube.com/$channel';
-          }
-
-          final game = Game(
-            name: 'OG vs $opponent',
-            time: gameTime,
-            streamUrl: streamUrl,
-            expiryTime: gameTime.add(Duration(hours: 1)),
-          );
-          gameBox.put('RL', game);
-          await page.close();
-        } else {
-          GetIt.I.get<logger.Logger>().i('No streams found');
-        }
-      }
+      // Todo Implement Liquipedia's API
     } catch (error) {
       GetIt.I.get<logger.Logger>().e(error);
     }
