@@ -23,10 +23,3 @@ int mapGardenerToId(String gardener) {
       return 0;
   }
 }
-
-const int botSpamChannelId = 721391448812945480;
-const int botStuffChannelId = 720994728937521193;
-
-const String ogDotaUrl = 'https://liquipedia.net/dota2/OG';
-const String ogCSUrl = 'https://liquipedia.net/counterstrike/OG';
-const String ogRLUrl = 'https://liquipedia.net/rocketleague/OG';
