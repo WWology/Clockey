@@ -33,7 +33,7 @@ TaskEither<EditEventError, Event> removeGardener(
         final supabase = GetIt.I.get<SupabaseClient>();
 
         final event = await supabase
-            .rpc('add_gardener', params: {
+            .rpc('remove_gardener', params: {
               'event_id': eventId,
               'gardener_id': gardenerId,
             })
