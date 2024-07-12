@@ -4,7 +4,6 @@ const Map<String, String> gardenerMap = {
   'WW': 'WW',
   'Bonteng': 'Bonteng',
   'Sam': 'Sam',
-  'Nin': 'Nin',
 };
 
 int mapGardenerToId(String gardener) {
