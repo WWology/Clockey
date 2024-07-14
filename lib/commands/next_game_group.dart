@@ -78,7 +78,7 @@ final nextRL = ChatCommand(
             (a, b) => a.scheduledStartTime.compareTo(b.scheduledStartTime));
 
         final event = eventList.firstWhere(
-          (event) => event.name.contains("RL"),
+          (event) => event.name.contains("Rocket League"),
           orElse: () => throw StateError("No RL event"),
         );
 
