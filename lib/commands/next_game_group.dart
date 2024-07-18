@@ -1,3 +1,5 @@
+import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart' as logger;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 
@@ -27,9 +29,14 @@ final nextDota = ChatCommand(
         await context.respond(MessageBuilder(
             content:
                 'https://discord.com/events/689865753662455829/${event.id}'));
-      } catch (error) {
+      } on StateError {
         await context.respond(MessageBuilder(
           content: "No dota games planned currently",
+        ));
+      } catch (error) {
+        GetIt.I.get<logger.Logger>().e("next dota error: ", error: error);
+        await context.respond(MessageBuilder(
+          content: "Something wrong has happened, please try again",
         ));
       }
     },
@@ -53,13 +60,22 @@ final nextCS = ChatCommand(
           orElse: () => throw StateError("No CS event"),
         );
 
-        await context.respond(MessageBuilder(
-            content:
-                'https://discord.com/events/689865753662455829/${event.id}'));
+        await context.respond(
+          MessageBuilder(
+              content:
+                  'https://discord.com/events/689865753662455829/${event.id}'),
+          level: ResponseLevel.hint,
+        );
+      } on StateError {
+        await context
+            .respond(MessageBuilder(content: "No CS games planned currently"));
       } catch (error) {
-        await context.respond(MessageBuilder(
-          content: "No CS games planned currently",
-        ));
+        GetIt.I.get<logger.Logger>().e("next cs error: ", error: error);
+        await context.respond(
+          MessageBuilder(
+            content: "Something wrong has happened, please try again",
+          ),
+        );
       }
     },
   ),
@@ -85,10 +101,16 @@ final nextRL = ChatCommand(
         await context.respond(MessageBuilder(
             content:
                 'https://discord.com/events/689865753662455829/${event.id}'));
+      } on StateError {
+        await context
+            .respond(MessageBuilder(content: "No RL games planned currently"));
       } catch (error) {
-        await context.respond(MessageBuilder(
-          content: "No RL games planned currently",
-        ));
+        GetIt.I.get<logger.Logger>().e("next cs error: ", error: error);
+        await context.respond(
+          MessageBuilder(
+            content: "Something wrong has happened, please try again",
+          ),
+        );
       }
     },
   ),
