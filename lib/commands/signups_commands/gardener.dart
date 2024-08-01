@@ -26,6 +26,11 @@ import '../../data/events/events.dart';
 //   );
 // }
 
+final _weCooEmoji = ReactionBuilder(
+  name: 'OGwecoo',
+  id: Snowflake(787697278190223370),
+);
+
 SelectMenuBuilder _gardenerSelectMenu(
   List<int> ids,
   ComponentId gardenerSelectMenuId,
@@ -142,14 +147,9 @@ final gardener = MessageCommand(
     final message = context.targetMessage;
     final user = context.user;
 
-    final weCooEmoji = ReactionBuilder(
-      name: 'OGwecoo',
-      id: Snowflake(787697278190223370),
-    );
-
     // Check if message has already been processed
     final weCooReactions =
-        await message.manager.fetchReactions(message.id, weCooEmoji);
+        await message.manager.fetchReactions(message.id, _weCooEmoji);
 
     if (weCooReactions.isNotEmpty) {
       await context.respond(
@@ -210,6 +210,7 @@ final gardener = MessageCommand(
     if (gardenersWorking.isEmpty) {
       await context.respond(
         MessageBuilder(content: 'An invalid choice has been made'),
+        level: ResponseLevel.hint,
       );
       return;
     }
@@ -261,7 +262,7 @@ final gardener = MessageCommand(
                 ),
                 level: ResponseLevel.public,
               ),
-              message.react(weCooEmoji),
+              message.react(_weCooEmoji),
             ]);
           },
         ).run();

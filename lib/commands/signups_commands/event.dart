@@ -121,8 +121,8 @@ final event = ChatCommand(
           eventChannelId = Snowflake(746618267434614804);
           scheduledEntityType = ScheduledEntityType.voice;
           break;
-        case "Rocket League":
-          name = 'Rocket League - ${modalContext['eventName']!}';
+        case "RL":
+          name = 'RL - ${modalContext['eventName']!}';
           hours = "1";
           eventChannelId = Snowflake(1194677990290894989);
           scheduledEntityType = ScheduledEntityType.voice;
