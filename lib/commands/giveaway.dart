@@ -17,24 +17,26 @@ final giveaway = MessageCommand(
         timeout: Duration(seconds: 30),
       );
 
+      await modalContext.acknowledge();
       final numberOfWinners = int.parse(modalContext['numberOfWinnersInput']!);
 
-      //   List<User> peopleReacted = [];
-      //   final reactions = message.reactions;
-      //   for (final reaction in reactions) {
-      //     final emoji = await reaction.emoji.get();
-      //     final users = await message.manager
-      //         .fetchReactions(message.id, ReactionBuilder.fromEmoji(emoji));
-      //     peopleReacted.addAll(users);
-      //   }
+      List<User> peopleReacted = [];
+      final reactions = message.reactions;
+      for (final reaction in reactions) {
+        if (reaction.emoji is TextEmoji) {
+          final users = await message.manager.fetchReactions(message.id,
+              ReactionBuilder.fromEmoji(reaction.emoji as TextEmoji));
+          peopleReacted.addAll(users);
+        } else {
+          final users = await message.manager.fetchReactions(
+            message.id,
+            ReactionBuilder(name: 'emoji', id: reaction.emoji.id),
+            limit: 100,
+          );
+          peopleReacted.addAll(users);
+        }
+      }
 
-      final peopleReacted = await message.manager.fetchReactions(
-        message.id,
-        ReactionBuilder(
-          name: 'OGpeepoYes',
-          id: Snowflake(730890894814740541),
-        ),
-      );
       final ids = peopleReacted.map((user) => user.id.value).toList();
 
       // Remove the bots id from the potential gardener list
@@ -43,7 +45,7 @@ final giveaway = MessageCommand(
       }
 
       ids.shuffle();
-      final winners = ids.take(numberOfWinners);
+      final winners = ids.toSet().take(numberOfWinners);
 
       for (final id in winners) {
         replyMessage += '<@$id> ';
