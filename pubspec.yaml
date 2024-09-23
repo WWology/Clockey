@@ -19,7 +19,6 @@ dependencies:
   nyxx: ^6.3.0
   nyxx_commands: ^6.0.2
   nyxx_extensions: ^4.1.0
-  puppeteer: ^3.12.0
   supabase: ^2.2.3
   tabular: ^0.6.3+1
 
