@@ -2,6 +2,7 @@
 export 'giveaway.dart';
 export 'next_game_group.dart';
 export 'ping.dart';
+export 'players_birthday.dart';
 // Prediction commands
 export 'prediction_commands/best_of_commands.dart';
 export 'prediction_commands/score_adder_commands.dart';

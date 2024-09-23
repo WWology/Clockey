@@ -73,6 +73,7 @@ CommandsPlugin registerCommand() {
   commands.addCommand(rlAdd);
 
   // General Commands
+  commands.addCommand(playerBirthday);
   commands.addCommand(giveaway);
   commands.addCommand(nextGameGroup);
   commands.addCommand(ping);
