@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
+import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart' as logger;
 import 'package:nyxx/nyxx.dart';
 
-import '../constants.dart';
 import '../data/game/game.dart';
+import '../env.dart';
 
 class GameChecker extends NyxxPlugin<NyxxGateway> {
   late final Timer dotaTimer, csTimer, rlTimer;
@@ -14,21 +15,22 @@ class GameChecker extends NyxxPlugin<NyxxGateway> {
   @override
   void afterConnect(NyxxGateway client) async {
     super.afterConnect(client);
+    final apiKey = {'authorization': 'Apikey ${Env.liquipediaApiKey}'};
 
-    dotaTimer = Timer.periodic(const Duration(minutes: 15), (timer) {
-      checkForDotaMatch(client);
+    dotaTimer = Timer.periodic(const Duration(minutes: 6), (timer) {
+      checkForDotaMatch(client, apiKey);
     });
 
     await Future.delayed(const Duration(minutes: 5));
 
-    csTimer = Timer.periodic(const Duration(minutes: 15), (timer) {
-      checkForCSMatch(client);
+    csTimer = Timer.periodic(const Duration(minutes: 6), (timer) {
+      checkForCSMatch(client, apiKey);
     });
 
     await Future.delayed(const Duration(minutes: 5));
 
-    rlTimer = Timer.periodic(const Duration(minutes: 15), (timer) {
-      checkForRLMatch(client);
+    rlTimer = Timer.periodic(const Duration(minutes: 6), (timer) {
+      checkForRLMatch(client, apiKey);
     });
   }
 
@@ -44,16 +46,14 @@ class GameChecker extends NyxxPlugin<NyxxGateway> {
   }
 }
 
-void checkForDotaMatch(
-  NyxxGateway client,
-) async {
+void checkForDotaMatch(NyxxGateway client, Map<String, String> apiKey) async {
   var gameBox = Hive.box<Game>('gameBox');
   final dotaMatch = gameBox.get('Dota');
   final DateTime currentTime = DateTime.now();
 
+  final ogGuild = await client.guilds.get(Snowflake(Env.guildId));
+  final eventList = List.of(await ogGuild.scheduledEvents.list());
   if (dotaMatch != null) {
-    print(dotaMatch.name);
-    print(dotaMatch.alreadyPosted);
     // Check for conditions before posting
     if (!dotaMatch.alreadyPosted &&
         dotaMatch.time.difference(currentTime).inHours <= 1) {
@@ -80,15 +80,34 @@ void checkForDotaMatch(
   } else {
     try {
       // Todo, implement Liquipedia's api
+      final url = Uri.parse(
+        'https://api.liquipedia.net/api/v3/match?wiki=dota2&conditions=%5B%5Bopponent%3A%3AOG%5D%5D&'
+        'query=match2opponents%2C%20date%2C%20stream&limit=10&'
+        'order=date%20DESC&'
+        'rawstreams=true&streamurls=true',
+      );
+
+      final request = http.Request(
+        'GET',
+        url,
+      );
+
+      request.headers.addAll(apiKey);
+
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        print(await response.stream.bytesToString());
+      } else {
+        print(response.reasonPhrase);
+      }
     } catch (error) {
       GetIt.I.get<logger.Logger>().e(error);
     }
   }
 }
 
-void checkForCSMatch(
-  NyxxGateway client,
-) async {
+void checkForCSMatch(NyxxGateway client, Map<String, String> apiKey) async {
   var gameBox = Hive.box<Game>('gameBox');
   final csMatch = gameBox.get('CS');
   final DateTime currentTime = DateTime.now();
@@ -130,6 +149,7 @@ void checkForCSMatch(
 
 void checkForRLMatch(
   NyxxGateway client,
+  Map<String, String> apiKey,
 ) async {
   var gameBox = Hive.box<Game>('gameBox');
   final rlMatch = gameBox.get('RL');
@@ -170,6 +190,10 @@ void checkForRLMatch(
 }
 
 EmbedBuilder _gameEmbed(Game game, String type) {
+  const String ogDotaUrl = 'https://liquipedia.net/dota2/OG';
+  const String ogCSUrl = 'https://liquipedia.net/counterstrike/OG';
+  const String ogRLUrl = 'https://liquipedia.net/rocketleague/OG';
+
   late final String title, url, colour;
   switch (type) {
     case 'Dota':

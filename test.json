@@ -1,0 +1,161 @@
+{
+    "result": [
+        {
+            "date": "2024-06-22 08:00:00",
+            "stream": {
+                "twitch_en_1": "https://www.twitch.tv/pgl_dota2",
+                "twitch": "https://www.twitch.tv/pgl_dota2"
+            },
+            "match2id": "8fg6TQXiyr_R03-M003",
+            "pagename": "The_International/2024/Western_Europe",
+            "namespace": 0,
+            "match2opponents": [
+                {
+                    "id": 1,
+                    "type": "team",
+                    "name": "OG",
+                    "template": "og redbull",
+                    "icon": "OG RB allmode.png",
+                    "score": 0,
+                    "status": "S",
+                    "placement": 2,
+                    "match2players": [
+                        {
+                            "id": 1,
+                            "opid": 1,
+                            "name": "Timado",
+                            "displayname": "Timado",
+                            "flag": "Peru",
+                            "extradata": null
+                        },
+                        {
+                            "id": 2,
+                            "opid": 1,
+                            "name": "Bzm",
+                            "displayname": "bzm",
+                            "flag": "Bulgaria",
+                            "extradata": null
+                        },
+                        {
+                            "id": 3,
+                            "opid": 1,
+                            "name": "Wisper",
+                            "displayname": "Wisper",
+                            "flag": "Bolivia",
+                            "extradata": null
+                        },
+                        {
+                            "id": 4,
+                            "opid": 1,
+                            "name": "Ari",
+                            "displayname": "Ari",
+                            "flag": "United Kingdom",
+                            "extradata": null
+                        },
+                        {
+                            "id": 5,
+                            "opid": 1,
+                            "name": "Ceb",
+                            "displayname": "Ceb",
+                            "flag": "France",
+                            "extradata": null
+                        },
+                        {
+                            "id": 6,
+                            "opid": 1,
+                            "name": "Immersion",
+                            "displayname": "Immersion",
+                            "flag": "Russia",
+                            "extradata": null
+                        }
+                    ],
+                    "extradata": null,
+                    "teamtemplate": {
+                        "template": "og redbull",
+                        "page": "OG",
+                        "name": "OG",
+                        "shortname": "OG",
+                        "bracketname": "OG",
+                        "image": "OG RB allmode.png",
+                        "imagedark": "OG RB allmode.png",
+                        "legacyimage": "",
+                        "legacyimagedark": "",
+                        "imageurl": "https://liquipedia.net/commons/images/thumb/7/70/OG_RB_allmode.png/273px-OG_RB_allmode.png",
+                        "imagedarkurl": "https://liquipedia.net/commons/images/thumb/7/70/OG_RB_allmode.png/273px-OG_RB_allmode.png",
+                        "legacyimageurl": "",
+                        "legacyimagedarkurl": ""
+                    }
+                },
+                {
+                    "id": 2,
+                    "type": "team",
+                    "name": "NAVI Junior",
+                    "template": "navi junior",
+                    "icon": "Natus Vincere Junior 2021 lightmode.png",
+                    "score": 2,
+                    "status": "S",
+                    "placement": 1,
+                    "match2players": [
+                        {
+                            "id": 1,
+                            "opid": 2,
+                            "name": "Gotthejuice",
+                            "displayname": "gotthejuice",
+                            "flag": "Ukraine",
+                            "extradata": null
+                        },
+                        {
+                            "id": 2,
+                            "opid": 2,
+                            "name": "Niku",
+                            "displayname": "Niku",
+                            "flag": "Ukraine",
+                            "extradata": null
+                        },
+                        {
+                            "id": 3,
+                            "opid": 2,
+                            "name": "Pma",
+                            "displayname": "pma",
+                            "flag": "Ukraine",
+                            "extradata": null
+                        },
+                        {
+                            "id": 4,
+                            "opid": 2,
+                            "name": "Daze",
+                            "displayname": "daze",
+                            "flag": "Kazakhstan",
+                            "extradata": null
+                        },
+                        {
+                            "id": 5,
+                            "opid": 2,
+                            "name": "Riddys",
+                            "displayname": "Riddys",
+                            "flag": "Ukraine",
+                            "extradata": null
+                        }
+                    ],
+                    "extradata": null,
+                    "teamtemplate": {
+                        "template": "navi junior",
+                        "page": "NAVI Junior",
+                        "name": "NAVI Junior",
+                        "shortname": "NAVI Jr.",
+                        "bracketname": "NAVI Junior",
+                        "image": "Natus Vincere Junior 2021 lightmode.png",
+                        "imagedark": "Natus Vincere Junior 2021 darkmode.png",
+                        "legacyimage": "",
+                        "legacyimagedark": "",
+                        "imageurl": "https://liquipedia.net/commons/images/thumb/d/df/Natus_Vincere_Junior_2021_lightmode.png/396px-Natus_Vincere_Junior_2021_lightmode.png",
+                        "imagedarkurl": "https://liquipedia.net/commons/images/thumb/7/7c/Natus_Vincere_Junior_2021_darkmode.png/395px-Natus_Vincere_Junior_2021_darkmode.png",
+                        "legacyimageurl": "",
+                        "legacyimagedarkurl": ""
+                    }
+                }
+            ],
+            "wiki": "dota2"
+        }
+    ]
+}

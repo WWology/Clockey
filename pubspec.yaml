@@ -37,9 +37,5 @@ dependency_overrides:
     git:
       url: https://github.com/nyxx-discord/nyxx_extensions.git
       ref: dev
-  nyxx:
-    git:
-      url: https://github.com/nyxx-discord/nyxx.git
-      ref: dev
 
 publish_to: none
