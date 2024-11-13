@@ -128,7 +128,7 @@ final event = ChatCommand(
           scheduledEntityType = ScheduledEntityType.voice;
           break;
         case "Other":
-          name = "Other - ${modalContext['eventName']!}";
+          name = modalContext['eventName']!;
           hours = modalContext['hours']!;
           eventChannelId = Snowflake(1186593338300842025);
           scheduledEntityType = ScheduledEntityType.stageInstance;
@@ -151,7 +151,7 @@ final event = ChatCommand(
             '\n\nAs this is a ${modalContext['eventSeriesLength']}, you will be able to add $hours hours of work to your invoice for the month';
       } else {
         replyMessage +=
-            '1 gardener to work the event - ${modalContext['eventName']}, at <t:${modalContext['eventTime']}:F>'
+            '1 gardener to work the Other event - ${modalContext['eventName']}, at <t:${modalContext['eventTime']}:F>'
             '\n\nPlease react below with a <:OGpeepoYes:730890894814740541> to sign up!'
             '\n\nYou will be able to add $hours hours of work to your invoice for the month';
       }
