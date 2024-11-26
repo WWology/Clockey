@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart' as logger;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:nyxx_extensions/nyxx_extensions.dart';
 
 import '../../constants.dart';
 import '../../data/events/events.dart';
@@ -235,7 +234,7 @@ final gardener = MessageCommand(
           hours: hours,
         );
 
-        replyMessage += '$eventName are: ';
+        replyMessage += '$eventName is: ';
         for (final id in gardenersWorking) {
           replyMessage += '<@$id> ';
         }
@@ -251,19 +250,29 @@ final gardener = MessageCommand(
             );
           },
           (_) async {
-            final url = await message.url;
-            Future.wait([
-              context.respond(
-                MessageBuilder(
-                  content: '$replyMessage - $url',
-                  allowedMentions: AllowedMentions(
-                    parse: ['users'],
-                  ),
-                ),
-                level: ResponseLevel.public,
+            await context.respond(
+              MessageBuilder(
+                content: "Hours added to the database",
               ),
-              message.react(_weCooEmoji),
-            ]);
+              level: ResponseLevel.hint,
+            );
+            await message.channel.sendMessage(
+              MessageBuilder(
+                referencedMessage: MessageReferenceBuilder.forward(
+                  messageId: message.id,
+                  channelId: message.channelId,
+                ),
+              ),
+            );
+            await context.channel.sendMessage(
+              MessageBuilder(
+                content: replyMessage,
+                allowedMentions: AllowedMentions(
+                  parse: ['users'],
+                ),
+              ),
+            );
+            await message.react(_weCooEmoji);
           },
         ).run();
       },
