@@ -13,7 +13,6 @@ ChatGroup manualGroup = ChatGroup(
     signUps,
     addGardenerCommand,
     removeGardenerCommand,
-    addDeductionCommand,
   ],
 );
 
@@ -73,7 +72,7 @@ final signUps = ChatCommand(
       final eventTime = DateTime.fromMillisecondsSinceEpoch(
               int.parse(modalContext['eventTime']!) * 1000)
           .toUtc();
-      final hours = num.parse(modalContext['hours']!);
+      final hours = int.parse(modalContext['hours']!);
 
       final event = Event(
         name: eventName,
@@ -233,41 +232,4 @@ final removeGardenerCommand = ChatCommand(
       ).run();
     },
   ),
-);
-
-final addDeductionCommand = ChatCommand(
-  'add_deduction',
-  'Add a deduction for a gardener',
-  options: CommandOptions(
-    defaultResponseLevel: ResponseLevel.hint,
-  ),
-  id('add_deduction', (
-    InteractionChatContext context,
-    @Choices(gardenerMap)
-    @Description('The gardener who will be deducted')
-    @Name('gardener')
-    String gardener,
-    int eventId,
-    num hours,
-  ) async {
-    final gardenerId = mapGardenerToId(gardener);
-    addDeduction(eventId, gardenerId, hours).match(
-      (error) async {
-        GetIt.I.get<logger.Logger>().e(error.message, error: error);
-        await context.respond(
-          MessageBuilder(
-            content: 'Error while adding deduction, please try again',
-          ),
-        );
-      },
-      (event) async {
-        await context.respond(
-          MessageBuilder(
-            content:
-                'Added a $hours hour deduction to $gardener for ${event.name} at <t:${event.time.millisecondsSinceEpoch ~/ 1000}:F>',
-          ),
-        );
-      },
-    ).run();
-  }),
 );

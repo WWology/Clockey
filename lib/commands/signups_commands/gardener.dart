@@ -59,7 +59,7 @@ typedef EventDetails = (
   String,
   DateTime,
   EventType,
-  num,
+  int,
 );
 
 Either<ParsingEventError, EventDetails> _parseEvent(
@@ -98,7 +98,7 @@ Either<ParsingEventError, EventDetails> _parseEvent(
         final eventTime =
             DateTime.fromMillisecondsSinceEpoch(eventUnixTime).toUtc();
 
-        final hours = num.parse(
+        final hours = int.parse(
           message.content
               .substring(message.content.indexOf("add") + 4)
               .split(' ')[0],

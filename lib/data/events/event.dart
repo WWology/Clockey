@@ -34,17 +34,9 @@ sealed class Event with _$Event {
     required DateTime time,
     required EventType type,
     required List<int> gardeners,
-    required num hours,
-    Map<int, num>? deductions,
+    required int hours,
   }) = _Event;
 
   factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
   const Event._();
-
-  bool get hasDeductions {
-    if (deductions != null) {
-      return true;
-    }
-    return false;
-  }
 }

@@ -117,85 +117,30 @@ EmbedBuilder _generateInvoiceEmbed(
 }) {
   String dotaEventsWorked = '';
   String csEventsWorked = '';
-  String rlEventsWorked = '';
   String otherEventsWorked = '';
-  String deductions = '';
   num totalHours = 0;
 
   final DateFormat dateFormat = DateFormat.yMMMd();
 
   for (final dotaEvent in invoiceData['Dota']!) {
-    if (dotaEvent.hasDeductions) {
-      final num hours = dotaEvent.hours - dotaEvent.deductions![user.id.value]!;
-      if (hours > 0) {
-        dotaEventsWorked +=
-            '${dotaEvent.name} at ${dateFormat.format(dotaEvent.time)} - $hours hours\n';
+    dotaEventsWorked +=
+        '${dotaEvent.name} at ${dateFormat.format(dotaEvent.time)} - ${dotaEvent.hours} hours\n';
 
-        totalHours += dotaEvent.hours - dotaEvent.deductions![user.id.value]!;
-      }
-    } else {
-      dotaEventsWorked +=
-          '${dotaEvent.name} at ${dateFormat.format(dotaEvent.time)} - ${dotaEvent.hours} hours\n';
-
-      totalHours += dotaEvent.hours;
-    }
+    totalHours += dotaEvent.hours;
   }
 
   for (final csEvent in invoiceData['CS']!) {
-    if (csEvent.hasDeductions) {
-      final num hours = csEvent.hours - csEvent.deductions![user.id.value]!;
-      if (hours > 0) {
-        csEventsWorked +=
-            '${csEvent.name} at ${dateFormat.format(csEvent.time)} - $hours hours\n';
+    csEventsWorked +=
+        '${csEvent.name} at ${dateFormat.format(csEvent.time)} - ${csEvent.hours} hours\n';
 
-        totalHours += csEvent.hours - csEvent.deductions![user.id.value]!;
-      }
-    } else {
-      csEventsWorked +=
-          '${csEvent.name} at ${dateFormat.format(csEvent.time)} - ${csEvent.hours} hours\n';
-
-      totalHours += csEvent.hours;
-    }
-  }
-
-  for (final rlEvent in invoiceData['RL']!) {
-    if (rlEvent.hasDeductions) {
-      final num hours = rlEvent.hours - rlEvent.deductions![user.id.value]!;
-      if (hours > 0) {
-        rlEventsWorked +=
-            '${rlEvent.name} at ${dateFormat.format(rlEvent.time)} - $hours hours\n';
-
-        totalHours += rlEvent.hours - rlEvent.deductions![user.id.value]!;
-      }
-    } else {
-      rlEventsWorked +=
-          '${rlEvent.name} at ${dateFormat.format(rlEvent.time)} - ${rlEvent.hours} hours\n';
-
-      totalHours += rlEvent.hours;
-    }
+    totalHours += csEvent.hours;
   }
 
   for (final otherEvent in invoiceData['Other']!) {
-    if (otherEvent.hasDeductions) {
-      final num hours =
-          otherEvent.hours - otherEvent.deductions![user.id.value]!;
-      if (hours > 0) {
-        otherEventsWorked +=
-            '${otherEvent.name} at ${dateFormat.format(otherEvent.time)} - $hours hours\n';
+    otherEventsWorked +=
+        '${otherEvent.name} at ${dateFormat.format(otherEvent.time)} - ${otherEvent.hours} hours\n';
 
-        totalHours += otherEvent.hours - otherEvent.deductions![user.id.value]!;
-      }
-    } else {
-      otherEventsWorked +=
-          '${otherEvent.name} at ${dateFormat.format(otherEvent.time)} - ${otherEvent.hours} hours\n';
-
-      totalHours += otherEvent.hours;
-    }
-  }
-
-  for (final deduction in invoiceData['Deductions']!) {
-    deductions +=
-        '${deduction.name} at ${dateFormat.format(deduction.time)} - ${deduction.deductions![user.id.value]!} hours \n';
+    totalHours += otherEvent.hours;
   }
 
   return EmbedBuilder(
@@ -219,22 +164,10 @@ EmbedBuilder _generateInvoiceEmbed(
           value: csEventsWorked,
           isInline: false,
         ),
-      if (rlEventsWorked.isNotEmpty)
-        EmbedFieldBuilder(
-          name: 'Rocket League',
-          value: rlEventsWorked,
-          isInline: false,
-        ),
       if (otherEventsWorked.isNotEmpty)
         EmbedFieldBuilder(
           name: 'Other',
           value: otherEventsWorked,
-          isInline: false,
-        ),
-      if (deductions.isNotEmpty)
-        EmbedFieldBuilder(
-          name: 'Deductions',
-          value: deductions,
           isInline: false,
         ),
       EmbedFieldBuilder(

@@ -171,43 +171,6 @@ String csEventRows(List<Event> csEvents) {
   return csSections;
 }
 
-String rlEventRows(List<Event> rlEvents) {
-  String rlSections = '''<tr class="c8">
-			<td class="c3" colspan="1" rowspan="1">
-				<p class="c4"><span class="c9">Rocket League</span></p>
-			</td>
-			<td class="c1" colspan="1" rowspan="1">
-				<p class="c0"><span class="c11"></span></p>
-			</td>
-		</tr>''';
-
-  for (final rlEvent in rlEvents) {
-    rlSections += '''<tr class="c8">
-			<td class="c3" colspan="1" rowspan="1">
-				<ul class="c6 lst-kix_87mbg6thn9c7-0 start">
-          <li class="c4 c12 li-bullet-0">
-            <span class="c11">${rlEvent.name} - ${DateFormat('dd/MM/yyyy').format(rlEvent.time)}</span>
-          </li>
-        </ul>
-			</td>
-			<td class="c1" colspan="1" rowspan="1">
-				<p class="c0">${rlEvent.hours}hrs/${rlEvent.hours * 12}€<span class="c11"></span></p>
-			</td>
-		</tr>''';
-  }
-
-  rlSections += '''<tr class="c8">
-			<td class="c3" colspan="1" rowspan="1">
-				<p class="c4 c15"><span class="c17 c9"></span></p>
-			</td>
-			<td class="c1" colspan="1" rowspan="1">
-				<p class="c0"><span class="c11"></span></p>
-			</td>
-		</tr>''';
-
-  return rlSections;
-}
-
 String otherEventRows(List<Event> otherEvents) {
   String otherSections = '''<tr class="c8">
 			<td class="c3" colspan="1" rowspan="1">
@@ -294,59 +257,21 @@ Future<File> createInvoiceHtml(
   num totalHours = 0;
   List<Event> dotaEventsWorked = [],
       csEventsWorked = [],
-      rlEventsWorked = [],
       otherEventsWorked = [];
 
   for (final dotaEvent in eventsWorked['Dota']!) {
-    if (dotaEvent.hasDeductions) {
-      final num hours = dotaEvent.hours - dotaEvent.deductions![gardenerID]!;
-      if (hours > 0) {
-        dotaEventsWorked.add(dotaEvent.copyWith(hours: hours));
-        totalHours += hours;
-      }
-    } else {
-      dotaEventsWorked.add(dotaEvent);
-      totalHours += dotaEvent.hours;
-    }
+    dotaEventsWorked.add(dotaEvent);
+    totalHours += dotaEvent.hours;
   }
 
   for (final csEvent in eventsWorked['CS']!) {
-    if (csEvent.hasDeductions) {
-      final num hours = csEvent.hours - csEvent.deductions![gardenerID]!;
-      if (hours > 0) {
-        csEventsWorked.add(csEvent.copyWith(hours: hours));
-        totalHours += hours;
-      }
-    } else {
-      csEventsWorked.add(csEvent);
-      totalHours += csEvent.hours;
-    }
-  }
-
-  for (final rlEvent in eventsWorked['RL']!) {
-    if (rlEvent.hasDeductions) {
-      final num hours = rlEvent.hours - rlEvent.deductions![gardenerID]!;
-      if (hours > 0) {
-        rlEventsWorked.add(rlEvent.copyWith(hours: hours));
-        totalHours += hours;
-      }
-    } else {
-      rlEventsWorked.add(rlEvent);
-      totalHours += rlEvent.hours;
-    }
+    csEventsWorked.add(csEvent);
+    totalHours += csEvent.hours;
   }
 
   for (final otherEvent in eventsWorked['Other']!) {
-    if (otherEvent.hasDeductions) {
-      final num hours = otherEvent.hours - otherEvent.deductions![gardenerID]!;
-      if (hours > 0) {
-        otherEventsWorked.add(otherEvent.copyWith(hours: hours));
-        totalHours += hours;
-      }
-    } else {
-      otherEventsWorked.add(otherEvent);
-      totalHours += otherEvent.hours;
-    }
+    otherEventsWorked.add(otherEvent);
+    totalHours += otherEvent.hours;
   }
 
   String htmlString = style +
@@ -354,7 +279,6 @@ Future<File> createInvoiceHtml(
       tableColumnName +
       dotaEventsRows(dotaEventsWorked) +
       csEventRows(csEventsWorked) +
-      rlEventRows(rlEventsWorked) +
       otherEventRows(otherEventsWorked) +
       totalHoursRow(totalHours);
 
@@ -362,7 +286,3 @@ Future<File> createInvoiceHtml(
       File(filename).create().then((file) => file.writeAsString(htmlString));
   return invoiceFile;
 }
-
-// Future<File> createReportHtml(Map<String, List<Event>> events) {
-
-// }

@@ -101,7 +101,7 @@ final editHoursCommand = ChatCommand(
     String messageId,
     @Description('The new duration of this event')
     @Name('new_hours')
-    num newHours,
+    int newHours,
   ) async {
     await context.acknowledge();
     final message =
