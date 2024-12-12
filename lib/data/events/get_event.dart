@@ -49,7 +49,6 @@ TaskEither<EventError, InvoiceData> getEvents({
           csEventsWorked,
           rlEventsWorked,
           otherEventsWorked,
-          deductions
         ) = await (
           supabase
               .from('clockey')
@@ -87,14 +86,6 @@ TaskEither<EventError, InvoiceData> getEvents({
               .filter('gardeners', 'cs', {'$gardenerID'})
               .order('time', ascending: true)
               .withConverter((events) => events.map(Event.fromJson).toList()),
-          supabase
-              .rpc<List<Map<String, dynamic>>>('get_deductions', params: {
-                'start_date': start.toString(),
-                'end_date': end.toString(),
-                'gardener_id': '$gardenerID'
-              })
-              .order('time', ascending: true)
-              .withConverter((events) => events.map(Event.fromJson).toList()),
         ).wait;
 
         invoiceData.addAll({
@@ -102,7 +93,6 @@ TaskEither<EventError, InvoiceData> getEvents({
           'CS': csEventsWorked,
           'RL': rlEventsWorked,
           'Other': otherEventsWorked,
-          'Deductions': deductions,
         });
 
         return invoiceData;
@@ -111,69 +101,3 @@ TaskEither<EventError, InvoiceData> getEvents({
     );
 
 typedef ReportData = Map<String, List<Event>>;
-
-/// Get all events in between [start] and [end] date
-TaskEither<EventError, ReportData> getReport({
-  required DateTime start,
-  required DateTime end,
-}) =>
-    TaskEither.tryCatch(
-      () async {
-        final supabase = GetIt.I.get<SupabaseClient>();
-        final ReportData reportData = {};
-
-        final (dotaEvents, csEvents, rlEvents, otherEvents, deductions) =
-            await (
-          supabase
-              .from('clockey')
-              .select()
-              .gte('time', start)
-              .lte('time', end)
-              .eq('type', 'Dota')
-              .order('time', ascending: true)
-              .withConverter((events) => events.map(Event.fromJson).toList()),
-          supabase
-              .from('clockey')
-              .select()
-              .gte('time', start)
-              .lte('time', end)
-              .eq('type', 'CS')
-              .order('time', ascending: true)
-              .withConverter((events) => events.map(Event.fromJson).toList()),
-          supabase
-              .from('clockey')
-              .select()
-              .gte('time', start)
-              .lte('time', end)
-              .eq('type', 'RL')
-              .order('time', ascending: true)
-              .withConverter((events) => events.map(Event.fromJson).toList()),
-          supabase
-              .from('clockey')
-              .select()
-              .gte('time', start)
-              .lte('time', end)
-              .eq('type', 'Other')
-              .order('time', ascending: true)
-              .withConverter((events) => events.map(Event.fromJson).toList()),
-          supabase
-              .rpc<List<Map<String, dynamic>>>('get_report', params: {
-                'start_date': start.toString(),
-                'end_date': end.toString(),
-              })
-              .order('time', ascending: true)
-              .withConverter((events) => events.map(Event.fromJson).toList()),
-        ).wait;
-
-        reportData.addAll({
-          'Dota': dotaEvents,
-          'CS': csEvents,
-          'RL': rlEvents,
-          'Other': otherEvents,
-          'Deductions': deductions,
-        });
-
-        return reportData;
-      },
-      GetEventsError.new,
-    );
