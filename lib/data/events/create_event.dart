@@ -11,7 +11,7 @@ import 'event_errors.dart';
 TaskEither<EventError, Unit> createEvent(Event event) => TaskEither.tryCatch(
       () async {
         final supabase = GetIt.I.get<SupabaseClient>();
-        await supabase.from('clockey').insert(event);
+        await supabase.from('events').insert(event);
 
         return unit;
       },

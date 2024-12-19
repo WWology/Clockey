@@ -15,7 +15,7 @@ TaskEither<EventError, int> getEventId(
         final supabase = GetIt.I.get<SupabaseClient>();
 
         final event = await supabase
-            .from('clockey')
+            .from('events')
             .select()
             .match({
               'name': eventName,
@@ -51,7 +51,7 @@ TaskEither<EventError, InvoiceData> getEvents({
           otherEventsWorked,
         ) = await (
           supabase
-              .from('clockey')
+              .from('events')
               .select()
               .gte('time', start)
               .lte('time', end)
@@ -60,7 +60,7 @@ TaskEither<EventError, InvoiceData> getEvents({
               .order('time', ascending: true)
               .withConverter((events) => events.map(Event.fromJson).toList()),
           supabase
-              .from('clockey')
+              .from('events')
               .select()
               .gte('time', start)
               .lte('time', end)
@@ -69,7 +69,7 @@ TaskEither<EventError, InvoiceData> getEvents({
               .order('time', ascending: true)
               .withConverter((events) => events.map(Event.fromJson).toList()),
           supabase
-              .from('clockey')
+              .from('events')
               .select()
               .gte('time', start)
               .lte('time', end)
@@ -78,7 +78,7 @@ TaskEither<EventError, InvoiceData> getEvents({
               .order('time', ascending: true)
               .withConverter((events) => events.map(Event.fromJson).toList()),
           supabase
-              .from('clockey')
+              .from('events')
               .select()
               .gte('time', start)
               .lte('time', end)

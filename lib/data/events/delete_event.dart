@@ -9,7 +9,7 @@ TaskEither<EventError, Unit> deleteEvent(int id) => TaskEither.tryCatch(
       () async {
         final supabase = GetIt.I.get<SupabaseClient>();
 
-        await supabase.from('clockey').delete().match({'id': id});
+        await supabase.from('events').delete().match({'id': id});
         return unit;
       },
       DeleteEventError.new,

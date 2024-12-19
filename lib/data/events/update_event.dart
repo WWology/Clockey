@@ -52,7 +52,7 @@ TaskEither<EditEventError, Unit> editName(int eventId, String newName) =>
         final supabase = GetIt.I.get<SupabaseClient>();
 
         await supabase
-            .from('clockey')
+            .from('events')
             .update({'name': newName}).match({'id': eventId});
 
         return unit;
@@ -66,7 +66,7 @@ TaskEither<EditEventError, Unit> editTime(int eventId, DateTime newTime) =>
         final supabase = GetIt.I.get<SupabaseClient>();
 
         await supabase
-            .from('clockey')
+            .from('events')
             .update({'time': newTime.toString()}).match({'id': eventId});
 
         return unit;
@@ -79,7 +79,7 @@ TaskEither<EditEventError, Unit> editHours(int eventId, num newHours) =>
       () async {
         final supabase = GetIt.I.get<SupabaseClient>();
         await supabase
-            .from('clockey')
+            .from('events')
             .update({'hours': newHours}).match({'id': eventId});
 
         return unit;

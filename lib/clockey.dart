@@ -32,7 +32,7 @@ void run() async {
     );
 
     client.onReady.listen((event) async {
-      print('Clockey Ready ⏰');
+      print('events Ready ⏰');
     });
 
     pagination.onDisallowedUse.listen((event) async {
