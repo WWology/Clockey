@@ -190,33 +190,28 @@ EmbedBuilder _scoreEmbed(
       break;
   }
   return EmbedBuilder(
-      title: title,
-      color: DiscordColor.parseHexString(colour),
-      author: EmbedAuthorBuilder(
-        name: 'OG',
-        iconUrl: Uri.parse(
-          'https://liquipedia.net/commons/images/thumb/7/70/OG_RB_allmode.png/1200px-OG_RB_allmode.png',
-        ),
+    title: title,
+    color: DiscordColor.parseHexString(colour),
+    author: EmbedAuthorBuilder(
+      name: 'OG',
+      iconUrl: Uri.parse(
+        'https://liquipedia.net/commons/images/thumb/7/70/OG_RB_allmode.png/1200px-OG_RB_allmode.png',
       ),
-      thumbnail: EmbedThumbnailBuilder(
-        url: Uri.parse(
-          'https://liquipedia.net/commons/images/thumb'
-          '/7/70/OG_RB_allmode.png/1200px-OG_RB_allmode.png',
-        ),
+    ),
+    fields: [
+      EmbedFieldBuilder(
+        name: '',
+        value: '```$scoreboard\n```',
+        isInline: true,
       ),
-      fields: [
-        EmbedFieldBuilder(
-          name: '',
-          value: '```$scoreboard\n```',
-          isInline: true,
-        ),
-        EmbedFieldBuilder(
-          name: "Can't see yourself?",
-          value:
-              'Use /show ${type.toLowerCase()} @yourself to see where you stand',
-          isInline: false,
-        ),
-      ]);
+      EmbedFieldBuilder(
+        name: "Can't see yourself?",
+        value:
+            'Use /show ${type.toLowerCase()} @yourself to see where you stand',
+        isInline: false,
+      ),
+    ],
+  );
 }
 
 Future<String> _scoreboard(
